@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Valley Stars | Dance Moves Vault</title>
+    <style>
+        :root {
+            --primary: #FFD700;
+            --primary-hover: #E6C200;
+            --dark: #121212;
+            --card-bg: #1E1E1E;
+            --text: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --border: #2D2D2D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        .compliance-disclosure {
+            background-color: #1A1A1A;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        header {
+            background-color: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+        }
+
+        .brand-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .brand-subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #2A2A2A 0%, #151515 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .hero-banner h2 {
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+        }
+
+        .hero-banner p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--dark);
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-btn {
+            background-color: #252525;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #2D2D2D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .video-placeholder::before {
+            content: '▶';
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.8;
+        }
+
+        .card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-tag {
+            align-self: flex-start;
+            background-color: rgba(255, 215, 0, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            text-align: center;
+            background-color: #2D2D2D;
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        .card-link:hover {
+            background-color: #3D3D3D;
+        }
+
+        .ad-banner-placement {
+            background-color: #151515;
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 32px 0;
+            border-radius: 8px;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="compliance-disclosure">
+        Disclaimer: When you purchase dance gear or premium access through links on this portal, we may earn an affiliate commission at no extra cost to you.
+    </div>
+
+    <header>
+        <div class="brand-title">Central Valley Stars</div>
+        <div class="brand-subtitle">Street Choreography & Viral Move Vault</div>
+    </header>
+
+    <div class="container">
+        
+        <div class="hero-banner">
+            <h2>Unlock Your Next Performance</h2>
+            <p>Get access to elite choreography breakdown templates, audition logs, and masterclasses designed to take your performance to the next level.</p>
+            <a href="#" class="cta-btn">Download Complete Blueprint Vault</a>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterStyle('all')">All Library</button>
+            <button class="filter-btn" onclick="filterStyle('hiphop')">Hip Hop / Street</button>
+            <button class="filter-btn" onclick="filterStyle('cardio')">Cardio Fitness</button>
+            <button class="filter-btn" onclick="filterStyle('gear')">Recommended Gear</button>
+        </div>
+
+        <div class="ad-banner-placement">
+            ▲ Google AdSense Placeholder - Responsive Display Banner ▲
+        </div>
+
+        <div class="grid" id="vault-grid">
+            <!-- Item 1: Hip Hop -->
+            <div class="card" data-category="hiphop">
+                <div class="video-placeholder"></div>
+                <div class="card-content">
+                    <span class="card-tag">Hip Hop / Street</span>
+                    <h3 class="card-title">Footwork Speed Breakdown</h3>
+                    <p class="card-description">Master syncopated floor movements and speed combinations for modern street battles and routines.</p>
+                    <a href="#" class="card-link">Watch Slow-Mo Guide</a>
+                </div>
+            </div>
+
+            <!-- Item 2: Cardio -->
+            <div class="card" data-category="cardio">
+                <div class="video-placeholder"></div>
+                <div class="card-content">
+                    <span class="card-tag">Cardio Fitness</span>
+                    <h3 class="card-title">High-Intensity Dance Burn</h3>
+                    <p class="card-description">A rhythm-based fat-burning routine combining high-energy grooves with functional fitness patterns.</p>
+                    <a href="#" class="card-link">Start Routine</a>
+                </div>
+            </div>
+
+            <!-- Item 3: Affiliate Gear -->
+            <div class="card" data-category="gear">
+                <div class="video-placeholder" style="background-color: #252525; font-size: 3rem; font-weight: bold; color:#333;">👟</div>
+                <div class="card-content">
+                    <span class="card-tag">Recommended Gear</span>
+                    <h3 class="card-title">Pro Performance Dance Wear</h3>
+                    <p class="card-description">Explore premium lightweight footwear, supportive studio apparel, and stage gear built for durability.</p>
+                    <a href="#" class="card-link" rel="sponsored">Shop Partner Collection</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-banner-placement">
+            ▼ Google AdSense Placeholder - In-Feed Content Unit ▼
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Central Valley Stars. All rights reserved.</p>
