@@ -81,16 +81,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .gradient-btn {
-            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
-            transition: all 0.3s ease;
-        }
-
-        .gradient-btn:hover {
-            background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%);
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.6);
-        }
-
         .gold-btn {
             background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
             color: #000;
@@ -158,27 +148,36 @@
                 <span class="gradient-text">Fund a Dancer's Future.</span>
             </h1>
             <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
-                Choose any calendar day(s) of the month to sponsor. Each day represents a $25 contribution toward studio equipment, floor care, and youth scholarship passes.
+                Choose any calendar day to sponsor where your donation equals the day of the month (e.g., Day 15 = $15), or use custom input for any day amount!
             </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             <!-- Left: Dancer Silhouette Showcase Card -->
-            <div class="lg:col-span-5 glass-panel rounded-3xl p-8 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[450px]">
+            <div class="lg:col-span-5 glass-panel rounded-3xl p-8 text-center relative overflow-hidden flex flex-col items-center justify-center min-h-[480px]">
                 <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-pink-900/20 pointer-events-none"></div>
                 
                 <!-- Dancer Silhouette Graphic SVG -->
-                <div class="relative w-48 h-64 mx-auto mb-6 flex items-center justify-center filter drop-shadow-[0_0_25px_rgba(236,72,153,0.4)]">
+                <div class="relative w-48 h-64 mx-auto mb-4 flex items-center justify-center filter drop-shadow-[0_0_25px_rgba(236,72,153,0.4)]">
                     <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-pink-400 opacity-90">
                         <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4m9 7h-6l-2.12-3.18a2 2 0 0 0-1.66-.82H9.78c-.67 0-1.3.35-1.66.92L6 11.5l1.83 1.06L9 10.5v10.5h2V15h2v6h2V10.5l1.17 2.06L18 11.5l-2.12-3.18C15.82 8.35 15.17 8 14.5 8h-1.2l1.6 2.4L18 9z"/>
                     </svg>
                 </div>
 
-                <h3 class="text-xl font-bold text-white mb-2">Leave Your Mark</h3>
-                <p class="text-gray-400 text-xs sm:text-sm mb-6">
-                    Selected Days: <span id="selected-count" class="text-amber-400 font-bold">0</span> days (<span id="total-price" class="text-pink-400 font-bold">$0</span>)
+                <h3 class="text-xl font-bold text-white mb-1">Leave Your Mark</h3>
+                <p class="text-gray-400 text-xs sm:text-sm mb-4">
+                    Selected Days: <span id="selected-count" class="text-amber-400 font-bold">0</span> | Total: <span id="total-price" class="text-pink-400 font-bold">$0</span>
                 </p>
+
+                <!-- Custom Day Amount Override -->
+                <div class="w-full mb-4 bg-white/5 p-3 rounded-2xl border border-white/10 text-left">
+                    <label class="block text-[11px] font-semibold text-gray-300 mb-1">Custom Amount Override for Selected Day</label>
+                    <div class="flex gap-2">
+                        <span class="self-center text-gray-400 font-bold">$</span>
+                        <input type="number" id="custom-override-input" min="1" placeholder="Enter custom amount" oninput="applyCustomOverride(this.value)" class="w-full px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-xs">
+                    </div>
+                </div>
 
                 <button onclick="proceedToCheckout()" id="checkout-btn" disabled class="w-full py-3.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg opacity-50 cursor-not-allowed">
                     Proceed with Sponsorship
@@ -187,12 +186,12 @@
 
             <!-- Right: Interactive Calendar Days Grid -->
             <div class="lg:col-span-7 glass-panel rounded-3xl p-6 sm:p-8">
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-4">
                     <h3 id="current-month-year" class="text-xl font-bold text-white">Current Month Sponsorships</h3>
-                    <span class="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full font-semibold">$25 / Day</span>
+                    <span class="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full font-semibold">Value = Day of Month</span>
                 </div>
 
-                <p class="text-xs text-gray-400 mb-6">Click on any available calendar date to select or deselect it for your sponsorship donation.</p>
+                <p class="text-xs text-gray-400 mb-6">Click any calendar date to select it. Day 1 = $1, Day 15 = $15, Day 30 = $30. Use the left panel to customize amounts if desired!</p>
 
                 <!-- Days Grid Generated dynamically -->
                 <div id="calendar-grid" class="grid grid-cols-5 sm:grid-cols-7 gap-2.5">
@@ -246,8 +245,9 @@
     </div>
 
     <script>
+        // Map day number to its custom or default price
+        let dayValues = {};
         let selectedDays = new Set();
-        const dailyRate = 25;
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -265,13 +265,15 @@
             const daysInMonth = 30;
 
             for (let i = 1; i <= daysInMonth; i++) {
+                dayValues[i] = i; // Default price equals the day of the month
+
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.id = `day-${i}`;
                 btn.className = 'day-btn glass-card aspect-square rounded-xl flex flex-col items-center justify-center font-bold text-sm text-gray-200 hover:border-amber-400';
                 btn.innerHTML = `
-                    <span class="text-xs text-gray-400 font-normal">Day</span>
-                    <span class="text-lg text-white">${i}</span>
+                    <span class="text-[10px] text-gray-400 font-normal">Day ${i}</span>
+                    <span id="price-tag-${i}" class="text-base text-amber-400">$${i}</span>
                 `;
                 btn.onclick = () => toggleDay(i);
                 grid.appendChild(btn);
@@ -287,18 +289,42 @@
                 selectedDays.add(day);
                 btn.classList.add('selected');
             }
+            
+            // If one day is selected, show its value in the custom override box for easy editing
+            if(selectedDays.size === 1) {
+                const singleDay = Array.from(selectedDays)[0];
+                document.getElementById('custom-override-input').value = dayValues[singleDay];
+            } else {
+                document.getElementById('custom-override-input').value = '';
+            }
+
+            updateSummary();
+        }
+
+        function applyCustomOverride(val) {
+            if(selectedDays.size === 0) return;
+            const numericVal = parseInt(val);
+            if(isNaN(numericVal) || numericVal <= 0) return;
+
+            // Apply override to all currently selected days
+            selectedDays.forEach(day => {
+                dayValues[day] = numericVal;
+                document.getElementById(`price-tag-${day}`).innerText = `$${numericVal}`;
+            });
             updateSummary();
         }
 
         function updateSummary() {
-            const count = selectedDays.size;
-            const total = count * dailyRate;
+            let total = 0;
+            selectedDays.forEach(day => {
+                total += dayValues[day];
+            });
             
-            document.getElementById('selected-count').innerText = count;
+            document.getElementById('selected-count').innerText = selectedDays.size;
             document.getElementById('total-price').innerText = `$${total}`;
 
             const checkoutBtn = document.getElementById('checkout-btn');
-            if (count > 0) {
+            if (selectedDays.size > 0) {
                 checkoutBtn.removeAttribute('disabled');
                 checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             } else {
@@ -308,11 +334,13 @@
         }
 
         function proceedToCheckout() {
-            const count = selectedDays.size;
-            const total = count * dailyRate;
-            const daysArr = Array.from(selectedDays).sort((a,b) => a-b).join(', ');
+            let total = 0;
+            selectedDays.forEach(day => {
+                total += dayValues[day];
+            });
+            const daysArr = Array.from(selectedDays).sort((a,b) => a-b).map(d => `Day ${d} ($${dayValues[d]})`).join(', ');
             
-            document.getElementById('modal-summary').innerText = `You have selected ${count} day(s) (${daysArr}) for sponsorship. Total contribution: $${total}.`;
+            document.getElementById('modal-summary').innerText = `You have selected: ${daysArr}. Total contribution: $${total}.`;
             document.getElementById('sponsor-modal').classList.remove('hidden');
         }
 
@@ -329,7 +357,7 @@
                 return;
             }
 
-            alert(`Thank you so much, ${name}! Redirecting to secure payment for your sponsored days...`);
+            alert(`Thank you so much, ${name}! Redirecting to secure payment...`);
             closeModal();
         }
     </script>
