@@ -93,41 +93,41 @@
 
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="glass-panel rounded-2xl px-4 py-3 sm:px-6 flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="glass-panel rounded-2xl px-4 py-2.5 sm:px-6 flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20">
                         <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
-                            <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                            <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400"></i>
                         </div>
                     </div>
                     <div>
-                        <span class="font-heading font-extrabold text-lg sm:text-xl tracking-wider text-white block leading-none">CENTRAL VALLEY</span>
-                        <span class="font-heading text-xs font-semibold tracking-widest text-amber-400 block mt-0.5">ADMIN SUBMISSIONS PORTAL</span>
+                        <span class="font-heading font-extrabold text-sm sm:text-lg tracking-wider text-white block leading-none">CV STARS</span>
+                        <span class="font-heading text-[10px] sm:text-xs font-semibold tracking-widest text-amber-400 block mt-0.5">ADMIN PORTAL</span>
                     </div>
                 </a>
                 
-                <div class="flex items-center gap-3">
-                    <a href="index.html" class="px-4 py-2 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-2">
-                        <i data-lucide="home" class="w-4 h-4"></i>
-                        <span>Home Page</span>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <a href="index.html" class="px-3 py-2 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="home" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">Home Page</span>
                     </a>
-                    <button id="logout-btn" onclick="logoutAdmin()" class="hidden px-4 py-2 rounded-xl glass-card text-xs font-bold text-red-300 hover:text-white">Log Out</button>
+                    <button id="logout-btn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl glass-card text-xs font-bold text-red-300 hover:text-white">Log Out</button>
                 </div>
             </div>
         </nav>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow pt-32 pb-20 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <main class="flex-grow pt-28 sm:pt-32 pb-16 px-3 sm:px-6 lg:px-8 relative z-10 max-w-7xl mx-auto w-full">
         
         <!-- Login Card (Shown when not authenticated) -->
-        <div id="login-container" class="max-w-md mx-auto glass-panel rounded-3xl p-8 sm:p-10 border-amber-500/30 text-center">
-            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="lock" class="w-8 h-8"></i>
+        <div id="login-container" class="max-w-md mx-auto glass-panel rounded-3xl p-6 sm:p-10 border-amber-500/30 text-center">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="lock" class="w-7 h-7 sm:w-8 sm:h-8"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white mb-2">Admin Dashboard Access</h1>
-            <p class="text-gray-400 text-xs sm:text-sm mb-6">Please enter your password to view incoming student inquiries and registrations.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-white mb-2">Admin Dashboard Access</h1>
+            <p class="text-gray-400 text-xs sm:text-sm mb-6">Please enter your password to view incoming student inquiries.</p>
             
             <form onsubmit="handleAdminLogin(event)" class="space-y-4">
                 <input type="password" id="admin-pass" required placeholder="Password (default: admin123)" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
@@ -138,23 +138,23 @@
 
         <!-- Dashboard Table Section (Hidden until authenticated) -->
         <div id="dashboard-container" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 glass-panel rounded-3xl p-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-3xl p-5 sm:p-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-white">Student Inquiries Dashboard</h2>
-                    <p class="text-gray-400 text-xs mt-1">Review class sign-ups, toggle read status, or delete records.</p>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Student Inquiries</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Review registrations, toggle read status, or delete records.</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="exportData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-2">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button onclick="exportData()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center justify-center gap-2">
                         <i data-lucide="download" class="w-4 h-4 text-amber-400"></i>
                         <span>Export JSON</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Table Container -->
+            <!-- Responsive Table Container -->
             <div class="glass-panel rounded-3xl overflow-hidden border border-white/10">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left border-collapse min-w-[650px]">
                         <thead>
                             <tr class="bg-white/5 text-amber-400 font-heading text-xs uppercase tracking-wider border-b border-white/10">
                                 <th class="p-4 sm:p-6">Status</th>
@@ -179,7 +179,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs">
+    <footer class="py-6 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p>© 2026 Central Valley Stars Dance Studio. All Rights Reserved.</p>
         </div>
@@ -190,7 +190,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            // Check if already authenticated in this session
             if (sessionStorage.getItem('cvs_admin_auth') === 'true') {
                 showDashboard();
             }
@@ -239,24 +238,24 @@
                 const tr = document.createElement('tr');
                 tr.className = `transition-colors border-b border-white/5 ${sub.read ? 'bg-transparent text-gray-400' : 'bg-white/[0.03] text-white font-medium'}`;
                 tr.innerHTML = `
-                    <td class="p-4 sm:p-6">
+                    <td class="p-4 sm:p-6 whitespace-nowrap">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${sub.read ? 'bg-gray-500/10 text-gray-400 border border-gray-500/20' : 'bg-pink-500/20 text-pink-300 border border-pink-500/40'}">
                             <span class="w-1.5 h-1.5 rounded-full ${sub.read ? 'bg-gray-400' : 'bg-pink-400 animate-ping'}"></span>
                             ${sub.read ? 'Read' : 'New'}
                         </span>
                     </td>
-                    <td class="p-4 sm:p-6 text-white">${sub.firstName} ${sub.lastName}</td>
+                    <td class="p-4 sm:p-6 text-white whitespace-nowrap">${sub.firstName} ${sub.lastName}</td>
                     <td class="p-4 sm:p-6">
                         <div class="text-xs text-gray-200">${sub.email}</div>
                         <div class="text-[11px] text-gray-400">${sub.phone}</div>
                     </td>
-                    <td class="p-4 sm:p-6 text-amber-300 font-medium">${sub.danceType}</td>
-                    <td class="p-4 sm:p-6 text-xs text-gray-400">${sub.date}</td>
-                    <td class="p-4 sm:p-6 text-right space-x-2">
-                        <button onclick="toggleRead(${sub.id})" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-all text-white">
-                            ${sub.read ? 'Mark Unread' : 'Mark Read'}
+                    <td class="p-4 sm:p-6 text-amber-300 font-medium whitespace-nowrap">${sub.danceType}</td>
+                    <td class="p-4 sm:p-6 text-xs text-gray-400 whitespace-nowrap">${sub.date}</td>
+                    <td class="p-4 sm:p-6 text-right space-x-1 whitespace-nowrap">
+                        <button onclick="toggleRead(${sub.id})" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-all text-white">
+                            ${sub.read ? 'Unread' : 'Read'}
                         </button>
-                        <button onclick="deleteSubmission(${sub.id})" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-xs font-bold transition-all text-red-300">
+                        <button onclick="deleteSubmission(${sub.id})" class="px-2.5 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-xs font-bold transition-all text-red-300">
                             Delete
                         </button>
                     </td>
