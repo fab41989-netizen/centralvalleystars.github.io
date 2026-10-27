@@ -145,6 +145,36 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #8B5CF6;
         }
+		.facebook-section {
+			background-color: #f0f2f5; /* Light neutral background to offset white forms */
+			padding: 40px 20px;
+			border-radius: 8px;
+			margin: 40px auto;
+			max-width: 600px;
+			text-align: center;
+		}
+		.facebook-title {
+			font-size: 1.8em;
+			color: #111;
+			margin-bottom: 10px;
+		}
+		.facebook-subtitle {
+			font-size: 1em;
+			color: #555;
+			margin-bottom: 25px;
+		}
+		.facebook-container {
+			background: #ffffff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 10px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+			display: inline-block;
+			width: 100%;
+			max-width: 500px; /* Standard structural width for Meta Timeline plugins */
+			box-sizing: border-box;
+		}
+
     </style>
 </head>
 <body class="antialiased selection:bg-brand-magenta selection:text-white min-h-screen flex flex-col justify-between">
@@ -324,6 +354,28 @@
             </div>
         </div>
     </section>
+	
+	<!-- START FACEBOOK TIMELINE SPOT -->
+	<div class="facebook-section">
+		<h2 class="facebook-title">Follow Our Journey</h2>
+		<p class="facebook-subtitle">Stay up-to-date with behind-the-scenes studio build progress, class updates, and choreography previews!</p>
+		
+		<div class="facebook-container">
+			<!-- REPLACE THE IFRAME BELOW WITH YOUR COPIED META DEVELOPER CODE -->
+			<iframe 
+				src="https://www.facebook.com/starsdancestudiofresno" 
+				width="100%" 
+				height="500" 
+				style="border:none; overflow:hidden;" 
+				scrolling="no" 
+				frameborder="0" 
+				allowfullscreen="true" 
+				allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+			</iframe>
+		</div>
+	</div>
+	<!-- END FACEBOOK TIMELINE SPOT -->
+
 
     <!-- Meet The Faculty Section -->
     <section id="instructors" class="py-16 relative z-10 bg-black/20">
