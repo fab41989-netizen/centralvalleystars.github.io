@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Valley Stars Dance Studio | Fresno & Visalia</title>
+    <title>Central Valley Stars Dance Studio | Coming Soon - Fresno & Visalia</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,9 @@
     
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google AdSense Script (Replace ca-pub-XXXXXXXXXXXXXXXX with your actual Publisher ID) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     
     <script>
         tailwind.config = {
@@ -69,7 +72,6 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Glassmorphism utility classes */
         .glass-panel {
             background: rgba(23, 18, 38, 0.65);
             backdrop-filter: blur(16px);
@@ -98,12 +100,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .gradient-text-gold {
-            background: linear-gradient(135deg, #FFF 20%, #F59E0B 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .gradient-btn {
             background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
             transition: all 0.3s ease;
@@ -126,7 +122,6 @@
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
         }
 
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -141,21 +136,18 @@
             background: #8B5CF6;
         }
     </style>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7695544937295318"
-     crossorigin="anonymous">
-    </script>
-    
 </head>
-<body class="antialiased selection:bg-brand-magenta selection:text-white">
+<body class="antialiased selection:bg-brand-magenta selection:text-white min-h-screen flex flex-col justify-between">
 
+    <!-- Background Glow Blobs -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div class="absolute top-1/3 -right-40 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
         <div class="absolute bottom-10 left-1/3 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
     </div>
 
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="main-header">
+    <!-- Header / Nav -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="glass-panel rounded-2xl px-4 py-3 sm:px-6 flex items-center justify-between">
                 <!-- Brand Logo -->
@@ -171,813 +163,145 @@
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
-                    <a href="#about" class="text-gray-300 hover:text-amber-400 transition-colors">About</a>
-                    <a href="#styles" class="text-gray-300 hover:text-amber-400 transition-colors">Dance Styles</a>
-                    <a href="#schedule" class="text-gray-300 hover:text-amber-400 transition-colors">Schedule</a>
-                    <a href="#instructors" class="text-gray-300 hover:text-amber-400 transition-colors">Instructors</a>
-                    <a href="#pricing" class="text-gray-300 hover:text-amber-400 transition-colors">Pricing</a>
-                    <a href="#contact" class="text-gray-300 hover:text-amber-400 transition-colors">Locations</a>
-                </div>
-
-                <!-- Action Button & Mobile Toggle -->
-                <div class="flex items-center gap-4">
-                    <button onclick="openBookingModal()" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span>Free Trial Class</span>
-                    </button>
-                    
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-300 hover:text-white rounded-lg focus:outline-none" aria-label="Toggle Navigation">
-                        <i data-lucide="menu" class="w-6 h-6" id="menu-icon"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation Drawer -->
-            <div id="mobile-menu" class="hidden md:hidden mt-2 glass-panel rounded-2xl p-6 transition-all">
-                <div class="flex flex-col space-y-4 text-base font-medium">
-                    <a href="#about" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">About Studio</a>
-                    <a href="#styles" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">Dance Styles</a>
-                    <a href="#schedule" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">Class Schedule</a>
-                    <a href="#instructors" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">Instructors</a>
-                    <a href="#pricing" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">Tuition & Pricing</a>
-                    <a href="#contact" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-amber-400 py-1 border-b border-white/5">Fresno & Visalia Locations</a>
-                    <button onclick="toggleMobileMenu(); openBookingModal();" class="w-full mt-2 py-3 rounded-xl gold-btn text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span>Book Free Trial Class</span>
-                    </button>
+                <!-- Contact pill -->
+                <div class="flex items-center gap-3">
+                    <span class="hidden sm:inline-block text-xs text-gray-400">Fresno & Visalia</span>
+                    <a href="#notify" class="px-4 py-2 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
+                        <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+                        <span>Get Notified</span>
+                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
-    <section class="relative min-h-screen pt-32 pb-20 flex items-center justify-center z-10 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Hero Left Content -->
-                <div class="lg:col-span-7 text-center lg:text-left space-y-8">
-                    <!-- Badge -->
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-amber-500/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide">
-                        <span class="flex h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
-                        <span>Fresno & Visalia Premier Dance Academy</span>
-                    </div>
-
-                    <!-- Main Heading -->
-                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
-                        Unleash Your <br class="hidden sm:inline"/>
-                        <span class="gradient-text">Inner Rhythm</span> & Passion.
-                    </h1>
-
-                    <!-- Description -->
-                    <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
-                        Elevate your technique at Central Valley's top-rated dance studio. World-class choreography in Hip Hop, Ballet, Contemporary, Salsa, Jazz & Tap for ages 3 to Adult.
-                    </p>
-
-                    <!-- Hero CTAs -->
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                        <button onclick="openBookingModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl gradient-btn text-white font-bold text-sm tracking-widest uppercase shadow-xl flex items-center justify-center gap-3 group">
-                            <span>Claim Your Free Trial Pass</span>
-                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
-                        </button>
-                        <a href="#schedule" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card text-white font-semibold text-sm hover:border-amber-400/50 flex items-center justify-center gap-2 transition-all">
-                            <i data-lucide="calendar" class="w-4 h-4 text-amber-400"></i>
-                            <span>View Class Schedule</span>
-                        </a>
-                    </div>
-
-                    <!-- Key Stats Bar -->
-                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
-                        <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-bold text-amber-400">15+</div>
-                            <div class="text-xs text-gray-400 font-medium">Expert Instructors</div>
-                        </div>
-                        <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-bold text-pink-500">2</div>
-                            <div class="text-xs text-gray-400 font-medium">Valley Studios</div>
-                        </div>
-                        <div>
-                            <div class="font-heading text-2xl sm:text-3xl font-bold text-purple-400">1,200+</div>
-                            <div class="text-xs text-gray-400 font-medium">Active Dancers</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hero Right Visual Card Stack -->
-                <div class="lg:col-span-5 relative">
-                    <div class="relative w-full max-w-md mx-auto aspect-[4/5] rounded-3xl overflow-hidden p-2 glass-panel border-purple-500/40 animate-float">
-                        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80" 
-                             alt="Central Valley Stars Dancer Performing" 
-                             class="w-full h-full object-cover rounded-2xl filter brightness-90 contrast-105"
-                             onerror="this.src='https://placehold.co/800x1000/171226/F59E0B?text=Central+Valley+Stars+Dance'">
-                        
-                        <!-- Floating Badge 1 -->
-                        <div class="absolute top-6 left-6 glass-panel px-4 py-3 rounded-2xl flex items-center gap-3 shadow-2xl border-white/20">
-                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
-                                <i data-lucide="trophy" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-white">Award Winning</p>
-                                <p class="text-[10px] text-gray-300">National Champions 2025</p>
-                            </div>
-                        </div>
-
-                        <!-- Floating Badge 2 -->
-                        <div class="absolute bottom-6 right-6 glass-panel px-4 py-3 rounded-2xl flex items-center gap-3 shadow-2xl border-white/20">
-                            <div class="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center text-pink-400">
-                                <i data-lucide="music" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-white">All Levels Welcome</p>
-                                <p class="text-[10px] text-gray-300">Beginner to Professional</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Why Dance With Us</h2>
-                <p class="text-3xl sm:text-5xl font-extrabold text-white">Where Stars Are Born in the Central Valley</p>
-                <p class="text-gray-400 mt-4 text-base sm:text-lg">Combining technical precision with creative expression in state-of-the-art facilities across Fresno and Visalia.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="award" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Master Instructors</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Train directly with seasoned professionals, former touring artists, and certified dance educators dedicated to your growth.</p>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
-                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="sparkles" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Pro Studio Floors</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Our sprung hardwood and Marley floorings minimize impact and help prevent injury, allowing dancers to leap higher with safety.</p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
-                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="heart" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Inclusive Community</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">From toddlers taking their first steps to adult fitness lovers, we foster an inspiring environment built on encouragement and confidence.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="styles" class="py-20 relative z-10 bg-black/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                <div>
-                    <h2 class="text-xs uppercase tracking-widest text-pink-500 font-bold mb-2">Explore Genres</h2>
-                    <p class="text-3xl sm:text-5xl font-extrabold text-white">Our Signature Dance Styles</p>
-                </div>
-                <p class="text-gray-400 max-w-md text-sm">Whether you crave energetic street grooves, classical grace, or vibrant Latin rhythms, we have the ideal class tailored for you.</p>
-            </div>
-
-            <!-- Styles Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="styles-container">
-                
-                <!-- Hip Hop -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=800&q=80" alt="Hip Hop Class" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/EC4899?text=Hip+Hop'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-pink-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">High Energy</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-pink-400 transition-colors">Hip Hop & Urban Street</h3>
-                        <p class="text-gray-400 text-sm mb-4">Learn popping, locking, breaking, and commercial choreography set to the latest top hits.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-pink-400"></i> Ages 6+ to Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-pink-400"></i> 60 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ballet -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?auto=format&fit=crop&w=800&q=80" alt="Ballet Class" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/F59E0B?text=Ballet'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-amber-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">Classical Foundation</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Classical Ballet & Pointe</h3>
-                        <p class="text-gray-400 text-sm mb-4">Master technique, posture, elegance, and balance through structured barre and center work.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-amber-400"></i> Ages 3+ to Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-amber-400"></i> 60-90 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contemporary -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80" alt="Contemporary Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/A855F7?text=Contemporary'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-purple-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">Expressive</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Contemporary & Lyrical</h3>
-                        <p class="text-gray-400 text-sm mb-4">Blend fluidity, floorwork, and storytelling to express deep emotion through fluid motion.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-purple-400"></i> Ages 8+ to Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-purple-400"></i> 60 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Salsa & Latin -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80" alt="Salsa Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/EF4444?text=Salsa'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">Passionate</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors">Salsa & Bachata Latin</h3>
-                        <p class="text-gray-400 text-sm mb-4">Vibrant social and performance Latin rhythms covering footwork, turn patterns, and partner connections.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-red-400"></i> Teens & Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-red-400"></i> 60 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Jazz -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?auto=format&fit=crop&w=800&q=80" alt="Jazz Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/3B82F6?text=Jazz'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-blue-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">Dynamic</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Modern Jazz & Broadway</h3>
-                        <p class="text-gray-400 text-sm mb-4">High-power leaps, turns, and theatrical flair designed to build musicality, strength, and stamina.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-blue-400"></i> Ages 5+ to Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-blue-400"></i> 60 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tap -->
-                <div class="glass-card rounded-3xl overflow-hidden group">
-                    <div class="relative h-60 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="Tap Dance" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/171226/10B981?text=Tap'">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-emerald-500/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">Rhythmic</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">Rhythm Tap Dance</h3>
-                        <p class="text-gray-400 text-sm mb-4">Transform your feet into percussion instruments! Develop timing, syncopation, and sound precision.</p>
-                        <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-300">
-                            <span><i data-lucide="user" class="inline w-3.5 h-3.5 mr-1 text-emerald-400"></i> Ages 5+ to Adults</span>
-                            <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1 text-emerald-400"></i> 45-60 Min</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="schedule" class="py-20 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Weekly Timetable</h2>
-                <p class="text-3xl sm:text-5xl font-extrabold text-white">Interactive Class Schedule</p>
-                <p class="text-gray-400 mt-3 text-sm sm:text-base">Filter by dance style, studio location, or age category to find your perfect fit.</p>
-            </div>
-
-            <!-- Filters -->
-            <div class="flex flex-wrap items-center justify-center gap-3 mb-10">
-                <button onclick="filterSchedule('all')" class="schedule-filter-btn active px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel border-amber-400 bg-amber-500/20 text-amber-300" data-filter="all">All Classes</button>
-                <button onclick="filterSchedule('hiphop')" class="schedule-filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel text-gray-300 hover:text-white" data-filter="hiphop">Hip Hop</button>
-                <button onclick="filterSchedule('ballet')" class="schedule-filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel text-gray-300 hover:text-white" data-filter="ballet">Ballet</button>
-                <button onclick="filterSchedule('contemporary')" class="schedule-filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel text-gray-300 hover:text-white" data-filter="contemporary">Contemporary</button>
-                <button onclick="filterSchedule('salsa')" class="schedule-filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel text-gray-300 hover:text-white" data-filter="salsa">Salsa</button>
-                <button onclick="filterSchedule('jazz')" class="schedule-filter-btn px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all glass-panel text-gray-300 hover:text-white" data-filter="jazz">Jazz & Tap</button>
-            </div>
-
-            <!-- Schedule Table Container -->
-            <div class="glass-panel rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-white/5 text-amber-400 font-heading text-xs uppercase tracking-wider border-b border-white/10">
-                                <th class="p-4 sm:p-6">Time / Day</th>
-                                <th class="p-4 sm:p-6">Class & Style</th>
-                                <th class="p-4 sm:p-6">Age Group</th>
-                                <th class="p-4 sm:p-6">Studio Location</th>
-                                <th class="p-4 sm:p-6">Instructor</th>
-                                <th class="p-4 sm:p-6 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-white/5 text-sm" id="schedule-rows">
-                            <!-- Rows injected via JS dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="instructors" class="py-20 relative z-10 bg-black/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-xs uppercase tracking-widest text-pink-500 font-bold mb-2">Meet The Faculty</h2>
-                <p class="text-3xl sm:text-5xl font-extrabold text-white">World-Class Instructors</p>
-                <p class="text-gray-400 mt-4 text-sm sm:text-base">Our faculty brings decades of professional stage, commercial, and competitive experience right to the Central Valley.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Instructor 1 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-pink-500">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Elena Rostova" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Elena'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Elena Rostova</h3>
-                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Ballet & Contemporary Director</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Former Bolshoi trained soloist with 15+ years of classic repertoire and contemporary instruction.</p>
-                    <div class="flex justify-center gap-3 text-gray-400">
-                        <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                        <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
-                    </div>
-                </div>
-
-                <!-- Instructor 2 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-pink-500 to-purple-600">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Marcus 'Vibe' Rodriguez" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Marcus'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Marcus "Vibe" R.</h3>
-                    <p class="text-pink-400 text-xs font-semibold uppercase tracking-wider mb-3">Hip Hop & Urban lead</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Commercial choreographer featured in music videos, commercials, and international tour stages.</p>
-                    <div class="flex justify-center gap-3 text-gray-400">
-                        <a href="#" class="hover:text-pink-400 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                        <a href="#" class="hover:text-pink-400 transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
-                    </div>
-                </div>
-
-                <!-- Instructor 3 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-purple-500 to-amber-400">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Sofia Morales" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Sofia'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Sofia Morales</h3>
-                    <p class="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-3">Salsa & Latin Master</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">World Salsa Congress champion specializing in partner turn patterns and Latin styling.</p>
-                    <div class="flex justify-center gap-3 text-gray-400">
-                        <a href="#" class="hover:text-purple-400 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                        <a href="#" class="hover:text-purple-400 transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-                    </div>
-                </div>
-
-                <!-- Instructor 4 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-purple-600">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="David Sterling" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=David'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">David Sterling</h3>
-                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Jazz & Tap Specialist</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Broadway national tour alumnus focused on rhythm precision, theatricality, and stage energy.</p>
-                    <div class="flex justify-center gap-3 text-gray-400">
-                        <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                        <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-20 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Transparent Pricing</h2>
-                <p class="text-3xl sm:text-5xl font-extrabold text-white">Tuition & Pass Packages</p>
-                <p class="text-gray-400 mt-4 text-sm sm:text-base">No hidden contracts or unexpected fees. Family discounts and trial classes available.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                <!-- Drop-in Card -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between border-white/10 hover:border-amber-400/50">
-                    <div>
-                        <h3 class="text-xl font-bold text-white mb-2">Single Drop-In</h3>
-                        <p class="text-gray-400 text-xs mb-6">Perfect for guest dancers or trying out new styles.</p>
-                        <div class="flex items-baseline gap-1 mb-6">
-                            <span class="text-4xl font-extrabold text-white">$25</span>
-                            <span class="text-gray-400 text-xs">/ class</span>
-                        </div>
-                        <ul class="space-y-3 text-xs text-gray-300 mb-8">
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-400"></i> Valid for any 60 min class</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-400"></i> Fresno or Visalia locations</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-400"></i> Instant mobile reservation</li>
-                        </ul>
-                    </div>
-                    <button onclick="openBookingModal('Single Drop-In')" class="w-full py-3 rounded-xl border border-amber-400/50 text-amber-300 hover:bg-amber-500/10 text-xs font-bold uppercase tracking-wider transition-colors">Select Plan</button>
-                </div>
-
-                <!-- Monthly Unlimited (Highlighted) -->
-                <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border-2 border-pink-500/60 relative shadow-2xl scale-105 my-4 md:my-0">
-                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full gradient-btn text-white text-[10px] font-bold uppercase tracking-widest shadow-md">Most Popular</span>
-                    <div>
-                        <h3 class="text-2xl font-bold text-white mb-2">Unlimited Stars Membership</h3>
-                        <p class="text-gray-400 text-xs mb-6">Unlimited access to all weekly recreational classes.</p>
-                        <div class="flex items-baseline gap-1 mb-6">
-                            <span class="text-5xl font-extrabold gradient-text">$149</span>
-                            <span class="text-gray-400 text-xs">/ month</span>
-                        </div>
-                        <ul class="space-y-3 text-xs text-gray-200 mb-8">
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-pink-400"></i> Unlimited classes across both studios</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-pink-400"></i> Free entry to monthly masterclasses</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-pink-400"></i> 15% off official dance merchandise</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-pink-400"></i> Priority showcase seat reservation</li>
-                        </ul>
-                    </div>
-                    <button onclick="openBookingModal('Unlimited Stars Membership')" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Start Free Trial First</button>
-                </div>
-
-                <!-- Competitive Team -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between border-white/10 hover:border-purple-400/50">
-                    <div>
-                        <h3 class="text-xl font-bold text-white mb-2">Competitive Elite Team</h3>
-                        <p class="text-gray-400 text-xs mb-6">For dedicated dancers aiming for competitions & conventions.</p>
-                        <div class="flex items-baseline gap-1 mb-6">
-                            <span class="text-4xl font-extrabold text-white">$220</span>
-                            <span class="text-gray-400 text-xs">/ month</span>
-                        </div>
-                        <ul class="space-y-3 text-xs text-gray-300 mb-8">
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-400"></i> Intensive technical training regimen</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-400"></i> Solo & group competition rehearsals</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-400"></i> National convention prep</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-400"></i> Audition required (Ages 7+)</li>
-                        </ul>
-                    </div>
-                    <button onclick="openBookingModal('Competitive Elite Team')" class="w-full py-3 rounded-xl border border-purple-400/50 text-purple-300 hover:bg-purple-500/10 text-xs font-bold uppercase tracking-wider transition-colors">Request Audition Info</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 relative z-10 bg-black/30">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-2">Studio Community</h2>
-                <p class="text-3xl sm:text-4xl font-extrabold text-white">What Our Dancers & Parents Say</p>
-            </div>
-
-            <!-- Testimonial Card Container -->
-            <div class="glass-panel rounded-3xl p-8 sm:p-12 relative" id="testimonial-slider">
-                <div class="flex items-center gap-1 text-amber-400 mb-6" id="testimonial-stars">
-                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-                </div>
-                
-                <p class="text-lg sm:text-2xl italic text-gray-200 font-light mb-8 leading-relaxed" id="testimonial-text">
-                    "Central Valley Stars has completely transformed my daughter's confidence! The instructors in Fresno are so passionate, patient, and skilled. She went from timid beginner to winning gold at regional finals."
-                </p>
-
-                <div class="flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-white/10">
-                    <div>
-                        <h4 class="font-bold text-white text-base" id="testimonial-author">Jessica Martinez</h4>
-                        <p class="text-gray-400 text-xs" id="testimonial-role">Parent of Hip Hop & Ballet Student (Fresno Studio)</p>
-                    </div>
-
-                    <!-- Carousel Controls -->
-                    <div class="flex items-center gap-3">
-                        <button onclick="prevTestimonial()" class="p-3 rounded-xl glass-card hover:border-amber-400 text-white transition-all" aria-label="Previous Testimonial">
-                            <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                        </button>
-                        <button onclick="nextTestimonial()" class="p-3 rounded-xl glass-card hover:border-amber-400 text-white transition-all" aria-label="Next Testimonial">
-                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-xs uppercase tracking-widest text-pink-500 font-bold mb-2">Visit Our Studios</h2>
-                <p class="text-3xl sm:text-5xl font-extrabold text-white">Central Valley Locations</p>
-                <p class="text-gray-400 mt-4 text-sm sm:text-base">Conveniently serving dancers across Fresno, Clovis, Visalia, and surrounding Central Valley communities.</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-                <!-- Fresno Location -->
-                <div class="glass-card rounded-3xl p-8 relative">
-                    <div class="flex items-center justify-between mb-6">
-                        <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider">Fresno Main Studio</span>
-                        <i data-lucide="map-pin" class="w-6 h-6 text-amber-400"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Fresno Studio</h3>
-                    <p class="text-gray-300 text-sm mb-4">7400 N Palm Ave, Fresno, CA 93711</p>
-                    <div class="space-y-2 text-xs text-gray-400 mb-6">
-                        <p><strong class="text-gray-200">Phone:</strong> (559) 555-DANCE (3262)</p>
-                        <p><strong class="text-gray-200">Email:</strong> fresno@cvstarsdance.com</p>
-                        <p><strong class="text-gray-200">Hours:</strong> Mon-Fri: 3:30 PM - 9:00 PM | Sat: 9:00 AM - 3:00 PM</p>
-                    </div>
-                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider hover:underline">
-                        <span>Get Directions</span>
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                    </a>
-                </div>
-
-                <!-- Visalia Location -->
-                <div class="glass-card rounded-3xl p-8 relative">
-                    <div class="flex items-center justify-between mb-6">
-                        <span class="px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 text-xs font-bold uppercase tracking-wider">Visalia Branch</span>
-                        <i data-lucide="map-pin" class="w-6 h-6 text-pink-400"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Visalia Studio</h3>
-                    <p class="text-gray-300 text-sm mb-4">3200 S Mooney Blvd, Visalia, CA 93277</p>
-                    <div class="space-y-2 text-xs text-gray-400 mb-6">
-                        <p><strong class="text-gray-200">Phone:</strong> (559) 555-STAR (7827)</p>
-                        <p><strong class="text-gray-200">Email:</strong> visalia@cvstarsdance.com</p>
-                        <p><strong class="text-gray-200">Hours:</strong> Mon-Fri: 4:00 PM - 8:30 PM | Sat: 9:00 AM - 2:00 PM</p>
-                    </div>
-                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider hover:underline">
-                        <span>Get Directions</span>
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Quick Inquiry Form -->
-            <div class="glass-panel rounded-3xl p-8 sm:p-12 max-w-3xl mx-auto">
-                <h3 class="text-2xl font-bold text-white mb-2 text-center">Have Questions? Send Us a Message</h3>
-                <p class="text-gray-400 text-xs sm:text-sm text-center mb-8">Our studio directors respond within 24 hours.</p>
-                
-                <form onsubmit="handleInquirySubmit(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="text" required placeholder="Your Full Name" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                        <input type="email" required placeholder="Your Email Address" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                    <input type="text" placeholder="Preferred Location (Fresno or Visalia)" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    <textarea rows="4" required placeholder="How can we help you?" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm"></textarea>
-                    <button type="submit" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <div id="booking-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="glass-panel rounded-3xl p-6 sm:p-10 max-w-lg w-full relative border-amber-500/40 animate-float" style="animation-duration: 0s;">
-            <!-- Close Button -->
-            <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white p-2">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-
-            <div id="modal-form-content">
-                <div class="text-center mb-6">
-                    <span class="inline-block p-3 rounded-2xl bg-amber-500/20 text-amber-400 mb-3">
-                        <i data-lucide="sparkles" class="w-6 h-6"></i>
-                    </span>
-                    <h3 class="text-2xl font-bold text-white">Book Your Free Trial Class</h3>
-                    <p class="text-gray-400 text-xs mt-1">Experience Central Valley Stars with zero commitment!</p>
-                </div>
-
-                <form onsubmit="handleModalSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Student's Full Name</label>
-                        <input type="text" required placeholder="e.g. Maya Lin" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1">Age</label>
-                            <input type="number" min="3" max="99" required placeholder="e.g. 10" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1">Location</label>
-                            <select required class="w-full px-4 py-2.5 rounded-xl bg-brand-dark border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                                <option value="Fresno">Fresno Studio</option>
-                                <option value="Visalia">Visalia Studio</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Preferred Dance Style / Class</label>
-                        <select id="modal-style-select" required class="w-full px-4 py-2.5 rounded-xl bg-brand-dark border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                            <option value="Hip Hop">Hip Hop & Urban Street</option>
-                            <option value="Ballet">Classical Ballet</option>
-                            <option value="Contemporary">Contemporary & Lyrical</option>
-                            <option value="Salsa">Salsa & Latin</option>
-                            <option value="Jazz">Jazz & Broadway</option>
-                            <option value="Tap">Rhythm Tap</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Parent/Guardian Email</label>
-                        <input type="email" required placeholder="contact@example.com" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Phone Number</label>
-                        <input type="tel" required placeholder="(559) 000-0000" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-
-                    <button type="submit" class="w-full py-3.5 mt-2 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg">Confirm Free Booking</button>
-                </form>
-            </div>
-
-            <!-- Success confirmation state -->
-            <div id="modal-success-content" class="hidden text-center py-8">
-                <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="check-circle" class="w-10 h-10"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-2">You're All Set!</h3>
-                <p class="text-gray-300 text-xs sm:text-sm mb-6 leading-relaxed">
-                    We've saved your spot! A confirmation details pass has been sent to your email address. We can't wait to see you dance with us!
-                </p>
-                <button onclick="closeBookingModal()" class="px-6 py-2.5 rounded-xl glass-card text-white text-xs uppercase font-bold tracking-wider">Close Window</button>
-            </div>
+    <!-- Top AdSense Banner Container -->
+    <div class="w-full max-w-4xl mx-auto px-4 pt-28 pb-2 z-10">
+        <div class="glass-card rounded-2xl p-3 text-center border border-white/5 overflow-hidden">
+            <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Advertisement</div>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
 
-    <footer class="py-12 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-400 to-pink-500 p-[1px]">
-                        <div class="w-full h-full bg-brand-dark rounded-[7px] flex items-center justify-center">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
-                        </div>
-                    </div>
-                    <span class="font-heading font-bold text-white text-sm">Central Valley Stars Dance Studio</span>
-                </div>
-
-                <div class="flex flex-wrap justify-center gap-6">
-                    <a href="#about" class="hover:text-amber-400 transition-colors">About</a>
-                    <a href="#styles" class="hover:text-amber-400 transition-colors">Classes</a>
-                    <a href="#schedule" class="hover:text-amber-400 transition-colors">Schedule</a>
-                    <a href="#pricing" class="hover:text-amber-400 transition-colors">Tuition</a>
-                    <a href="#contact" class="hover:text-amber-400 transition-colors">Fresno & Visalia</a>
-                </div>
-
-                <p>© 2026 Central Valley Stars Dance. All Rights Reserved.</p>
+    <!-- Coming Soon Hero Section -->
+    <section class="relative flex-grow pt-8 pb-16 flex items-center justify-center z-10 overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-amber-500/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide mx-auto">
+                <span class="flex h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span>Grand Opening Coming Soon</span>
             </div>
+
+            <!-- Main Heading -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
+                Something Extraordinary Is <br/>
+                <span class="gradient-text">Taking Center Stage.</span>
+            </h1>
+
+            <!-- Description -->
+            <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
+                Central Valley's premier state-of-the-art dance studios in Fresno and Visalia are putting the finishing touches on our professional Marley floors, sound systems, and world-class faculty lineups.
+            </p>
+
+            <!-- Countdown Timer Grid -->
+            <div class="grid grid-cols-4 gap-3 sm:gap-6 max-w-lg mx-auto py-4">
+                <div class="glass-card p-4 rounded-2xl text-center">
+                    <span id="days" class="font-heading text-2xl sm:text-4xl font-extrabold text-amber-400 block">30</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Days</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl text-center">
+                    <span id="hours" class="font-heading text-2xl sm:text-4xl font-extrabold text-pink-500 block">12</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Hours</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl text-center">
+                    <span id="minutes" class="font-heading text-2xl sm:text-4xl font-extrabold text-purple-400 block">45</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Minutes</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl text-center">
+                    <span id="seconds" class="font-heading text-2xl sm:text-4xl font-extrabold text-amber-300 block">00</span>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Seconds</span>
+                </div>
+            </div>
+
+            <!-- Notify Me Form Card -->
+            <div id="notify" class="glass-panel rounded-3xl p-6 sm:p-10 max-w-xl mx-auto border-purple-500/30">
+                <h3 class="text-xl font-bold text-white mb-2">Be First in Line for Grand Opening Passes</h3>
+                <p class="text-gray-400 text-xs sm:text-sm mb-6">Drop your email to receive early access to our schedule, VIP trial class reservations, and grand opening perks.</p>
+                
+                <form onsubmit="handleNotifySubmit(event)" class="space-y-4">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" required placeholder="Enter your email address" class="flex-grow px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                        <button type="submit" class="px-6 py-3 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg whitespace-nowrap">Notify Me</button>
+                    </div>
+                </form>
+
+                <div id="notify-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30">
+                    🎉 Thank you! You're on the VIP notification list. We'll be in touch soon!
+                </div>
+            </div>
+
+            <!-- Location Snippets -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto pt-4 text-left text-xs text-gray-400">
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-amber-400 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-white block">Fresno Studio</strong>
+                        <span>7400 N Palm Ave, Fresno, CA</span>
+                    </div>
+                </div>
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-pink-400 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-white block">Visalia Studio</strong>
+                        <span>3200 S Mooney Blvd, Visalia, CA</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Bottom AdSense In-Feed / Multiplex Container -->
+    <div class="w-full max-w-4xl mx-auto px-4 py-6 z-10">
+        <div class="glass-card rounded-2xl p-4 text-center border border-white/5 overflow-hidden">
+            <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Advertisement</div>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-format="fluid"
+                 data-ad-layout-key="-fb+5w+4e-db+86"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="0987654321"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>© 2026 Central Valley Stars Dance Studio. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Sample Schedule Data
-        const scheduleData = [
-            { id: 1, style: 'hiphop', name: 'Youth Hip Hop Foundations', age: 'Ages 6-10', loc: 'Fresno', time: 'Mon 4:30 PM', instructor: 'Marcus "Vibe"' },
-            { id: 2, style: 'ballet', name: 'Pre-Ballet & Creative Movement', age: 'Ages 3-5', loc: 'Fresno', time: 'Mon 5:30 PM', instructor: 'Elena Rostova' },
-            { id: 3, style: 'contemporary', name: 'Teen Contemporary Flow', age: 'Ages 11-17', loc: 'Visalia', time: 'Tue 5:00 PM', instructor: 'Elena Rostova' },
-            { id: 4, style: 'salsa', name: 'Adult Salsa & Bachata Partnering', age: 'Adults (18+)', loc: 'Fresno', time: 'Tue 7:00 PM', instructor: 'Sofia Morales' },
-            { id: 5, style: 'jazz', name: 'Broadway Jazz Technique', age: 'Ages 8-14', loc: 'Visalia', time: 'Wed 5:30 PM', instructor: 'David Sterling' },
-            { id: 6, style: 'hiphop', name: 'Advanced Street Choreography', age: 'Teens & Adults', loc: 'Fresno', time: 'Thu 6:30 PM', instructor: 'Marcus "Vibe"' },
-            { id: 7, style: 'jazz', name: 'Rhythm Tap Level 1 & 2', age: 'Ages 6-12', loc: 'Visalia', time: 'Thu 4:30 PM', instructor: 'David Sterling' },
-            { id: 8, style: 'ballet', name: 'Intermediate Ballet & Pointe', age: 'Ages 12+', loc: 'Fresno', time: 'Sat 10:00 AM', instructor: 'Elena Rostova' }
-        ];
-
-        // Sample Testimonials
-        const testimonials = [
-            {
-                text: "Central Valley Stars has completely transformed my daughter's confidence! The instructors in Fresno are so passionate, patient, and skilled. She went from timid beginner to winning gold at regional finals.",
-                author: "Jessica Martinez",
-                role: "Parent of Hip Hop & Ballet Student (Fresno Studio)"
-            },
-            {
-                text: "The adult Salsa and Bachata classes in Visalia are the highlight of my week! Great workout, super friendly community, and top-tier dance instruction.",
-                author: "Carlos Gutierrez",
-                role: "Adult Salsa Student (Visalia Studio)"
-            },
-            {
-                text: "As a competitive dancer, finding studios with high level training in the Valley was hard until I found Central Valley Stars. Clean facilities, professional Marley floors, and incredible choreography!",
-                author: "Samantha Reed",
-                role: "Elite Competition Team Member"
-            }
-        ];
-
-        let currentTestimonialIndex = 0;
-
-        // Render Lucide Icons
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            renderSchedule('all');
-            updateTestimonial();
         });
 
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Render Schedule Table
-        function renderSchedule(filter) {
-            const tbody = document.getElementById('schedule-rows');
-            tbody.innerHTML = '';
-
-            const filteredData = filter === 'all' 
-                ? scheduleData 
-                : scheduleData.filter(item => item.style === filter);
-
-            if(filteredData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400">No classes scheduled under this filter.</td></tr>`;
-                return;
-            }
-
-            filteredData.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5';
-                tr.innerHTML = `
-                    <td class="p-4 sm:p-6 font-semibold text-white">${item.time}</td>
-                    <td class="p-4 sm:p-6 text-amber-300 font-medium">${item.name}</td>
-                    <td class="p-4 sm:p-6 text-gray-300">${item.age}</td>
-                    <td class="p-4 sm:p-6"><span class="px-2.5 py-1 rounded-md text-xs font-semibold ${item.loc === 'Fresno' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-pink-500/10 text-pink-400 border border-pink-500/30'}">${item.loc}</span></td>
-                    <td class="p-4 sm:p-6 text-gray-300">${item.instructor}</td>
-                    <td class="p-4 sm:p-6 text-right">
-                        <button onclick="openBookingModal('${item.name}')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-amber-400 hover:text-black text-xs font-bold transition-all text-white">Book</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Filter Schedule Event
-        function filterSchedule(filterKey) {
-            document.querySelectorAll('.schedule-filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-amber-400', 'bg-amber-500/20', 'text-amber-300');
-                btn.classList.add('text-gray-300');
-                if(btn.dataset.filter === filterKey) {
-                    btn.classList.add('active', 'border-amber-400', 'bg-amber-500/20', 'text-amber-300');
-                    btn.classList.remove('text-gray-300');
-                }
-            });
-            renderSchedule(filterKey);
-        }
-
-        // Testimonial Carousel Handlers
-        function updateTestimonial() {
-            const data = testimonials[currentTestimonialIndex];
-            document.getElementById('testimonial-text').innerText = `"${data.text}"`;
-            document.getElementById('testimonial-author').innerText = data.author;
-            document.getElementById('testimonial-role').innerText = data.role;
-        }
-
-        function nextTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
-            updateTestimonial();
-        }
-
-        function prevTestimonial() {
-            currentTestimonialIndex = (currentTestimonialIndex - 1 + testimonials.length) % testimonials.length;
-            updateTestimonial();
-        }
-
-        // Booking Modal Handlers
-        function openBookingModal(className = '') {
-            const modal = document.getElementById('booking-modal');
-            const styleSelect = document.getElementById('modal-style-select');
-            
-            document.getElementById('modal-form-content').classList.remove('hidden');
-            document.getElementById('modal-success-content').classList.add('hidden');
-            
-            modal.classList.remove('hidden');
-        }
-
-        function closeBookingModal() {
-            const modal = document.getElementById('booking-modal');
-            modal.classList.add('hidden');
-        }
-
-        function handleModalSubmit(e) {
+        function handleNotifySubmit(e) {
             e.preventDefault();
-            document.getElementById('modal-form-content').classList.add('hidden');
-            document.getElementById('modal-success-content').classList.remove('hidden');
-        }
-
-        function handleInquirySubmit(e) {
-            e.preventDefault();
-            alert('Thank you for contacting Central Valley Stars! Our studio team will reach out to you shortly.');
+            const successBox = document.getElementById('notify-success');
+            successBox.classList.remove('hidden');
             e.target.reset();
         }
     </script>
