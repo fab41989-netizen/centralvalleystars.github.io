@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central Valley Stars Dance Studio | Coming Soon - Fresno & Visalia</title>
+    <title>Central Valley Stars Dance Studio | Coming Soon</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -163,9 +163,9 @@
                     </div>
                 </a>
 
-                <!-- Contact pill -->
+                <!-- Nav links -->
                 <div class="flex items-center gap-3">
-                    <span class="hidden sm:inline-block text-xs text-gray-400">Fresno & Visalia</span>
+                    <a href="#instructors" class="hidden sm:inline-block text-xs text-gray-300 hover:text-amber-400 transition-colors">Faculty</a>
                     <a href="#notify" class="px-4 py-2 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
                         <i data-lucide="bell" class="w-3.5 h-3.5"></i>
                         <span>Get Notified</span>
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Coming Soon Hero Section -->
-    <section class="relative flex-grow pt-8 pb-16 flex items-center justify-center z-10 overflow-hidden">
+    <section class="relative pt-8 pb-16 flex items-center justify-center z-10 overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
             
             <!-- Badge -->
@@ -209,7 +209,7 @@
 
             <!-- Description -->
             <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
-                Central Valley's premier state-of-the-art dance studios in Fresno and Visalia are putting the finishing touches on our professional Marley floors, sound systems, and world-class faculty lineups.
+                Central Valley's premier state-of-the-art dance studios are putting the finishing touches on professional Marley floors, sound systems, and world-class faculty lineups.
             </p>
 
             <!-- Countdown Timer Grid -->
@@ -249,24 +249,59 @@
                 </div>
             </div>
 
-            <!-- Location Snippets -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto pt-4 text-left text-xs text-gray-400">
-                <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-amber-400 flex-shrink-0"></i>
-                    <div>
-                        <strong class="text-white block">Fresno Studio</strong>
-                        <span>7400 N Palm Ave, Fresno, CA</span>
-                    </div>
-                </div>
-                <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-pink-400 flex-shrink-0"></i>
-                    <div>
-                        <strong class="text-white block">Visalia Studio</strong>
-                        <span>3200 S Mooney Blvd, Visalia, CA</span>
-                    </div>
-                </div>
+        </div>
+    </section>
+
+    <!-- Meet The Faculty Section -->
+    <section id="instructors" class="py-16 relative z-10 bg-black/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase tracking-widest text-pink-500 font-bold mb-2">Meet The Faculty</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">World-Class Instructors</p>
+                <p class="text-gray-400 mt-3 text-sm sm:text-base">Our faculty brings decades of professional stage, commercial, and competitive experience to lead our upcoming sessions.</p>
             </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Instructor 1 -->
+                <div class="glass-card rounded-3xl p-5 text-center group">
+                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-pink-500">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Elena Rostova" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Elena'">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Elena Rostova</h3>
+                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Ballet & Contemporary Director</p>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Former Bolshoi trained soloist with 15+ years of classic repertoire and contemporary instruction.</p>
+                </div>
+
+                <!-- Instructor 2 -->
+                <div class="glass-card rounded-3xl p-5 text-center group">
+                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-pink-500 to-purple-600">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Marcus 'Vibe' Rodriguez" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Marcus'">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Marcus "Vibe" R.</h3>
+                    <p class="text-pink-400 text-xs font-semibold uppercase tracking-wider mb-3">Hip Hop & Urban Lead</p>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Commercial choreographer featured in music videos, commercials, and international tour stages.</p>
+                </div>
+
+                <!-- Instructor 3 -->
+                <div class="glass-card rounded-3xl p-5 text-center group">
+                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-purple-500 to-amber-400">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Sofia Morales" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Sofia'">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Sofia Morales</h3>
+                    <p class="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-3">Salsa & Latin Master</p>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">World Salsa Congress champion specializing in partner turn patterns and Latin styling.</p>
+                </div>
+
+                <!-- Instructor 4 -->
+                <div class="glass-card rounded-3xl p-5 text-center group">
+                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-purple-600">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="David Sterling" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=David'">
+                    </div>
+                    <h3 class="text-xl font-bold text-white">David Sterling</h3>
+                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Jazz & Tap Specialist</p>
+                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Broadway national tour alumnus focused on rhythm precision, theatricality, and stage energy.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -296,7 +331,29 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            startCountdown();
         });
+
+        const launchDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
+
+        function startCountdown() {
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = launchDate - now;
+
+                if (distance < 0) return;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
 
         function handleNotifySubmit(e) {
             e.preventDefault();
