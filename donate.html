@@ -116,8 +116,8 @@
     <header class="fixed top-0 left-0 right-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="glass-panel rounded-2xl px-4 py-3 sm:px-6 flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20">
                         <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
                             <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
                         </div>
@@ -179,7 +179,7 @@
                     </div>
                 </div>
 
-                <button onclick="proceedToCheckout()" id="checkout-btn" disabled class="w-full py-3.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg opacity-50 cursor-not-allowed">
+                <button onclick="openCheckoutModal()" id="checkout-btn" disabled class="w-full py-3.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg opacity-50 cursor-not-allowed">
                     Proceed with Sponsorship
                 </button>
             </div>
@@ -221,31 +221,48 @@
         </div>
     </footer>
 
-    <!-- Sponsorship Modal -->
+    <!-- Sponsorship Checkout Modal with PayPal, Venmo & Cash App -->
     <div id="sponsor-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="glass-panel rounded-3xl p-6 sm:p-10 max-w-md w-full relative border-amber-500/40 text-center">
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full relative border-amber-500/40 text-center">
             <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white p-2">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <div class="w-16 h-16 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="heart-handshake" class="w-8 h-8"></i>
+            <div class="w-14 h-14 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="heart-handshake" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-2">Complete Your Sponsorship</h3>
-            <p id="modal-summary" class="text-gray-300 text-xs sm:text-sm mb-6 leading-relaxed">
-                You have selected days for sponsorship. Total due: $0.
+            <h3 class="text-xl font-bold text-white mb-1">Choose Payment Method</h3>
+            <p id="modal-summary" class="text-gray-300 text-xs mb-5 leading-relaxed">
+                Total due: $0. Select your preferred payment platform below to complete your sponsorship.
             </p>
+            
+            <!-- Payment Buttons Container -->
             <div class="space-y-3">
-                <input type="text" id="sponsor-name" placeholder="Your Name or Dedication Title" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                <input type="email" id="sponsor-email" placeholder="Your Email Address" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                <button onclick="completeSponsorship()" class="w-full py-3.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg font-bold">
-                    Proceed to Secure Payment
-                </button>
+                <!-- PayPal -->
+                <a id="paypal-link" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs uppercase tracking-wider shadow-lg font-bold transition-all">
+                    <i data-lucide="credit-card" class="w-4 h-4"></i>
+                    <span>Pay with PayPal / Card</span>
+                </a>
+
+                <!-- Venmo -->
+                <a id="venmo-link" href="https://venmo.com/u/YourUsername" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs uppercase tracking-wider shadow-lg font-bold transition-all">
+                    <i data-lucide="smartphone" class="w-4 h-4"></i>
+                    <span>Pay via Venmo (@YourUsername)</span>
+                </a>
+
+                <!-- Cash App -->
+                <a id="cashapp-link" href="https://cash.app/$YourCashtag" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs uppercase tracking-wider shadow-lg font-bold transition-all">
+                    <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                    <span>Pay via Cash App ($YourCashtag)</span>
+                </a>
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-white/10 text-[11px] text-gray-400">
+                After completing your transfer, your sponsored days will be officially locked in!
             </div>
         </div>
     </div>
 
     <script>
-        // Map day number to its custom or default price
         let dayValues = {};
         let selectedDays = new Set();
 
@@ -265,7 +282,7 @@
             const daysInMonth = 30;
 
             for (let i = 1; i <= daysInMonth; i++) {
-                dayValues[i] = i; // Default price equals the day of the month
+                dayValues[i] = i;
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
@@ -290,7 +307,6 @@
                 btn.classList.add('selected');
             }
             
-            // If one day is selected, show its value in the custom override box for easy editing
             if(selectedDays.size === 1) {
                 const singleDay = Array.from(selectedDays)[0];
                 document.getElementById('custom-override-input').value = dayValues[singleDay];
@@ -306,7 +322,6 @@
             const numericVal = parseInt(val);
             if(isNaN(numericVal) || numericVal <= 0) return;
 
-            // Apply override to all currently selected days
             selectedDays.forEach(day => {
                 dayValues[day] = numericVal;
                 document.getElementById(`price-tag-${day}`).innerText = `$${numericVal}`;
@@ -333,32 +348,23 @@
             }
         }
 
-        function proceedToCheckout() {
+        function openCheckoutModal() {
             let total = 0;
             selectedDays.forEach(day => {
                 total += dayValues[day];
             });
-            const daysArr = Array.from(selectedDays).sort((a,b) => a-b).map(d => `Day ${d} ($${dayValues[d]})`).join(', ');
+            const count = selectedDays.size;
             
-            document.getElementById('modal-summary').innerText = `You have selected: ${daysArr}. Total contribution: $${total}.`;
+            document.getElementById('modal-summary').innerText = `You have selected ${count} day(s) for a total contribution of $${total}. Choose your payment method below:`;
+            
+            // Optional: You can append the amount to your payment links if supported (e.g. PayPal custom amount link)
+            document.getElementById('paypal-link').href = `https://www.paypal.com/donate?hosted_button_id=YOUR_BUTTON_ID&amount=${total}`;
+
             document.getElementById('sponsor-modal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('sponsor-modal').classList.add('hidden');
-        }
-
-        function completeSponsorship() {
-            const name = document.getElementById('sponsor-name').value;
-            const email = document.getElementById('sponsor-email').value;
-            
-            if(!name || !email) {
-                alert('Please enter your name and email address to proceed.');
-                return;
-            }
-
-            alert(`Thank you so much, ${name}! Redirecting to secure payment...`);
-            closeModal();
         }
     </script>
 </body>
