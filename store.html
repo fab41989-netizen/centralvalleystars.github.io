@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Store & Merchandise | Central Valley Stars Dance Studio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0813',
+                            card: 'rgba(23, 18, 38, 0.7)',
+                            accent: '#8B5CF6',
+                            purple: '#A855F7',
+                            magenta: '#EC4899',
+                            gold: '#F59E0B',
+                            goldLight: '#FDE047',
+                            border: 'rgba(168, 85, 247, 0.2)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0813;
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(23, 18, 38, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card {
+            background: rgba(30, 24, 51, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(236, 72, 153, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px -10px rgba(168, 85, 247, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FFF 0%, #F59E0B 35%, #EC4899 70%, #A855F7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.6);
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-magenta selection:text-white">
+
+    <!-- Background Glow Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="glass-panel rounded-2xl px-4 py-3 sm:px-6 flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20">
+                        <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-heading font-extrabold text-lg sm:text-xl tracking-wider text-white block leading-none">CENTRAL VALLEY</span>
+                        <span class="font-heading text-xs font-semibold tracking-widest text-amber-400 block mt-0.5">STUDIO STORE</span>
+                    </div>
+                </a>
+                
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="px-4 py-2 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-2">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        <span>Home</span>
+                    </a>
+                    <button onclick="openCartModal()" class="relative px-4 py-2 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        <span>Cart</span>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-pink-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="flex-grow pt-32 pb-20 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        
+        <!-- Hero Title -->
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-amber-500/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide mb-4">
+                <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-400"></i>
+                <span>Official Merchandise & Gear</span>
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
+                Represent the Stars, <br/>
+                <span class="gradient-text">Gear Up in Style.</span>
+            </h1>
+            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                Browse our collection of studio apparel, practice wear, and branded accessories. Pre-order now to pick up on opening day!
+            </p>
+        </div>
+
+        <!-- AdSense Top Banner -->
+        <div class="w-full max-w-4xl mx-auto mb-12">
+            <div class="glass-card rounded-2xl p-3 text-center border border-white/5 overflow-hidden">
+                <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Advertisement</div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+
+        <!-- Store Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Item 1 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80" alt="Signature Hoodie" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-brand-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-amber-400 border border-amber-500/30">Best Seller</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">CVS Signature Studio Hoodie</h3>
+                    <p class="text-gray-400 text-xs mb-3">Ultra-soft fleece cotton pullover featuring our metallic gold & purple crest logo.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$45.00</span>
+                    <button onclick="addToCart('CVS Signature Studio Hoodie', 45)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80" alt="Dancer Tee" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Central Valley Stars Classic Tee</h3>
+                    <p class="text-gray-400 text-xs mb-3">Breathable athletic cotton blend designed for maximum stretch during rehearsals.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$25.00</span>
+                    <button onclick="addToCart('Central Valley Stars Classic Tee', 25)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80" alt="Duffle Bag" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-brand-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-pink-400 border border-pink-500/30">New Arrival</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Pro Dance Duffle Bag</h3>
+                    <p class="text-gray-400 text-xs mb-3">Spacious compartment with shoe pocket, water-resistant zippers, and padded straps.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$60.00</span>
+                    <button onclick="addToCart('Pro Dance Duffle Bag', 60)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80" alt="Water Bottle" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Insulated Stainless Water Bottle</h3>
+                    <p class="text-gray-400 text-xs mb-3">Keeps drinks ice-cold for 24 hours through intense back-to-back dance rehearsals.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$22.00</span>
+                    <button onclick="addToCart('Insulated Stainless Water Bottle', 22)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" alt="Stretching Band" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">Pro Flex Stretching Band Set</h3>
+                    <p class="text-gray-400 text-xs mb-3">Essential resistance bands for warm-ups, flexibility, and ballet conditioning.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$18.00</span>
+                    <button onclick="addToCart('Pro Flex Stretching Band Set', 18)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="w-full h-64 rounded-2xl overflow-hidden mb-4 bg-purple-900/20 relative">
+                        <img src="https://images.unsplash.com/photo-1576485375252-2579b18d29b2?auto=format&fit=crop&w=600&q=80" alt="Snapback Cap" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">CVS Embroidered Snapback Cap</h3>
+                    <p class="text-gray-400 text-xs mb-3">Structured flat-bill snapback featuring premium 3D embroidered star insignia.</p>
+                </div>
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$28.00</span>
+                    <button onclick="addToCart('CVS Embroidered Snapback Cap', 28)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full relative border-amber-500/40">
+            <button onclick="closeCartModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white p-2">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Your Shopping Cart</h3>
+                    <p class="text-xs text-gray-400">Review your pre-order items below</p>
+                </div>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="space-y-3 max-h-60 overflow-y-auto mb-4 pr-1 divide-y divide-white/5">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between mb-6">
+                <span class="text-sm font-semibold text-gray-300">Total:</span>
+                <span id="cart-total" class="text-2xl font-extrabold text-amber-400">$0.00</span>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="checkoutCart()" class="w-full py-3.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg font-bold">
+                    Proceed to Secure Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 Central Valley Stars Dance Studio. All Rights Reserved.</p>
+            <a href="index.html" class="hover:text-amber-400 transition-colors">Return to Home Page</a>
+        </div>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cvs_store_cart')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateCartCount();
+        });
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            saveAndRefreshCart();
+            alert(`Added "${name}" to your cart!`);
+        }
+
+        function saveAndRefreshCart() {
+            localStorage.setItem('cvs_store_cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+        }
+
+        function openCartModal() {
+            const container = document.getElementById('cart-items-container');
+            const totalElement = document.getElementById('cart-total');
+            container.innerHTML = '';
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 text-xs py-6">Your cart is currently empty.</p>`;
+                totalElement.innerText = '$0.00';
+            } else {
+                let total = 0;
+                cart.forEach((item, index) => {
+                    total += item.price * item.quantity;
+                    const div = document.createElement('div');
+                    div.className = 'flex items-center justify-between pt-3 first:pt-0';
+                    div.innerHTML = `
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${item.name}</h4>
+                            <p class="text-[11px] text-gray-400">$${item.price} x ${item.quantity}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300 text-xs font-bold">Remove</button>
+                    `;
+                    container.appendChild(div);
+                });
+                totalElement.innerText = `$${total.toFixed(2)}`;
+            }
+
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveAndRefreshCart();
+            openCartModal();
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Redirecting to secure payment gateway...');
+            closeCartModal();
+        }
+    </script>
+</body>
+</html>
