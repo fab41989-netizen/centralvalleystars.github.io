@@ -111,7 +111,8 @@
         <nav class="max-w-7xl mx-auto px-4 py-3">
             <div class="glass-panel rounded-2xl px-4 py-2.5 sm:px-6 flex items-center justify-between">
                 <a href="index.html" class="flex items-center gap-3 group">
-                    <img src="15_banner2.png" alt="Stars Dance Studio Logo" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform"></a>
+                    <img src="15_banner2.png" alt="Stars Dance Studio Logo" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform">[cite: 1]
+                </a>
                 <div class="flex items-center gap-2">
                     <a href="index.html" class="px-3 py-2 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1.5">
                         <i data-lucide="home" class="w-3.5 h-3.5"></i>
@@ -275,7 +276,7 @@
             }
         }
 
-        // 3. Render feed function with clickable images & delete handling
+        // 3. Render feed function with interactive Like buttons, clickable images & delete handling
         function renderFeed() {
             const feedContainer = document.getElementById('posts-feed');
             const emptyState = document.getElementById('empty-feed');
@@ -326,12 +327,12 @@
                     <!-- Post Image -->
                     ${imageHtml}
 
-                    <!-- Like Bar -->
+                    <!-- Interactive Like Bar -->
                     <div class="flex items-center justify-between pt-2 border-t border-white/5 text-xs text-gray-400">
-                        <span class="flex items-center gap-1.5 text-pink-400 font-bold">
-                            <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+                        <button onclick="likePost(${post.id}, ${post.likes || 0})" class="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-bold transition-colors group/btn py-1 px-2 rounded-lg hover:bg-white/5">
+                            <i data-lucide="heart" class="w-4 h-4 fill-current group-hover/btn:scale-110 transition-transform"></i>
                             <span>${post.likes || 0} Likes</span>
-                        </span>
+                        </button>
                     </div>
                 `;
                 feedContainer.appendChild(card);
@@ -342,7 +343,22 @@
             }
         }
 
-        // 4. Modal Lightbox Control Functions
+        // 4. Like Post Function
+        async function likePost(id, currentLikes) {
+            const newLikes = (currentLikes || 0) + 1;
+            const { error } = await _supabase
+                .from('posts')
+                .update({ likes: newLikes })
+                .eq('id', id);
+
+            if (error) {
+                console.error('Error updating likes:', error.message);
+            } else {
+                fetchPostsFromCloud();
+            }
+        }
+
+        // 5. Modal Lightbox Control Functions
         function openModal(imageUrl) {
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-img');
@@ -357,7 +373,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 5. Delete post and its storage file using the Supabase Storage API
+        // 6. Delete post and its storage file using the Supabase Storage API
         async function deletePost(id, imageUrl) {
             if (confirm("Are you sure you want to delete this post?")) {
                 if (imageUrl) {
