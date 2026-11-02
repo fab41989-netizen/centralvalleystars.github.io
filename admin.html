@@ -115,8 +115,8 @@
 
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 glass-panel border-r border-white/10 flex flex-col justify-between p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div>
-                <div class="flex items-center justify-between mb-8">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px] shadow-lg shadow-purple-500/20">
                             <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
@@ -133,20 +133,43 @@
                     </button>
                 </div>
 
-                <nav class="space-y-2">
-                    <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
-                        <i data-lucide="users" class="w-4 h-4"></i> Class Inquiries
-                    </button>
-                    <button onclick="switchTab('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
-                        <i data-lucide="shopping-bag" class="w-4 h-4"></i> Store Orders
-                    </button>
-                    <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics Overview
-                    </button>
-                    <button onclick="switchTab('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
-                        <i data-lucide="settings" class="w-4 h-4"></i> Portal Settings
-                    </button>
-                </nav>
+                <!-- Split Sidebar Sections -->
+                <div class="space-y-4">
+                    
+                    <!-- Section 1: Student Inquiries -->
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Student Inquiries</span>
+                        <nav class="space-y-1">
+                            <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
+                                <i data-lucide="users" class="w-4 h-4"></i> Class Registrations
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Section 2: Store Orders -->
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Merchandise Store</span>
+                        <nav class="space-y-1">
+                            <button onclick="switchTab('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i> Store Orders
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Section 3: Overview & Settings -->
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Management</span>
+                        <nav class="space-y-1">
+                            <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics Overview
+                            </button>
+                            <button onclick="switchTab('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
+                                <i data-lucide="settings" class="w-4 h-4"></i> Portal Settings
+                            </button>
+                        </nav>
+                    </div>
+
+                </div>
             </div>
 
             <div class="space-y-3 pt-6 border-t border-white/10">
@@ -250,49 +273,76 @@
             <section id="tab-analytics" class="hidden space-y-6">
                 <div class="glass-panel rounded-2xl p-6">
                     <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Analytics & Metrics</h2>
-                    <p class="text-gray-400 text-xs mt-0.5">Overview of interest, registrations, and store activity.</p>
+                    <p class="text-gray-400 text-xs mt-0.5">Comprehensive overview of student registrations, merchandise sales, and fulfillment status.</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
-                    <!-- Total Card -->
-                    <button onclick="jumpToFilter('all')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Inquiries</span>
-                            <i data-lucide="users" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span id="stat-total" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
-                        <span class="text-[11px] text-purple-300 flex items-center gap-1">View all submissions &rarr;</span>
-                    </button>
+                <!-- Student Inquiries Metrics Row -->
+                <div>
+                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Student Inquiry Metrics</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <button onclick="jumpToFilter('all')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Inquiries</span>
+                                <i data-lucide="users" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <span id="stat-total" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
+                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View all submissions &rarr;</span>
+                        </button>
 
-                    <!-- Unread Card -->
-                    <button onclick="jumpToFilter('new')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">New Unread</span>
-                            <i data-lucide="bell-ring" class="w-5 h-5 text-pink-500 group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span id="stat-unread" class="font-heading text-4xl font-extrabold text-pink-500 block mb-1">0</span>
-                        <span class="text-[11px] text-pink-300 flex items-center gap-1">View unread inquiries &rarr;</span>
-                    </button>
+                        <button onclick="jumpToFilter('new')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">New Unread</span>
+                                <i data-lucide="bell-ring" class="w-5 h-5 text-pink-500 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <span id="stat-unread" class="font-heading text-4xl font-extrabold text-pink-500 block mb-1">0</span>
+                            <span class="text-[11px] text-pink-300 flex items-center gap-1">View unread inquiries &rarr;</span>
+                        </button>
 
-                    <!-- Reviewed Card -->
-                    <button onclick="jumpToFilter('reviewed')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Reviewed</span>
-                            <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <span id="stat-reviewed" class="font-heading text-4xl font-extrabold text-purple-400 block mb-1">0</span>
-                        <span class="text-[11px] text-purple-300 flex items-center gap-1">View reviewed records &rarr;</span>
-                    </button>
+                        <button onclick="jumpToFilter('reviewed')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Reviewed</span>
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <span id="stat-reviewed" class="font-heading text-4xl font-extrabold text-purple-400 block mb-1">0</span>
+                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View reviewed records &rarr;</span>
+                        </button>
+                    </div>
+                </div>
 
-                    <!-- Store Orders Card -->
-                    <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Store Orders</span>
-                            <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                <!-- Store Orders Analytics Row -->
+                <div class="pt-4">
+                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Merchandise Store Metrics</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <!-- Total Orders Card -->
+                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Orders</span>
+                                <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <span id="stat-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block mb-1">0</span>
+                            <span class="text-[11px] text-emerald-300 flex items-center gap-1">View store orders &rarr;</span>
+                        </button>
+
+                        <!-- Pending Fulfillment Card -->
+                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Pending Fulfillment</span>
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
+                            </div>
+                            <span id="stat-orders-pending" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
+                            <span class="text-[11px] text-amber-300 flex items-center gap-1">View pending orders &rarr;</span>
+                        </button>
+
+                        <!-- Total Revenue Card -->
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30 text-left">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Gross Revenue</span>
+                                <i data-lucide="dollar-sign" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <span id="stat-revenue" class="font-heading text-4xl font-extrabold text-purple-300 block mb-1">$0.00</span>
+                            <span class="text-[11px] text-gray-400">Total store order volume</span>
                         </div>
-                        <span id="stat-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block mb-1">0</span>
-                        <span class="text-[11px] text-emerald-300 flex items-center gap-1">View store orders &rarr;</span>
-                    </button>
+                    </div>
                 </div>
             </section>
 
@@ -321,7 +371,7 @@
         let allSubmissions = [];
         let allOrders = [];
         let currentFilter = 'all';
-        const ADMIN_SECRET = 'DanceStar2026!'; // Change password here if desired
+        const ADMIN_SECRET = 'DanceStar2026!';
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -404,7 +454,6 @@
             renderTable();
         }
 
-        // Fetch submissions from Supabase
         async function fetchSubmissions() {
             const tbody = document.getElementById('submissions-table-body');
             tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading submissions...</td></tr>`;
@@ -433,7 +482,6 @@
             }
         }
 
-        // Fetch Store Orders from Supabase
         async function fetchStoreOrders() {
             const tbody = document.getElementById('orders-table-body');
             const noOrders = document.getElementById('no-orders');
@@ -446,14 +494,20 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
-                    // If table hasn't been created yet, gracefully handle it
                     console.warn('Store orders table query error:', error.message);
                     allOrders = [];
                 } else {
                     allOrders = data || [];
                 }
 
-                document.getElementById('stat-orders').innerText = allOrders.length;
+                // Calculate Store Order Analytics
+                const totalOrders = allOrders.length;
+                const pendingOrders = allOrders.filter(o => !o.fulfilled).length;
+                const grossRevenue = allOrders.reduce((sum, order) => sum + Number(order.total_amount || 0), 0);
+
+                document.getElementById('stat-orders').innerText = totalOrders;
+                document.getElementById('stat-orders-pending').innerText = pendingOrders;
+                document.getElementById('stat-revenue').innerText = `$${grossRevenue.toFixed(2)}`;
 
                 if (allOrders.length === 0) {
                     tbody.innerHTML = '';
