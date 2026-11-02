@@ -19,6 +19,9 @@
     <!-- Supabase JS Client CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <!-- External Configuration File -->
+    <script src="config.js"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -202,10 +205,11 @@
 
     <!-- Cloud Database & Feed Scripts -->
     <script>
-        // Initialize Supabase Client with your Project credentials
-        const SUPABASE_URL = 'https://lkpjbcxlczumkypuzlfg.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxrcGpiY3hsY3p1bWt5cHV6bGZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0OTE5OTYsImV4cCI6MjEwOTA2Nzk5Nn0.0GrtS-8nMstGg9Ci23CpEdmtKG3ruE2hgfb4QHgYZY0';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Initialize Supabase Client dynamically from external config.js
+        const _supabase = supabase.createClient(
+            window.SUPABASE_CONFIG.URL, 
+            window.SUPABASE_CONFIG.ANON_KEY
+        );
 
         let posts = [];
 
