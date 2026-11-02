@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Central Valley Stars Dance Studio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0813',
+                            card: 'rgba(23, 18, 38, 0.7)',
+                            accent: '#8B5CF6',
+                            purple: '#A855F7',
+                            magenta: '#EC4899',
+                            gold: '#F59E0B',
+                            border: 'rgba(168, 85, 247, 0.2)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0813;
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(23, 18, 38, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.45);
+        }
+
+        .glass-card {
+            background: rgba(30, 24, 51, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-btn:hover {
+            background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-magenta selection:text-white">
+
+    <!-- Background Glow Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-40 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header / Nav -->
+    <header class="fixed top-0 left-0 right-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 py-3">
+            <div class="glass-panel rounded-2xl px-4 py-2.5 sm:px-6 flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="15_banner2.png" alt="Stars Dance Studio Logo" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(239,68,68,0.4)] group-hover:scale-105 transition-transform"[cite: 1]>
+                </a>
+                <div class="flex items-center gap-2">
+                    <a href="index.html" class="px-3 py-2 rounded-xl glass-card text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="home" class="w-3.5 h-3.5"></i>
+                        <span>Home</span>
+                    </a>
+                    <button onclick="handleLogout()" class="px-3 py-2 rounded-xl glass-card text-xs font-bold text-red-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-28 pb-20 relative z-10 max-w-4xl mx-auto px-4 w-full space-y-6">
+        
+        <!-- Profile Header Card -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 border-amber-500/30 flex flex-col sm:flex-row items-center gap-6">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-1 shadow-xl">
+                <div class="w-full h-full bg-brand-dark rounded-full flex items-center justify-center text-3xl font-bold text-white font-heading" id="avatar-initials">
+                    JD
+                </div>
+            </div>
+            <div class="text-center sm:text-left space-y-1">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-semibold">
+                    <i data-lucide="shield-check" class="w-3 h-3 text-amber-400"></i>
+                    <span>Studio Member</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white" id="profile-fullname">Jane Doe</h1>
+                <p class="text-xs text-gray-400" id="profile-email">jane.doe@example.com</p>
+            </div>
+        </div>
+
+        <!-- Settings Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Left Column: Navigation / Quick Links -->
+            <div class="glass-panel rounded-3xl p-5 space-y-2 h-fit">
+                <button onclick="switchTab('details')" id="tab-btn-details" class="w-full text-left px-4 py-3 rounded-xl bg-white/10 text-white text-xs font-bold flex items-center gap-2.5 transition-colors">
+                    <i data-lucide="user" class="w-4 h-4 text-amber-400"></i>
+                    <span>Account Details</span>
+                </button>
+                <button onclick="switchTab('security')" id="tab-btn-security" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-300 text-xs font-semibold flex items-center gap-2.5 transition-colors">
+                    <i data-lucide="lock" class="w-4 h-4 text-pink-400"></i>
+                    <span>Password & Security</span>
+                </button>
+                <button onclick="switchTab('activity')" id="tab-btn-activity" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-300 text-xs font-semibold flex items-center gap-2.5 transition-colors">
+                    <i data-lucide="calendar-heart" class="w-4 h-4 text-purple-400"></i>
+                    <span>My Sponsorships</span>
+                </button>
+            </div>
+
+            <!-- Right Column: Tab Content Area -->
+            <div class="md:col-span-2 glass-panel rounded-3xl p-6 sm:p-8 border-white/10">
+                
+                <!-- TAB 1: Account Details -->
+                <div id="tab-details" class="space-y-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-white mb-1">Personal Information</h2>
+                        <p class="text-xs text-gray-400">Update your name, contact phone, and preferred dance style.</p>
+                    </div>
+
+                    <form onsubmit="handleUpdateDetails(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">First Name</label>
+                                <input type="text" id="update-firstname" required class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Last Name</label>
+                                <input type="text" id="update-lastname" required class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+                            <input type="email" id="update-email" disabled class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/5 text-gray-400 text-xs cursor-not-allowed">
+                            <span class="text-[10px] text-gray-500 mt-1 block">Email address cannot be changed directly.</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Phone Number</label>
+                            <input type="tel" id="update-phone" placeholder="(559) 000-0000" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                        </div>
+
+                        <button type="submit" class="px-6 py-2.5 rounded-xl gold-btn text-xs uppercase tracking-wider shadow-lg">
+                            Save Changes
+                        </button>
+                    </form>
+                    <div id="details-success" class="hidden p-3 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30">
+                        ✨ Profile updated successfully!
+                    </div>
+                </div>
+
+                <!-- TAB 2: Security -->
+                <div id="tab-security" class="hidden space-y-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-white mb-1">Change Password</h2>
+                        <p class="text-xs text-gray-400">Ensure your account is using a secure password.</p>
+                    </div>
+
+                    <form onsubmit="handleUpdatePassword(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Current Password</label>
+                            <input type="password" id="current-password" required class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">New Password</label>
+                            <input type="password" id="new-password" required placeholder="At least 6 characters" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Confirm New Password</label>
+                            <input type="password" id="confirm-new-password" required class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-amber-400">
+                        </div>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">
+                            Update Password
+                        </button>
+                    </form>
+                    <div id="password-alert" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
+                </div>
+
+                <!-- TAB 3: Activity / Sponsorships -->
+                <div id="tab-activity" class="hidden space-y-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white mb-1">Sponsorship History</h2>
+                        <p class="text-xs text-gray-400">Days you have sponsored to support Central Valley Stars.</p>
+                    </div>
+                    <div class="glass-card rounded-2xl p-4 text-center text-gray-400 text-xs">
+                        No active calendar sponsorships found on this device. Visit the <a href="donate.html" class="text-amber-400 underline font-bold">Sponsor-a-Day</a> page to claim a date!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 border-t border-white/10 relative z-10 bg-black/50 text-gray-400 text-xs text-center">
+        <p>© 2026 Central Valley Stars Dance Studio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('cvs_current_user')) || {
+            firstName: "Jane",
+            lastName: "Doe",
+            email: "jane.doe@example.com",
+            phone: "(559) 555-0199"
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadProfileData();
+        });
+
+        function loadProfileData() {
+            document.getElementById('profile-fullname').innerText = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('profile-email').innerText = currentUser.email;
+            document.getElementById('avatar-initials').innerText = `${currentUser.firstName.charAt(0)}${currentUser.lastName.charAt(0)}`;
+            
+            document.getElementById('update-firstname').value = currentUser.firstName;
+            document.getElementById('update-lastname').value = currentUser.lastName;
+            document.getElementById('update-email').value = currentUser.email;
+            document.getElementById('update-phone').value = currentUser.phone || '';
+        }
+
+        function switchTab(tabName) {
+            ['details', 'security', 'activity'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).classList.remove('bg-white/10', 'text-white');
+                document.getElementById(`tab-btn-${t}`).classList.add('hover:bg-white/5', 'text-gray-300');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).classList.remove('hover:bg-white/5', 'text-gray-300');
+            document.getElementById(`tab-btn-${tabName}`).classList.add('bg-white/10', 'text-white');
+        }
+
+        function handleUpdateDetails(e) {
+            e.preventDefault();
+            currentUser.firstName = document.getElementById('update-firstname').value.trim();
+            currentUser.lastName = document.getElementById('update-lastname').value.trim();
+            currentUser.phone = document.getElementById('update-phone').value.trim();
+
+            localStorage.setItem('cvs_current_user', JSON.stringify(currentUser));
+            loadProfileData();
+
+            const successBox = document.getElementById('details-success');
+            successBox.classList.remove('hidden');
+            setTimeout(() => successBox.classList.add('hidden'), 4000);
+        }
+
+        function handleUpdatePassword(e) {
+            e.preventDefault();
+            const newPwd = document.getElementById('new-password').value;
+            const confirmPwd = document.getElementById('confirm-new-password').value;
+            const alertBox = document.getElementById('password-alert');
+
+            alertBox.classList.remove('hidden');
+            if (newPwd !== confirmPwd) {
+                alertBox.className = "p-3 rounded-xl text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30";
+                alertBox.innerText = "⚠️ New passwords do not match.";
+                return;
+            }
+            if (newPwd.length < 6) {
+                alertBox.className = "p-3 rounded-xl text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30";
+                alertBox.innerText = "⚠️ Password must be at least 6 characters.";
+                return;
+            }
+
+            alertBox.className = "p-3 rounded-xl text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+            alertBox.innerText = "✨ Password successfully updated!";
+            e.target.reset();
+            setTimeout(() => alertBox.classList.add('hidden'), 4000);
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('cvs_admin_auth');
+            localStorage.removeItem('cvs_current_user');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
