@@ -10,10 +10,7 @@
     gtag('js', new Date());
 
     gtag('config', 'G-4FH688Y9RK');
-    </script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7695544937295318" crossorigin="anonymous"></script>
-    
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coming Soon | Central Valley Stars Dance Studio</title>
@@ -552,6 +549,57 @@
             e.target.reset();
         }
 
-        // Handle Public Inquiry / Registration Form Submissions via Supabase safely
+        // Handle Public Inquiry / Registration Form Submissions via Supabase with Explicit Success Confirmation
         async function handleInquirySubmit(e) {
             e.preventDefault();
+            
+            if (!_supabase) {
+                alert('Database connection is not initialized. Please check your config.js file.');
+                return;
+            }
+
+            const successBox = document.getElementById('inquiry-success');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting Registration...';
+            successBox.classList.add('hidden');
+
+            const newSub = {
+                first_name: document.getElementById('firstName').value.trim(),
+                last_name: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                dance_type: document.getElementById('danceType').value,
+                read: false
+            };
+
+            try {
+                const { data, error } = await _supabase
+                    .from('cvs_dance_submissions')
+                    .insert([newSub]);
+
+                if (error) {
+                    console.error('Supabase Error Details:', error);
+                    alert(`Database Error: ${error.message}`);
+                    throw error;
+                }
+
+                // Explicitly show success message
+                successBox.classList.remove('hidden');
+                e.target.reset();
+                
+                // Hide success message after 6 seconds
+                setTimeout(() => {
+                    successBox.classList.add('hidden');
+                }, 6000);
+            } catch (err) {
+                console.error('Submission caught error:', err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Submit Registration';
+            }
+        }
+    </script>
+</body>
+</html>
