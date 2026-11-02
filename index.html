@@ -18,6 +18,12 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Your Config File -->
+    <script src="config.js"></script>
+    
     <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -451,7 +457,6 @@
             if (!container) return;
 
             try {
-                // Fetch all feeds in parallel
                 const promises = feeds.map(async feed => {
                     try {
                         const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`);
@@ -472,11 +477,9 @@
                 const results = await Promise.all(promises);
                 let allArticles = results.flat();
 
-                // Sort by publication date newest first
                 allArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
                 if (allArticles.length > 0) {
-                    // Pick top 3 mixed articles across all feeds
                     container.innerHTML = allArticles.slice(0, 3).map(item => `
                         <div class="glass-panel rounded-3xl p-5 border-white/10 flex flex-col justify-between space-y-3 hover:border-purple-500/40 transition-all group">
                             <div class="space-y-2">
@@ -513,31 +516,47 @@
             e.target.reset();
         }
 
-        // Handle Public Inquiry / Registration Form Submissions
-        function handleInquirySubmit(e) {
+        // Handle Public Inquiry / Registration Form Submissions via Supabase (from config.js)
+        async function handleInquirySubmit(e) {
             e.preventDefault();
             
-            let submissions = JSON.parse(localStorage.getItem('cvs_dance_submissions')) || [];
+            const successBox = document.getElementById('inquiry-success');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
             
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting Registration...';
+            successBox.classList.add('hidden');
+
             const newSub = {
-                id: Date.now(),
-                firstName: document.getElementById('firstName').value.trim(),
-                lastName: document.getElementById('lastName').value.trim(),
+                first_name: document.getElementById('firstName').value.trim(),
+                last_name: document.getElementById('lastName').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
-                danceType: document.getElementById('danceType').value,
-                date: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                dance_type: document.getElementById('danceType').value,
                 read: false
             };
 
-            submissions.unshift(newSub);
-            localStorage.setItem('cvs_dance_submissions', JSON.stringify(submissions));
+            try {
+                // Uses global supabaseClient defined in config.js
+                const { data, error } = await supabaseClient
+                    .from('cvs_dance_submissions')
+                    .insert([newSub]);
 
-            document.getElementById('inquiry-success').classList.remove('hidden');
-            e.target.reset();
-            setTimeout(() => {
-                document.getElementById('inquiry-success').classList.add('hidden');
-            }, 5000);
+                if (error) throw error;
+
+                successBox.classList.remove('hidden');
+                e.target.reset();
+                
+                setTimeout(() => {
+                    successBox.classList.add('hidden');
+                }, 5000);
+            } catch (err) {
+                console.error('Error submitting inquiry:', err.message);
+                alert('Failed to submit registration. Please try again later.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Submit Registration';
+            }
         }
     </script>
 </body>
