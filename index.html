@@ -406,6 +406,12 @@
     </footer>
 
     <script>
+        // Initialize Supabase client using window.SUPABASE_CONFIG from config.js
+        const _supabase = supabase.createClient(
+            window.SUPABASE_CONFIG.URL, 
+            window.SUPABASE_CONFIG.ANON_KEY
+        );
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             startCountdown();
@@ -534,7 +540,7 @@
             e.target.reset();
         }
 
-        // Handle Public Inquiry / Registration Form Submissions via Supabase (from config.js)
+        // Handle Public Inquiry / Registration Form Submissions via Supabase using _supabase
         async function handleInquirySubmit(e) {
             e.preventDefault();
             
@@ -555,8 +561,7 @@
             };
 
             try {
-                // Uses global supabaseClient defined in config.js
-                const { data, error } = await supabaseClient
+                const { data, error } = await _supabase
                     .from('cvs_dance_submissions')
                     .insert([newSub]);
 
