@@ -13,7 +13,7 @@
         body { background-color: #0B0813; color: #F3F4F6; font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
         .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
         .glass-card:hover { border-color: rgba(236, 72, 153, 0.5); transform: translateY(-3px); }
         .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
         .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
@@ -34,7 +34,7 @@
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
-                    <input type="password" id="adminPassword" required placeholder="admin123" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <input type="password" id="adminPassword" required placeholder="••••••••••••" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                 </div>
                 <button type="submit" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Access Portal</button>
             </form>
@@ -304,7 +304,7 @@
         </main>
     </div>
 
-    <!-- Add Merchandise Modal (With Image Upload) -->
+    <!-- Add Merchandise Modal -->
     <div id="merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
         <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl">
             <button onclick="closeAddMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -394,19 +394,19 @@
 
         function switchTab(tabName) {
             ['inquiries', 'merchandise', 'orders', 'analytics', 'settings'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`nav-${t}`).classList.remove('active');
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('nav-' + t).classList.remove('active');
             });
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.getElementById(`nav-${tabName}`).classList.add('active');
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('nav-' + tabName).classList.add('active');
             if (window.innerWidth < 1024) toggleMobileSidebar();
         }
 
         function jumpToInquiriesFilter(filterType) {
             currentInquiryFilter = filterType;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            if (document.getElementById(`filter-inq-${filterType}`)) {
-                document.getElementById(`filter-inq-${filterType}`).classList.add('active');
+            if (document.getElementById('filter-inq-' + filterType)) {
+                document.getElementById('filter-inq-' + filterType).classList.add('active');
             }
             switchTab('inquiries');
             renderSubmissionsTable();
@@ -415,8 +415,8 @@
         function filterInquiriesTable(filterType) {
             currentInquiryFilter = filterType;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            if (document.getElementById(`filter-inq-${filterType}`)) {
-                document.getElementById(`filter-inq-${filterType}`).classList.add('active');
+            if (document.getElementById('filter-inq-' + filterType)) {
+                document.getElementById('filter-inq-' + filterType).classList.add('active');
             }
             renderSubmissionsTable();
         }
@@ -447,28 +447,24 @@
             let imageUrl = '';
 
             try {
-                // 1. Upload image to Supabase Storage if file is selected
                 if (fileInput.files && fileInput.files[0]) {
                     const file = fileInput.files[0];
                     const fileExt = file.name.split('.').pop();
-                    const fileName = `${Date.now()}_${Math.random().toString(36.substring(2, 9))}.${fileExt}`;
-                    const filePath = `${fileName}`;
+                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
 
                     const { error: uploadError } = await _supabase.storage
                         .from('merchandise-images')
-                        .upload(filePath, file);
+                        .upload(fileName, file);
 
                     if (uploadError) throw uploadError;
 
-                    // Get Public URL
                     const { data: publicUrlData } = _supabase.storage
                         .from('merchandise-images')
-                        .getPublicUrl(filePath);
+                        .getPublicUrl(fileName);
 
                     imageUrl = publicUrlData.publicUrl;
                 }
 
-                // 2. Insert item into cvs_merchandise table
                 const newItem = {
                     name,
                     category,
@@ -491,7 +487,7 @@
 
             } catch (err) {
                 console.error('Error adding merchandise:', err);
-                alert(`Error: ${err.message}`);
+                alert('Error: ' + err.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Upload & Save to Catalog';
@@ -560,9 +556,9 @@
 
             noMerch.classList.add('hidden');
             tbody.innerHTML = allMerchandise.map(m => {
-                let imgThumb = `<div class="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-5 h-5"></i></div>`;
+                let imgThumb = '<div class="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-5 h-5"></i></div>';
                 if (m.image_url) {
-                    imgThumb = `<img src="${m.image_url}" alt="${m.name}" class="w-10 h-10 rounded-lg object-cover border border-white/10">`;
+                    imgThumb = '<img src="' + m.image_url + '" alt="' + m.name + '" class="w-10 h-10 rounded-lg object-cover border border-white/10">';
                 }
                 return `
                     <tr class="hover:bg-white/5">
@@ -619,7 +615,7 @@
 
             document.getElementById('stat-total-orders').innerText = totalOrders;
             document.getElementById('stat-pending-orders').innerText = pendingOrders;
-            document.getElementById('stat-gross-revenue').innerText = `$${grossRevenue.toFixed(2)}`;
+            document.getElementById('stat-gross-revenue').innerText = '$' + grossRevenue.toFixed(2);
 
             const catalogItemsCount = allMerchandise.length;
             const totalStockUnits = allMerchandise.reduce((sum, m) => sum + Number(m.quantity_available || 0), 0);
