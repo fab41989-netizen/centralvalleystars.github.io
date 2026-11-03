@@ -49,7 +49,7 @@
     <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-8">
         <div class="text-center max-w-2xl mx-auto">
             <h1 class="text-3xl sm:text-5xl font-extrabold mb-3 font-heading">Studio Merchandise Store</h1>
-            <p class="text-gray-400 text-xs sm:text-sm">Pre-order official apparel, snacks, and dance gear[cite: 1]. Inventory updates live.</p>
+            <p class="text-gray-400 text-xs sm:text-sm">Pre-order official apparel, snacks, and dance gear. Inventory updates live.</p>
         </div>
 
         <!-- Category Filters -->
@@ -139,23 +139,30 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(p => `
-                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative">
-                            <i data-lucide="shopping-bag" class="w-16 h-16 text-pink-400"></i>
-                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">${p.category}</span>
-                            <span class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/60 text-gray-300 text-[10px] font-semibold border border-white/10">In Stock: ${p.quantity_available}</span>
+            grid.innerHTML = filtered.map(p => {
+                let imageElement = `<i data-lucide="shopping-bag" class="w-16 h-16 text-pink-400"></i>`;
+                if (p.image_url && p.image_url.trim() !== '') {
+                    imageElement = `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover">`;
+                }
+
+                return `
+                    <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative overflow-hidden">
+                                ${imageElement}
+                                <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30 z-10">${p.category}</span>
+                                <span class="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 text-gray-300 text-[10px] font-semibold border border-white/10 z-10">In Stock: ${p.quantity_available}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white font-heading">${p.name}</h3>
+                            <p class="text-gray-400 text-xs mt-1">${p.description || 'Official studio merchandise item.'}</p>
                         </div>
-                        <h3 class="text-lg font-bold text-white font-heading">${p.name}</h3>
-                        <p class="text-gray-400 text-xs mt-1">${p.description || 'Official studio merchandise item.'}</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                            <span class="text-xl font-extrabold text-amber-400">$${Number(p.price).toFixed(2)}</span>
+                            <button onclick="openCheckout('${p.name}', ${p.price}, '${p.category}')" ${p.quantity_available <= 0 ? 'disabled class="px-4 py-2.5 rounded-xl bg-gray-600 text-gray-400 text-xs font-bold uppercase cursor-not-allowed"' : 'class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg"'}>${p.quantity_available <= 0 ? 'Sold Out' : 'Pre-Order'}</button>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
-                        <span class="text-xl font-extrabold text-amber-400">$${Number(p.price).toFixed(2)}</span>
-                        <button onclick="openCheckout('${p.name}', ${p.price}, '${p.category}')" ${p.quantity_available <= 0 ? 'disabled class="px-4 py-2.5 rounded-xl bg-gray-600 text-gray-400 text-xs font-bold uppercase cursor-not-allowed"' : 'class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg"'}>${p.quantity_available <= 0 ? 'Sold Out' : 'Pre-Order'}</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
@@ -182,7 +189,6 @@
             const cleanItemName = selectedItem.replace(/\[.*?\]\s*/g, '').trim();
 
             try {
-                // 1. Fetch current inventory to check stock
                 const { data: merchItem, error: fetchError } = await _supabase
                     .from('cvs_merchandise')
                     .select('*')
@@ -196,14 +202,12 @@
                         submitBtn.innerText = 'Submit Pre-Order';
                         return;
                     }
-                    // 2. Automatically decrement inventory stock
                     await _supabase
                         .from('cvs_merchandise')
                         .update({ quantity_available: merchItem.quantity_available - 1 })
                         .eq('id', merchItem.id);
                 }
 
-                // 3. Log customer order
                 const newOrder = {
                     customer_name: document.getElementById('orderName').value.trim(),
                     email: document.getElementById('orderEmail').value.trim(),
@@ -221,7 +225,7 @@
                 setTimeout(() => {
                     closeCheckout();
                     successBox.classList.add('hidden');
-                    fetchMerchandise(); // Refresh catalog stock display
+                    fetchMerchandise();
                 }, 3000);
 
             } catch (err) {
