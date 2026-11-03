@@ -30,6 +30,7 @@
         .glass-card:hover { border-color: rgba(236, 72, 153, 0.5); transform: translateY(-4px); }
         .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
         .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.5); }
+        .cat-btn.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); color: #FBBF24; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased">
@@ -49,69 +50,80 @@
                         <span class="font-heading text-[10px] font-semibold tracking-widest text-amber-400 block mt-0.5">STARS STORE</span>
                     </div>
                 </a>
-                <a href="index.html" class="px-4 py-2 rounded-xl glass-panel text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1.5">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Home
-                </a>
+                <div class="flex items-center gap-3">
+                    <a href="admin.html" class="px-3 py-2 rounded-xl glass-panel text-xs font-bold text-amber-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin
+                    </a>
+                    <a href="index.html" class="px-4 py-2 rounded-xl glass-panel text-xs font-bold text-gray-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Home
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
 
     <!-- Main Store Content -->
-    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="text-center max-w-2xl mx-auto mb-12">
+    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-8">
+        <div class="text-center max-w-2xl mx-auto">
             <h1 class="text-3xl sm:text-5xl font-extrabold mb-3 font-heading">Studio Merchandise Store</h1>
-            <p class="text-gray-400 text-xs sm:text-sm">Pre-order official Central Valley Stars apparel, gear, and dance accessories directly. Orders sync instantly with our studio portal.</p>
+            <p class="text-gray-400 text-xs sm:text-sm">Pre-order official apparel, snacks, and dance gear. All orders sync instantly with our studio portal.</p>
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div class="flex items-center justify-center gap-2 overflow-x-auto pb-2">
+            <button onclick="filterStoreCategory('all')" id="cat-all" class="cat-btn active px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Items</button>
+            <button onclick="filterStoreCategory('Apparel & Hats')" id="cat-Apparel & Hats" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">👕 Apparel & Hats</button>
+            <button onclick="filterStoreCategory('Food & Snacks')" id="cat-Food & Snacks" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🍿 Food & Snacks</button>
+            <button onclick="filterStoreCategory('Gear & Accessories')" id="cat-Gear & Accessories" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🎒 Gear & Accessories</button>
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Item 1 -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamically populated or static items -->
             <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
                 <div>
-                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 overflow-hidden relative">
+                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative">
                         <i data-lucide="shirt" class="w-16 h-16 text-pink-400"></i>
-                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">Bestseller</span>
+                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">Apparel & Hats</span>
                     </div>
                     <h3 class="text-lg font-bold text-white font-heading">CVS Signature Hoodie</h3>
                     <p class="text-gray-400 text-xs mt-1">Premium heavyweight cotton blend hoodie with embroidered gold star logo.</p>
                 </div>
                 <div class="flex items-center justify-between pt-4 border-t border-white/10">
                     <span class="text-xl font-extrabold text-amber-400">$45.00</span>
-                    <button onclick="openCheckout('CVS Signature Hoodie', 45.00)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
+                    <button onclick="openCheckout('CVS Signature Hoodie', 45.00, 'https://www.paypal.com/ncp/payment/YOUR_BUTTON_ID')" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
                 </div>
             </div>
 
-            <!-- Item 2 -->
             <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
                 <div>
-                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 overflow-hidden relative">
+                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative">
+                        <i data-lucide="coffee" class="w-16 h-16 text-amber-400"></i>
+                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">Food & Snacks</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white font-heading">Studio Energy Snack Pack</h3>
+                    <p class="text-gray-400 text-xs mt-1">Assorted healthy snacks, fruit bars, and hydration refreshments for rehearsals.</p>
+                </div>
+                <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                    <span class="text-xl font-extrabold text-amber-400">$8.50</span>
+                    <button onclick="openCheckout('Studio Energy Snack Pack', 8.50, 'https://www.paypal.com/ncp/payment/YOUR_BUTTON_ID')" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                <div>
+                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative">
                         <i data-lucide="shopping-bag" class="w-16 h-16 text-purple-400"></i>
+                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">Gear & Accessories</span>
                     </div>
                     <h3 class="text-lg font-bold text-white font-heading">Dancer Duffel Bag</h3>
                     <p class="text-gray-400 text-xs mt-1">Spacious compartment gear bag with shoe pocket and custom studio branding.</p>
                 </div>
                 <div class="flex items-center justify-between pt-4 border-t border-white/10">
                     <span class="text-xl font-extrabold text-amber-400">$38.00</span>
-                    <button onclick="openCheckout('Dancer Duffel Bag', 38.00)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
+                    <button onclick="openCheckout('Dancer Duffel Bag', 38.00, 'https://www.paypal.com/ncp/payment/YOUR_BUTTON_ID')" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
                 </div>
             </div>
-
-            <!-- Item 3 -->
-            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
-                <div>
-                    <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 overflow-hidden relative">
-                        <i data-lucide="award" class="w-16 h-16 text-amber-400"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white font-heading">Pro Stretch Resistance Band</h3>
-                    <p class="text-gray-400 text-xs mt-1">Essential training accessory for flexibility, warm-ups, and pointe conditioning.</p>
-                </div>
-                <div class="flex items-center justify-between pt-4 border-t border-white/10">
-                    <span class="text-xl font-extrabold text-amber-400">$18.50</span>
-                    <button onclick="openCheckout('Pro Stretch Resistance Band', 18.50)" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
-                </div>
-            </div>
-
         </div>
     </main>
 
@@ -139,11 +151,11 @@
                     <input type="text" id="orderNotes" placeholder="e.g. Size Adult Medium" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                 </div>
 
-                <button type="submit" id="order-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Confirm Order</button>
+                <button type="submit" id="order-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Confirm & Pay with PayPal</button>
             </form>
 
             <div id="order-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">
-                🎉 Order placed successfully! It has been logged in the studio admin portal.
+                🎉 Order logged! Redirecting to PayPal...
             </div>
         </div>
     </div>
@@ -157,11 +169,21 @@
         let _supabase;
         let selectedItem = '';
         let selectedPrice = 0;
+        let selectedPayPalUrl = '';
+        let currentCategory = 'all';
+
+        const products = [
+            { name: 'CVS Signature Hoodie', category: 'Apparel & Hats', price: 45.00, desc: 'Premium heavyweight cotton blend hoodie with embroidered gold star logo.', icon: 'shirt' },
+            { name: 'CVS Snapback Cap', category: 'Apparel & Hats', price: 25.00, desc: 'Adjustable structured flat brim cap with embroidered studio emblem.', icon: 'disc' },
+            { name: 'Studio Energy Snack Pack', category: 'Food & Snacks', price: 8.50, desc: 'Assorted healthy snacks, fruit bars, and hydration refreshments for rehearsals.', icon: 'coffee' },
+            { name: 'Dancer Fuel Protein Bar Box', category: 'Food & Snacks', price: 22.00, desc: 'Box of 12 organic chocolate peanut butter energy bars.', icon: 'package' },
+            { name: 'Dancer Duffel Bag', category: 'Gear & Accessories', price: 38.00, desc: 'Spacious compartment gear bag with shoe pocket and custom studio branding.', icon: 'shopping-bag' },
+            { name: 'Pro Stretch Resistance Band', category: 'Gear & Accessories', price: 18.50, desc: 'Essential training accessory for flexibility, warm-ups, and pointe conditioning.', icon: 'award' }
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
-            // Initialize Supabase from config.js
             if (window.SUPABASE_CONFIG) {
                 _supabase = supabase.createClient(
                     window.SUPABASE_CONFIG.URL, 
@@ -170,10 +192,43 @@
             } else {
                 console.error('Supabase configuration error: config.js not found.');
             }
+            renderProducts();
         });
 
-        function openCheckout(itemName, itemPrice) {
-            selectedItem = itemName;
+        function filterStoreCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            if (document.getElementById(`cat-${category}`)) {
+                document.getElementById(`cat-${category}`).classList.add('active');
+            }
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="w-full h-48 rounded-2xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center mb-4 relative">
+                            <i data-lucide="${p.icon}" class="w-16 h-16 text-pink-400"></i>
+                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30">${p.category}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white font-heading">${p.name}</h3>
+                        <p class="text-gray-400 text-xs mt-1">${p.desc}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="text-xl font-extrabold text-amber-400">$${p.price.toFixed(2)}</span>
+                        <button onclick="openCheckout('${p.name}', ${p.price}, '${p.category}')" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Pre-Order</button>
+                    </div>
+                </div>
+            `).join('');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function openCheckout(itemName, itemPrice, category) {
+            selectedItem = `[${category}] ${itemName}`;
             selectedPrice = itemPrice;
             document.getElementById('modal-item-title').innerText = `${itemName} — $${itemPrice.toFixed(2)}`;
             document.getElementById('checkout-modal').classList.remove('hidden');
@@ -186,7 +241,6 @@
 
         async function submitStoreOrder(e) {
             e.preventDefault();
-
             if (!_supabase) {
                 alert('Database connection is not initialized.');
                 return;
@@ -196,41 +250,30 @@
             const successBox = document.getElementById('order-success');
             
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Processing Order...';
-
-            const customerName = document.getElementById('orderName').value.trim();
-            const email = document.getElementById('orderEmail').value.trim();
-            const notes = document.getElementById('orderNotes').value.trim();
-            const itemDetails = notes ? `${selectedItem} (${notes})` : selectedItem;
+            submitBtn.innerText = 'Logging Order...';
 
             const newOrder = {
-                customer_name: customerName,
-                email: email,
-                item_details: itemDetails,
+                customer_name: document.getElementById('orderName').value.trim(),
+                email: document.getElementById('orderEmail').value.trim(),
+                item_details: document.getElementById('orderNotes').value.trim() ? `${selectedItem} (${document.getElementById('orderNotes').value.trim()})` : selectedItem,
                 total_amount: selectedPrice,
                 fulfilled: false
             };
 
             try {
-                const { data, error } = await _supabase
-                    .from('cvs_store_orders')
-                    .insert([newOrder]);
-
+                const { error } = await _supabase.from('cvs_store_orders').insert([newOrder]);
                 if (error) throw error;
 
                 successBox.classList.remove('hidden');
-                e.target.reset();
-
                 setTimeout(() => {
-                    closeCheckout();
-                    successBox.classList.add('hidden');
-                }, 4000);
+                    // Redirect to PayPal or PayPal.me
+                    window.location.href = `https://www.paypal.me/yourbusinessname/${selectedPrice}`;
+                }, 1500);
             } catch (err) {
                 console.error('Error submitting order:', err);
                 alert(`Failed to complete order: ${err.message}`);
-            } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Confirm Order';
+                submitBtn.innerText = 'Confirm & Pay with PayPal';
             }
         }
     </script>
