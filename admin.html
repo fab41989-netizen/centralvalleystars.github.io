@@ -116,7 +116,7 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Class Inquiries & Registrations</h2>
                         <p class="text-gray-400 text-xs mt-0.5">Manage trial class submissions.</p>
                     </div>
-                    <button onclick="fetchSubmissions()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
+                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
                 </div>
                 <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
                     <div class="overflow-x-auto">
@@ -133,7 +133,7 @@
                 </div>
             </section>
 
-            <!-- TAB: MERCHANDISE CATALOG (Inventory & Quantities) -->
+            <!-- TAB: MERCHANDISE CATALOG -->
             <section id="tab-merchandise" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
                     <div>
@@ -164,7 +164,7 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Customer Store Orders</h2>
                         <p class="text-gray-400 text-xs mt-0.5">Fulfill and manage customer purchases.</p>
                     </div>
-                    <button onclick="fetchStoreOrders()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
+                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
                 </div>
                 <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
                     <div class="overflow-x-auto">
@@ -181,24 +181,100 @@
                 </div>
             </section>
 
-            <!-- TAB: ANALYTICS -->
+            <!-- TAB: ANALYTICS OVERVIEW (Comprehensive Studio Metrics) -->
             <section id="tab-analytics" class="hidden space-y-6">
-                <div class="glass-panel rounded-2xl p-6">
-                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Analytics & Metrics</h2>
-                    <p class="text-gray-400 text-xs mt-0.5">Overview of inquiries and store revenue.</p>
+                <div class="glass-panel rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Analytics & Metrics Dashboard</h2>
+                        <p class="text-gray-400 text-xs mt-0.5">Real-time performance indicators across student registrations, store revenue, and inventory stock levels.</p>
+                    </div>
+                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh Metrics</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div class="glass-card rounded-3xl p-6 border-purple-500/30">
-                        <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Total Inquiries</span>
-                        <span id="stat-total" class="font-heading text-4xl font-extrabold text-amber-400 block">0</span>
+
+                <!-- Section: Student Inquiries -->
+                <div>
+                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Student Inquiry Metrics</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Inquiries</span>
+                                <i data-lucide="users" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <span id="stat-total-inquiries" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
+                            <span class="text-[11px] text-gray-400">Total student class trial signups</span>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">New Unread</span>
+                                <i data-lucide="bell-ring" class="w-5 h-5 text-pink-500"></i>
+                            </div>
+                            <span id="stat-unread-inquiries" class="font-heading text-4xl font-extrabold text-pink-500 block mb-1">0</span>
+                            <span class="text-[11px] text-gray-400">Inquiries pending review</span>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Reviewed</span>
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <span id="stat-reviewed-inquiries" class="font-heading text-4xl font-extrabold text-purple-400 block mb-1">0</span>
+                            <span class="text-[11px] text-gray-400">Processed inquiry records</span>
+                        </div>
                     </div>
-                    <div class="glass-card rounded-3xl p-6 border-purple-500/30">
-                        <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Store Orders</span>
-                        <span id="stat-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block">0</span>
+                </div>
+
+                <!-- Section: Merchandise Store & Orders -->
+                <div class="pt-2">
+                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Merchandise Store & Sales Metrics</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Orders</span>
+                                <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400"></i>
+                            </div>
+                            <span id="stat-total-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block mb-1">0</span>
+                            <span class="text-[11px] text-gray-400">Customer pre-order transactions</span>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Pending Fulfillment</span>
+                                <i data-lucide="clock" class="w-5 h-5 text-amber-400"></i>
+                            </div>
+                            <span id="stat-pending-orders" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
+                            <span class="text-[11px] text-gray-400">Orders awaiting pickup or delivery</span>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Gross Revenue</span>
+                                <i data-lucide="dollar-sign" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <span id="stat-gross-revenue" class="font-heading text-4xl font-extrabold text-purple-300 block mb-1">$0.00</span>
+                            <span class="text-[11px] text-gray-400">Total store sales volume</span>
+                        </div>
                     </div>
-                    <div class="glass-card rounded-3xl p-6 border-purple-500/30">
-                        <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Gross Revenue</span>
-                        <span id="stat-revenue" class="font-heading text-4xl font-extrabold text-purple-300 block">$0.00</span>
+                </div>
+
+                <!-- Section: Inventory Stock Status -->
+                <div class="pt-2">
+                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Catalog Inventory Status</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Active Catalog Items</span>
+                                <span id="stat-catalog-items" class="font-heading text-3xl font-extrabold text-white">0</span>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+                                <i data-lucide="package" class="w-6 h-6 text-purple-300"></i>
+                            </div>
+                        </div>
+                        <div class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Total Stock Units Available</span>
+                                <span id="stat-total-stock" class="font-heading text-3xl font-extrabold text-amber-400">0</span>
+                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                                <i data-lucide="layers" class="w-6 h-6 text-amber-300"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -289,9 +365,7 @@
         function showApp() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
-            fetchSubmissions();
-            fetchMerchandiseCatalog();
-            fetchStoreOrders();
+            fetchAllData();
         }
 
         function handleLogout() {
@@ -342,7 +416,7 @@
                 if (error) throw error;
                 document.getElementById('merch-success').classList.remove('hidden');
                 e.target.reset();
-                fetchMerchandiseCatalog();
+                fetchAllData();
                 setTimeout(() => { closeAddMerchModal(); document.getElementById('merch-success').classList.add('hidden'); }, 1500);
             } catch (err) {
                 alert(`Error: ${err.message}`);
@@ -352,10 +426,18 @@
             }
         }
 
+        async function fetchAllData() {
+            await Promise.all([
+                fetchSubmissions(),
+                fetchMerchandiseCatalog(),
+                fetchStoreOrders()
+            ]);
+            updateAnalyticsDashboard();
+        }
+
         async function fetchSubmissions() {
             const { data } = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
             allSubmissions = data || [];
-            document.getElementById('stat-total').innerText = allSubmissions.length;
             document.getElementById('submissions-table-body').innerHTML = allSubmissions.map(s => `
                 <tr class="hover:bg-white/5"><td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${s.read ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${s.read ? 'Reviewed' : 'New'}</span></td>
                 <td class="p-4 text-gray-400">${new Date(s.created_at).toLocaleDateString()}</td>
@@ -382,20 +464,18 @@
 
         async function updateQty(id, newQty) {
             await _supabase.from('cvs_merchandise').update({ quantity_available: parseInt(newQty) }).eq('id', id);
+            fetchMerchandiseCatalog();
         }
 
         async function deleteMerch(id) {
             if (!confirm('Delete item from catalog?')) return;
             await _supabase.from('cvs_merchandise').delete().eq('id', id);
-            fetchMerchandiseCatalog();
+            fetchAllData();
         }
 
         async function fetchStoreOrders() {
             const { data } = await _supabase.from('cvs_store_orders').select('*').order('created_at', { ascending: false });
             allOrders = data || [];
-            document.getElementById('stat-orders').innerText = allOrders.length;
-            const rev = allOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
-            document.getElementById('stat-revenue').innerText = `$${rev.toFixed(2)}`;
             document.getElementById('orders-table-body').innerHTML = allOrders.map(o => `
                 <tr class="hover:bg-white/5"><td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${o.fulfilled ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${o.fulfilled ? 'Fulfilled' : 'Pending'}</span></td>
                 <td class="p-4 text-gray-400">${new Date(o.created_at).toLocaleDateString()}</td>
@@ -408,21 +488,48 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
+        function updateAnalyticsDashboard() {
+            // Inquiries Metrics
+            const totalInquiries = allSubmissions.length;
+            const unreadInquiries = allSubmissions.filter(s => !s.read).length;
+            const reviewedInquiries = totalInquiries - unreadInquiries;
+
+            document.getElementById('stat-total-inquiries').innerText = totalInquiries;
+            document.getElementById('stat-unread-inquiries').innerText = unreadInquiries;
+            document.getElementById('stat-reviewed-inquiries').innerText = reviewedInquiries;
+
+            // Store Orders & Revenue Metrics
+            const totalOrders = allOrders.length;
+            const pendingOrders = allOrders.filter(o => !o.fulfilled).length;
+            const grossRevenue = allOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+
+            document.getElementById('stat-total-orders').innerText = totalOrders;
+            document.getElementById('stat-pending-orders').innerText = pendingOrders;
+            document.getElementById('stat-gross-revenue').innerText = `$${grossRevenue.toFixed(2)}`;
+
+            // Inventory Stock Metrics
+            const catalogItemsCount = allMerchandise.length;
+            const totalStockUnits = allMerchandise.reduce((sum, m) => sum + Number(m.quantity_available || 0), 0);
+
+            document.getElementById('stat-catalog-items').innerText = catalogItemsCount;
+            document.getElementById('stat-total-stock').innerText = totalStockUnits;
+        }
+
         async function toggleOrder(id, curr) {
             await _supabase.from('cvs_store_orders').update({ fulfilled: !curr }).eq('id', id);
-            fetchStoreOrders();
+            fetchAllData();
         }
 
         async function deleteOrder(id) {
             if (!confirm('Delete order?')) return;
             await _supabase.from('cvs_store_orders').delete().eq('id', id);
-            fetchStoreOrders();
+            fetchAllData();
         }
 
         async function deleteSub(id) {
             if (!confirm('Delete inquiry?')) return;
             await _supabase.from('cvs_dance_submissions').delete().eq('id', id);
-            fetchSubmissions();
+            fetchAllData();
         }
     </script>
 </body>
