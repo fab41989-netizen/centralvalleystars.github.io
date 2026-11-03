@@ -146,12 +146,15 @@
                         </nav>
                     </div>
 
-                    <!-- Section 2: Store Orders -->
+                    <!-- Section 2: Store Orders & Merchandise -->
                     <div>
                         <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Merchandise Store</span>
                         <nav class="space-y-1">
                             <button onclick="switchTab('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-transparent transition-all text-left">
                                 <i data-lucide="shopping-bag" class="w-4 h-4"></i> Store Orders
+                            </button>
+                            <button onclick="openAddMerchModal()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-amber-300 hover:text-amber-200 glass-card border border-amber-400/30 transition-all text-left">
+                                <i data-lucide="plus-circle" class="w-4 h-4 text-amber-400"></i> Add Merchandise
                             </button>
                         </nav>
                     </div>
@@ -239,9 +242,23 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Store Orders & Merchandise</h2>
                         <p class="text-gray-400 text-xs mt-0.5">Manage customer purchases, apparel orders, and fulfillment statuses.</p>
                     </div>
-                    <button onclick="fetchStoreOrders()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center justify-center gap-2">
-                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh Orders
-                    </button>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button onclick="openAddMerchModal()" class="flex-grow sm:flex-grow-0 px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Merchandise
+                        </button>
+                        <button onclick="fetchStoreOrders()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center justify-center gap-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Store Category Section Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                    <span class="text-xs text-gray-400 font-semibold mr-2">Category:</span>
+                    <button onclick="filterOrdersCategory('all')" id="ord-cat-all" class="ord-cat-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Orders</button>
+                    <button onclick="filterOrdersCategory('Apparel & Hats')" id="ord-cat-Apparel & Hats" class="ord-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Apparel & Hats</button>
+                    <button onclick="filterOrdersCategory('Food & Snacks')" id="ord-cat-Food & Snacks" class="ord-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Food & Snacks</button>
+                    <button onclick="filterOrdersCategory('Gear & Accessories')" id="ord-cat-Gear & Accessories" class="ord-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Gear & Accessories</button>
                 </div>
 
                 <!-- Orders Table Grid -->
@@ -253,7 +270,7 @@
                                     <th class="p-4">Fulfillment</th>
                                     <th class="p-4">Order Date</th>
                                     <th class="p-4">Customer</th>
-                                    <th class="p-4">Items Ordered</th>
+                                    <th class="p-4">Category / Items</th>
                                     <th class="p-4">Total</th>
                                     <th class="p-4 text-right">Actions</th>
                                 </tr>
@@ -264,7 +281,7 @@
                         </table>
                     </div>
                     <div id="no-orders" class="hidden p-12 text-center text-gray-400 text-xs">
-                        No store orders found in the database.
+                        No store orders found in this category.
                     </div>
                 </div>
             </section>
@@ -313,7 +330,6 @@
                 <div class="pt-4">
                     <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Merchandise Store Metrics</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <!-- Total Orders Card -->
                         <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Orders</span>
@@ -323,7 +339,6 @@
                             <span class="text-[11px] text-emerald-300 flex items-center gap-1">View store orders &rarr;</span>
                         </button>
 
-                        <!-- Pending Fulfillment Card -->
                         <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Pending Fulfillment</span>
@@ -333,7 +348,6 @@
                             <span class="text-[11px] text-amber-300 flex items-center gap-1">View pending orders &rarr;</span>
                         </button>
 
-                        <!-- Total Revenue Card -->
                         <div class="glass-card rounded-3xl p-6 border-purple-500/30 text-left">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Gross Revenue</span>
@@ -366,11 +380,55 @@
         </main>
     </div>
 
+    <!-- Add Merchandise Modal -->
+    <div id="merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl">
+            <button onclick="closeAddMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <h2 class="text-xl font-bold text-white mb-1 font-heading">Add New Merchandise</h2>
+            <p class="text-amber-400 text-xs font-semibold mb-4">Create a new item entry for store orders & catalog.</p>
+
+            <form onsubmit="handleAddNewMerchandise(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
+                    <input type="text" id="merchName" required placeholder="e.g. CVS Snapback Cap" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
+                    <select id="merchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
+                        <option value="Apparel & Hats">Apparel & Hats</option>
+                        <option value="Food & Snacks">Food & Snacks</option>
+                        <option value="Gear & Accessories">Gear & Accessories</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
+                        <input type="number" step="0.01" id="merchPrice" required placeholder="25.00" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Test Customer</label>
+                        <input type="text" id="merchCustomer" value="Studio Admin" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    </div>
+                </div>
+
+                <button type="submit" id="merch-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Item to Store</button>
+            </form>
+
+            <div id="merch-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">
+                ✨ Merchandise item logged successfully!
+            </div>
+        </div>
+    </div>
+
     <script>
         let _supabase;
         let allSubmissions = [];
         let allOrders = [];
         let currentFilter = 'all';
+        let currentOrderCategory = 'all';
         const ADMIN_SECRET = 'DanceStar2026!';
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -454,6 +512,69 @@
             renderTable();
         }
 
+        function filterOrdersCategory(category) {
+            currentOrderCategory = category;
+            document.querySelectorAll('.ord-cat-btn').forEach(btn => btn.classList.remove('active'));
+            if (document.getElementById(`ord-cat-${category}`)) {
+                document.getElementById(`ord-cat-${category}`).classList.add('active');
+            }
+            renderOrdersTable();
+        }
+
+        function openAddMerchModal() {
+            document.getElementById('merch-modal').classList.remove('hidden');
+            document.getElementById('merch-success').classList.add('hidden');
+        }
+
+        function closeAddMerchModal() {
+            document.getElementById('merch-modal').classList.add('hidden');
+        }
+
+        async function handleAddNewMerchandise(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('merch-submit-btn');
+            const successBox = document.getElementById('merch-success');
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Saving Item...';
+
+            const name = document.getElementById('merchName').value.trim();
+            const category = document.getElementById('merchCategory').value;
+            const price = parseFloat(document.getElementById('merchPrice').value);
+            const customer = document.getElementById('merchCustomer').value.trim();
+
+            const newItem = {
+                customer_name: customer,
+                email: 'admin@cvsdance.com',
+                item_details: `[${category}] ${name}`,
+                total_amount: price,
+                fulfilled: true
+            };
+
+            try {
+                const { error } = await _supabase
+                    .from('cvs_store_orders')
+                    .insert([newItem]);
+
+                if (error) throw error;
+
+                successBox.classList.remove('hidden');
+                e.target.reset();
+                fetchStoreOrders();
+
+                setTimeout(() => {
+                    closeAddMerchModal();
+                    successBox.classList.add('hidden');
+                }, 2000);
+            } catch (err) {
+                console.error('Error adding merchandise:', err);
+                alert(`Failed to add item: ${err.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Save Item to Store';
+            }
+        }
+
         async function fetchSubmissions() {
             const tbody = document.getElementById('submissions-table-body');
             tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading submissions...</td></tr>`;
@@ -484,7 +605,6 @@
 
         async function fetchStoreOrders() {
             const tbody = document.getElementById('orders-table-body');
-            const noOrders = document.getElementById('no-orders');
             tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading store orders...</td></tr>`;
 
             try {
@@ -500,7 +620,6 @@
                     allOrders = data || [];
                 }
 
-                // Calculate Store Order Analytics
                 const totalOrders = allOrders.length;
                 const pendingOrders = allOrders.filter(o => !o.fulfilled).length;
                 const grossRevenue = allOrders.reduce((sum, order) => sum + Number(order.total_amount || 0), 0);
@@ -509,39 +628,51 @@
                 document.getElementById('stat-orders-pending').innerText = pendingOrders;
                 document.getElementById('stat-revenue').innerText = `$${grossRevenue.toFixed(2)}`;
 
-                if (allOrders.length === 0) {
-                    tbody.innerHTML = '';
-                    noOrders.classList.remove('hidden');
-                    return;
-                }
-
-                noOrders.classList.add('hidden');
-                tbody.innerHTML = allOrders.map(order => `
-                    <tr class="hover:bg-white/5 transition-colors">
-                        <td class="p-4">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${order.fulfilled ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
-                                ${order.fulfilled ? 'Fulfilled' : 'Pending'}
-                            </span>
-                        </td>
-                        <td class="p-4 text-gray-400 whitespace-nowrap">${new Date(order.created_at).toLocaleDateString()}</td>
-                        <td class="p-4 font-bold text-white whitespace-nowrap">${order.customer_name || order.email}</td>
-                        <td class="p-4 text-gray-300">${order.item_details || 'Merchandise Order'}</td>
-                        <td class="p-4 text-amber-300 font-semibold">$${Number(order.total_amount || 0).toFixed(2)}</td>
-                        <td class="p-4 text-right space-x-2 whitespace-nowrap">
-                            <button onclick="toggleOrderFulfillment('${order.id}', ${order.fulfilled})" class="px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 font-semibold transition-all">
-                                ${order.fulfilled ? 'Mark Pending' : 'Mark Fulfilled'}
-                            </button>
-                            <button onclick="deleteOrder('${order.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold transition-all">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-                if (typeof lucide !== 'undefined') lucide.createIcons();
+                renderOrdersTable();
             } catch (err) {
                 console.error('Error fetching store orders:', err);
                 tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-rose-400">Failed to load store orders table.</td></tr>`;
             }
+        }
+
+        function renderOrdersTable() {
+            const tbody = document.getElementById('orders-table-body');
+            const noOrders = document.getElementById('no-orders');
+
+            let filteredOrders = allOrders;
+            if (currentOrderCategory !== 'all') {
+                filteredOrders = allOrders.filter(o => (o.item_details || '').includes(`[${currentOrderCategory}]`));
+            }
+
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = '';
+                noOrders.classList.remove('hidden');
+                return;
+            }
+
+            noOrders.classList.add('hidden');
+            tbody.innerHTML = filteredOrders.map(order => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${order.fulfilled ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}">
+                            ${order.fulfilled ? 'Fulfilled' : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-gray-400 whitespace-nowrap">${new Date(order.created_at).toLocaleDateString()}</td>
+                    <td class="p-4 font-bold text-white whitespace-nowrap">${order.customer_name || order.email}</td>
+                    <td class="p-4 text-gray-300">${order.item_details || 'Merchandise Order'}</td>
+                    <td class="p-4 text-amber-300 font-semibold">$${Number(order.total_amount || 0).toFixed(2)}</td>
+                    <td class="p-4 text-right space-x-2 whitespace-nowrap">
+                        <button onclick="toggleOrderFulfillment('${order.id}', ${order.fulfilled})" class="px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 font-semibold transition-all">
+                            ${order.fulfilled ? 'Mark Pending' : 'Mark Fulfilled'}
+                        </button>
+                        <button onclick="deleteOrder('${order.id}')" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 font-semibold transition-all">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function renderTable() {
