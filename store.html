@@ -52,12 +52,22 @@
             <p class="text-gray-400 text-xs sm:text-sm">Pre-order official apparel, snacks, and dance gear. Inventory updates live.</p>
         </div>
 
-        <!-- Category Filters -->
-        <div class="flex items-center justify-center gap-2 overflow-x-auto pb-2">
-            <button onclick="filterStoreCategory('all')" id="cat-all" class="cat-btn active px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Items</button>
-            <button onclick="filterStoreCategory('Apparel & Hats')" id="cat-Apparel & Hats" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">👕 Apparel & Hats</button>
-            <button onclick="filterStoreCategory('Food & Snacks')" id="cat-Food & Snacks" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🍿 Food & Snacks</button>
-            <button onclick="filterStoreCategory('Gear & Accessories')" id="cat-Gear & Accessories" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🎒 Gear & Accessories</button>
+        <!-- Live Search Bar & Category Filters Container -->
+        <div class="max-w-xl mx-auto space-y-4">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </span>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search merchandise by name or description..." class="w-full pl-11 pr-4 py-3 rounded-2xl glass-panel text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs sm:text-sm shadow-lg">
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex items-center justify-center gap-2 overflow-x-auto pb-2">
+                <button onclick="filterStoreCategory('all')" id="cat-all" class="cat-btn active px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Items</button>
+                <button onclick="filterStoreCategory('Apparel & Hats')" id="cat-Apparel & Hats" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">👕 Apparel & Hats</button>
+                <button onclick="filterStoreCategory('Food & Snacks')" id="cat-Food & Snacks" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🍿 Food & Snacks</button>
+                <button onclick="filterStoreCategory('Gear & Accessories')" id="cat-Gear & Accessories" class="cat-btn px-5 py-2.5 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">🎒 Gear & Accessories</button>
+            </div>
         </div>
 
         <!-- Product Grid -->
@@ -102,6 +112,7 @@
         let selectedItem = '';
         let selectedPrice = 0;
         let currentCategory = 'all';
+        let searchQuery = '';
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -130,12 +141,29 @@
             renderProducts();
         }
 
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderProducts();
+        }
+
         function renderProducts() {
             const grid = document.getElementById('product-grid');
-            const filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
+            
+            // Filter by Category & Search Query
+            let filtered = products;
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+            if (searchQuery !== '') {
+                filtered = filtered.filter(p => 
+                    (p.name && p.name.toLowerCase().includes(searchQuery)) || 
+                    (p.description && p.description.toLowerCase().includes(searchQuery)) ||
+                    (p.category && p.category.toLowerCase().includes(searchQuery))
+                );
+            }
 
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="glass-card rounded-3xl p-8 text-center text-gray-400 col-span-full">No items available in this category.</div>`;
+                grid.innerHTML = `<div class="glass-card rounded-3xl p-12 text-center text-gray-400 col-span-full text-xs sm:text-sm">No merchandise items found matching your search or filter.</div>`;
                 return;
             }
 
