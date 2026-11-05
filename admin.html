@@ -149,6 +149,26 @@
                     </div>
                     <button onclick="openAddMerchModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Merchandise</button>
                 </div>
+
+                <!-- Admin Merchandise Index / Live Search & Category Filter Bar -->
+                <div class="space-y-4">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                        </span>
+                        <input type="text" id="merchSearchInput" oninput="handleMerchSearch()" placeholder="Index search: filter catalog by item name, category, or description..." class="w-full pl-11 pr-4 py-3 rounded-2xl glass-panel text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs sm:text-sm shadow-lg">
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs text-gray-400 font-semibold mr-1">Category:</span>
+                        <button onclick="filterAdminMerchCategory('all')" id="admin-cat-all" class="admin-cat-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">All Items</button>
+                        <button onclick="filterAdminMerchCategory('STARS Sweet Treats')" id="admin-cat-STARS Sweet Treats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-amber-400/40 text-amber-300 hover:text-white">🍪 Sweet Treats</button>
+                        <button onclick="filterAdminMerchCategory('Apparel & Hats')" id="admin-cat-Apparel & Hats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">👕 Apparel & Hats</button>
+                        <button onclick="filterAdminMerchCategory('Food & Snacks')" id="admin-cat-Food & Snacks" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🍿 Food & Snacks</button>
+                        <button onclick="filterAdminMerchCategory('Gear & Accessories')" id="admin-cat-Gear & Accessories" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🎒 Gear</button>
+                    </div>
+                </div>
+
                 <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[750px]">
@@ -160,7 +180,7 @@
                             <tbody id="merchandise-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
                         </table>
                     </div>
-                    <div id="no-merchandise" class="hidden p-12 text-center text-gray-400 text-xs">No merchandise items found in inventory.</div>
+                    <div id="no-merchandise" class="hidden p-12 text-center text-gray-400 text-xs">No merchandise items found matching your search or filter.</div>
                 </div>
             </section>
 
@@ -419,6 +439,8 @@
         let allMerchandise = [];
         let allOrders = [];
         let currentInquiryFilter = 'all';
+        let currentAdminMerchCategory = 'all';
+        let merchSearchQuery = '';
         const ADMIN_SECRET = 'DanceStar2026!';
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -495,6 +517,23 @@
                 targetBtn.classList.add('active');
             }
             renderSubmissionsTable();
+        }
+
+        function filterAdminMerchCategory(category) {
+            currentAdminMerchCategory = category;
+            var buttons = document.querySelectorAll('.admin-cat-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            var btnId = 'admin-cat-' + category;
+            var targetBtn = document.getElementById(btnId);
+            if (targetBtn) targetBtn.classList.add('active');
+            renderMerchandiseCatalogTable();
+        }
+
+        function handleMerchSearch() {
+            merchSearchQuery = document.getElementById('merchSearchInput').value.toLowerCase().trim();
+            renderMerchandiseCatalogTable();
         }
 
         function openAddMerchModal() {
@@ -739,11 +778,26 @@
         async function fetchMerchandiseCatalog() {
             const response = await _supabase.from('cvs_merchandise').select('*').order('name');
             allMerchandise = response.data || [];
-            
+            renderMerchandiseCatalogTable();
+        }
+
+        function renderMerchandiseCatalogTable() {
             const tbody = document.getElementById('merchandise-table-body');
             const noMerch = document.getElementById('no-merchandise');
 
-            if (allMerchandise.length === 0) {
+            var filtered = allMerchandise;
+            if (currentAdminMerchCategory !== 'all') {
+                filtered = filtered.filter(function(m) { return m.category === currentAdminMerchCategory; });
+            }
+            if (merchSearchQuery !== '') {
+                filtered = filtered.filter(function(m) {
+                    return (m.name && m.name.toLowerCase().includes(merchSearchQuery)) ||
+                           (m.description && m.description.toLowerCase().includes(merchSearchQuery)) ||
+                           (m.category && m.category.toLowerCase().includes(merchSearchQuery));
+                });
+            }
+
+            if (filtered.length === 0) {
                 tbody.innerHTML = '';
                 noMerch.classList.remove('hidden');
                 return;
@@ -751,8 +805,8 @@
 
             noMerch.classList.add('hidden');
             var html = '';
-            for (var i = 0; i < allMerchandise.length; i++) {
-                var m = allMerchandise[i];
+            for (var i = 0; i < filtered.length; i++) {
+                var m = filtered[i];
                 var imgThumb = '<div class="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-5 h-5"></i></div>';
                 if (m.image_url) {
                     imgThumb = '<img src="' + m.image_url + '" alt="' + m.name + '" class="w-10 h-10 rounded-lg object-cover border border-white/10 cursor-pointer hover:opacity-80 transition-opacity" onclick="openImagePreview(\'' + m.image_url + '\')">';
@@ -775,7 +829,10 @@
 
         async function updateQty(id, newQty) {
             await _supabase.from('cvs_merchandise').update({ quantity_available: parseInt(newQty) }).eq('id', id);
-            fetchMerchandiseCatalog();
+            // Update local array data and re-render index
+            var item = allMerchandise.find(function(m) { return m.id === id; });
+            if (item) item.quantity_available = parseInt(newQty);
+            updateAnalyticsDashboard();
         }
 
         async function deleteMerch(id) {
@@ -793,6 +850,7 @@
 
             if (allOrders.length === 0) {
                 tbody.innerHTML = '';
+                noOrders.classList.add('hidden'); // or remove
                 noOrders.classList.remove('hidden');
                 return;
             }
