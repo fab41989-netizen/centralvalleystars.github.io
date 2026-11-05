@@ -14,9 +14,11 @@
         h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
         .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
         .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
-        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); transform: translateY(-4px); }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); }
         .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
         .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
+        .day-cell.selected { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); color: #ffffff; border-color: #FBBF24; font-weight: bold; }
+        .pay-tab.active { border-color: #FBBF24; background: rgba(251, 191, 36, 0.15); color: #FBBF24; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-[#0B0813]">
@@ -51,65 +53,74 @@
             <span id="current-month-badge" class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest bg-amber-400/10 text-amber-300 border border-amber-400/30 inline-block">
                 <!-- Dynamically populated -->
             </span>
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading">Donate a Day of Dance</h1>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading">Calendar Match Donation Drive</h1>
             <p class="text-gray-300 text-sm leading-relaxed">
-                Sponsor a dancer's studio time, instruction, and recital prep for a day, a week, or a full month of training in the Central Valley.
+                Pick a day or two on the calendar below! Each day’s donation amount matches the date number (e.g. Day 1 = $1, Day 12 = $12).
             </p>
         </div>
 
-        <!-- Featured Monthly Campaign Card -->
-        <div class="glass-panel rounded-3xl p-6 sm:p-10 border-amber-400/30 relative overflow-hidden">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="space-y-4 flex-1">
-                    <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
-                        <i data-lucide="calendar" class="w-4 h-4 text-pink-400"></i>
-                        <span id="campaign-header">Donate a Day Drive</span>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Calendar Day Selection Grid -->
+            <div class="lg:col-span-7 glass-panel rounded-3xl p-6 sm:p-8 border-amber-400/30 space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 id="calendar-month-title" class="text-xl font-bold text-white font-heading">
+                            <!-- Dynamically populated -->
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Click any day(s) below to select your donation amount</p>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-heading" id="campaign-title">
-                        <!-- Dynamically populated -->
-                    </h2>
-                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                        Our goal this month is to fund 300 days of dance education for passionate local youth. Select how many days of training you would like to gift to a student dancer!
-                    </p>
-                    
-                    <!-- Progress Tracker Bar -->
-                    <div class="space-y-2 pt-2">
-                        <div class="flex justify-between text-xs font-semibold">
-                            <span class="text-amber-300" id="days-funded-text">185 / 300 Days Funded</span>
-                            <span class="text-gray-400">Goal: 300 Days</span>
-                        </div>
-                        <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-amber-400 to-pink-500 rounded-full" style="width: 61.6%;"></div>
-                        </div>
-                    </div>
+                    <span class="text-xs font-semibold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">Date = $ Amount</span>
                 </div>
 
-                <!-- Preset Day Donation Buttons -->
-                <div class="w-full md:w-80 glass-card rounded-2xl p-6 space-y-4 border-white/10">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-300 text-center">Select Sponsorship Level</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="selectDayAmount(15, 1, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
-                            <span class="block text-sm font-extrabold">$15</span>
-                            <span class="text-[10px] text-gray-400 block font-normal">1 Day</span>
-                        </button>
-                        <button onclick="selectDayAmount(45, 3, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-amber-300 border border-amber-400 transition-colors text-center">
-                            <span class="block text-sm font-extrabold">$45</span>
-                            <span class="text-[10px] text-amber-400/80 block font-normal">3 Days</span>
-                        </button>
-                        <button onclick="selectDayAmount(105, 7, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
-                            <span class="block text-sm font-extrabold">$105</span>
-                            <span class="text-[10px] text-gray-400 block font-normal">1 Week (7 Days)</span>
-                        </button>
-                        <button onclick="selectDayAmount(450, 30, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
-                            <span class="block text-sm font-extrabold">$450</span>
-                            <span class="text-[10px] text-gray-400 block font-normal">1 Month (30 Days)</span>
-                        </button>
-                    </div>
-                    
-                    <button onclick="handleDonationSubmit()" id="submit-donate-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
-                        <i data-lucide="heart" class="w-4 h-4"></i> Donate 3 Days ($45)
+                <!-- Days of Week Header -->
+                <div class="grid grid-cols-7 gap-2 text-center text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+
+                <!-- Calendar Days Grid -->
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-white/10">
+                    <span id="selected-summary-text">0 Days Selected ($0)</span>
+                    <button onclick="clearSelectedDays()" class="text-rose-400 hover:text-rose-300 text-xs font-semibold">Clear Selection</button>
+                </div>
+            </div>
+
+            <!-- Payment Methods & Checkout Card -->
+            <div class="lg:col-span-5 glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-white font-heading">Choose Payment Method</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Select how you'd like to submit your donation</p>
+                </div>
+
+                <!-- Payment Apps Tabs -->
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selectPaymentMethod('paypal')" id="pay-btn-paypal" class="pay-tab active p-3 rounded-xl glass-card border border-white/10 text-center flex flex-col items-center gap-1.5 transition-all">
+                        <i data-lucide="credit-card" class="w-5 h-5 text-blue-400"></i>
+                        <span class="text-xs font-bold text-white">PayPal</span>
+                    </button>
+                    <button onclick="selectPaymentMethod('venmo')" id="pay-btn-venmo" class="pay-tab p-3 rounded-xl glass-card border border-white/10 text-center flex flex-col items-center gap-1.5 transition-all">
+                        <i data-lucide="smartphone" class="w-5 h-5 text-sky-400"></i>
+                        <span class="text-xs font-bold text-white">Venmo</span>
+                    </button>
+                    <button onclick="selectPaymentMethod('cashapp')" id="pay-btn-cashapp" class="pay-tab p-3 rounded-xl glass-card border border-white/10 text-center flex flex-col items-center gap-1.5 transition-all">
+                        <i data-lucide="dollar-sign" class="w-5 h-5 text-emerald-400"></i>
+                        <span class="text-xs font-bold text-white">Cash App</span>
                     </button>
                 </div>
+
+                <!-- Payment Handles / Guidance Box -->
+                <div id="payment-details-box" class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs space-y-2">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Submit Button -->
+                <button onclick="executePayment()" id="checkout-btn" class="w-full py-4 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                    <i data-lucide="heart" class="w-4 h-4"></i> Complete Donation via PayPal
+                </button>
             </div>
         </div>
 
@@ -120,62 +131,140 @@
         <p>&copy; <span id="current-year"></span> Central Valley Stars Dance Studio. All rights reserved.</p>
     </footer>
 
-    <!-- Date Synchronization & Logic Script -->
+    <!-- Interactive Calendar & Payment Script -->
     <script>
-        let selectedAmount = 45;
-        let selectedDays = 3;
+        let selectedDays = [];
+        let activePaymentMethod = 'paypal';
+
+        const PAYMENT_HANDLES = {
+            paypal: {
+                name: 'PayPal',
+                handle: 'paypal.me/CentralValleyStars',
+                instructions: 'Send your donation directly via PayPal. Click below to launch payment.',
+                url: 'https://paypal.me/CentralValleyStars'
+            },
+            venmo: {
+                name: 'Venmo',
+                handle: '@CentralValleyStars-Dance',
+                instructions: 'Open Venmo app and send total to handle below or tap button to launch.',
+                url: 'https://venmo.com/CentralValleyStars-Dance'
+            },
+            cashapp: {
+                name: 'Cash App',
+                handle: '$CVSStarsDance',
+                instructions: 'Send via Cash App to $CVSStarsDance with "Calendar Drive" in the note.',
+                url: 'https://cash.app/$CVSStarsDance'
+            }
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof lucide !== 'undefined') lucide.createIcons();
 
-            // Automatically compute local month & year on each page load
             const now = new Date();
-            const monthNames = [
-                "January", "February", "March", "April", "May", "June", 
-                "July", "August", "September", "October", "November", "December"
-            ];
-            
-            const currentMonth = monthNames[now.getMonth()];
-            const currentYear = now.getFullYear();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-            // Dynamic DOM updates for "Donate a Day"
-            const monthBadge = document.getElementById('current-month-badge');
-            const campaignHeader = document.getElementById('campaign-header');
-            const campaignTitle = document.getElementById('campaign-title');
-            const yearFooter = document.getElementById('current-year');
+            document.getElementById('current-month-badge').innerText = `✨ ${monthNames[month]} ${year} Calendar Drive`;
+            document.getElementById('calendar-month-title').innerText = `${monthNames[month]} ${year}`;
+            document.getElementById('current-year').innerText = year;
 
-            if (monthBadge) monthBadge.innerText = `✨ ${currentMonth} ${currentYear} "Donate a Day" Campaign`;
-            if (campaignHeader) campaignHeader.innerText = `${currentMonth} ${currentYear} Community Sponsorship`;
-            if (campaignTitle) campaignTitle.innerText = `Fund a Day of Dance for ${currentMonth}`;
-            if (yearFooter) yearFooter.innerText = currentYear;
+            buildCalendarGrid(year, month);
+            updatePaymentDetailsBox();
         });
 
-        function selectDayAmount(amt, days, btnElem) {
-            selectedAmount = amt;
-            selectedDays = days;
-            
-            const buttons = document.querySelectorAll('.day-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('border-amber-400', 'text-amber-300');
-                btn.classList.add('border-white/10', 'text-white');
-                const subtext = btn.querySelector('span:nth-child(2)');
-                if (subtext) subtext.classList.replace('text-amber-400/80', 'text-gray-400');
-            });
+        function buildCalendarGrid(year, month) {
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
 
-            btnElem.classList.remove('border-white/10', 'text-white');
-            btnElem.classList.add('border-amber-400', 'text-amber-300');
-            const subtext = btnElem.querySelector('span:nth-child(2)');
-            if (subtext) subtext.classList.replace('text-gray-400', 'text-amber-400/80');
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // Update CTA Button Text
-            const dayText = days === 1 ? '1 Day' : `${days} Days`;
-            document.getElementById('submit-donate-btn').innerHTML = `<i data-lucide="heart" class="w-4 h-4"></i> Donate ${dayText} ($${amt})`;
+            // Blank filler cells for starting day offset
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'h-12 sm:h-14';
+                grid.appendChild(emptyCell);
+            }
+
+            // Month day buttons displaying day number and corresponding dollar amount
+            for (let day = 1; day <= daysInMonth; day++) {
+                const btn = document.createElement('button');
+                btn.className = 'day-cell h-12 sm:h-14 rounded-xl glass-card border border-white/10 text-xs font-semibold text-gray-200 flex flex-col items-center justify-center transition-all hover:border-amber-400';
+                btn.innerHTML = `<span class="text-xs font-bold">${day}</span><span class="text-[10px] text-amber-400 font-normal">$${day}</span>`;
+                btn.onclick = () => toggleDaySelection(day, btn);
+                grid.appendChild(btn);
+            }
+        }
+
+        function toggleDaySelection(dayNum, btnElem) {
+            const index = selectedDays.indexOf(dayNum);
+            if (index > -1) {
+                selectedDays.splice(index, 1);
+                btnElem.classList.remove('selected');
+            } else {
+                selectedDays.push(dayNum);
+                btnElem.classList.add('selected');
+            }
+            updateSummary();
+        }
+
+        function clearSelectedDays() {
+            selectedDays = [];
+            const cells = document.querySelectorAll('.day-cell');
+            cells.forEach(c => c.classList.remove('selected'));
+            updateSummary();
+        }
+
+        function updateSummary() {
+            // Calculate total sum of values for all selected calendar days
+            const totalCost = selectedDays.reduce((sum, day) => sum + day, 0);
+            const textElem = document.getElementById('selected-summary-text');
+            const btnElem = document.getElementById('checkout-btn');
+
+            if (selectedDays.length === 0) {
+                textElem.innerText = '0 Days Selected ($0)';
+                btnElem.innerHTML = `<i data-lucide="heart" class="w-4 h-4"></i> Select Days to Donate`;
+            } else {
+                const daysLabel = selectedDays.length === 1 ? '1 Day' : `${selectedDays.length} Days`;
+                textElem.innerText = `${daysLabel} Selected ($${totalCost})`;
+                btnElem.innerHTML = `<i data-lucide="heart" class="w-4 h-4"></i> Donate $${totalCost} via ${PAYMENT_HANDLES[activePaymentMethod].name}`;
+            }
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        function handleDonationSubmit() {
-            const dayText = selectedDays === 1 ? '1 day' : `${selectedDays} days`;
-            alert(`Thank you for funding ${dayText} of dance ($${selectedAmount}) for our students at Central Valley Stars!`);
+        function selectPaymentMethod(method) {
+            activePaymentMethod = method;
+            document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`pay-btn-${method}`).classList.add('active');
+            updatePaymentDetailsBox();
+            updateSummary();
+        }
+
+        function updatePaymentDetailsBox() {
+            const info = PAYMENT_HANDLES[activePaymentMethod];
+            const box = document.getElementById('payment-details-box');
+            box.innerHTML = `
+                <div class="font-bold text-amber-300 flex items-center justify-between">
+                    <span>${info.name} Handle:</span>
+                    <span class="text-white bg-white/10 px-2 py-0.5 rounded">${info.handle}</span>
+                </div>
+                <p class="text-gray-300 text-[11px]">${info.instructions}</p>
+            `;
+        }
+
+        function executePayment() {
+            if (selectedDays.length === 0) {
+                alert('Please pick at least 1 day on the calendar before completing your donation!');
+                return;
+            }
+
+            const totalCost = selectedDays.reduce((sum, day) => sum + day, 0);
+            const daysString = selectedDays.sort((a,b) => a-b).join(', ');
+            const info = PAYMENT_HANDLES[activePaymentMethod];
+
+            const paymentUrl = `${info.url}?amount=${totalCost}&note=Calendar%20Drive%20Days%20${daysString}`;
+            window.open(paymentUrl, '_blank');
         }
     </script>
 </body>
