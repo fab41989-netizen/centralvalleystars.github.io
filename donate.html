@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support & Donate | Central Valley Stars Dance Studio</title>
+    <title>Donate a Day | Central Valley Stars Dance Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="config.js"></script>
@@ -51,9 +51,9 @@
             <span id="current-month-badge" class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest bg-amber-400/10 text-amber-300 border border-amber-400/30 inline-block">
                 <!-- Dynamically populated -->
             </span>
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading">Empower Our Dancers</h1>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading">Donate a Day of Dance</h1>
             <p class="text-gray-300 text-sm leading-relaxed">
-                Your support funds youth scholarships, recital costumes, competition travel, and studio equipment for young performers in the Central Valley.
+                Sponsor a dancer's studio time, instruction, and recital prep for a day, a week, or a full month of training in the Central Valley.
             </p>
         </div>
 
@@ -62,39 +62,52 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                 <div class="space-y-4 flex-1">
                     <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
-                        <i data-lucide="heart" class="w-4 h-4 fill-pink-400"></i>
-                        <span id="campaign-header">Monthly Community Drive</span>
+                        <i data-lucide="calendar" class="w-4 h-4 text-pink-400"></i>
+                        <span id="campaign-header">Donate a Day Drive</span>
                     </div>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-heading" id="campaign-title">
                         <!-- Dynamically populated -->
                     </h2>
                     <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                        Every contribution made during this drive helps cover tuition fees and competition attire for families in need. Help us ensure every dancer has a chance to shine on stage!
+                        Our goal this month is to fund 300 days of dance education for passionate local youth. Select how many days of training you would like to gift to a student dancer!
                     </p>
                     
                     <!-- Progress Tracker Bar -->
                     <div class="space-y-2 pt-2">
                         <div class="flex justify-between text-xs font-semibold">
-                            <span class="text-amber-300">$3,450 Raised</span>
-                            <span class="text-gray-400">Goal: $5,000</span>
+                            <span class="text-amber-300" id="days-funded-text">185 / 300 Days Funded</span>
+                            <span class="text-gray-400">Goal: 300 Days</span>
                         </div>
                         <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-amber-400 to-pink-500 rounded-full" style="width: 69%;"></div>
+                            <div class="h-full bg-gradient-to-r from-amber-400 to-pink-500 rounded-full" style="width: 61.6%;"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Preset Donation Buttons -->
+                <!-- Preset Day Donation Buttons -->
                 <div class="w-full md:w-80 glass-card rounded-2xl p-6 space-y-4 border-white/10">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-300 text-center">Select Donation Amount</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-300 text-center">Select Sponsorship Level</h3>
                     <div class="grid grid-cols-2 gap-3">
-                        <button onclick="selectAmount(25, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$25</button>
-                        <button onclick="selectAmount(50, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-amber-300 border border-amber-400 transition-colors">$50</button>
-                        <button onclick="selectAmount(100, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$100</button>
-                        <button onclick="selectAmount(250, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$250</button>
+                        <button onclick="selectDayAmount(15, 1, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
+                            <span class="block text-sm font-extrabold">$15</span>
+                            <span class="text-[10px] text-gray-400 block font-normal">1 Day</span>
+                        </button>
+                        <button onclick="selectDayAmount(45, 3, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-amber-300 border border-amber-400 transition-colors text-center">
+                            <span class="block text-sm font-extrabold">$45</span>
+                            <span class="text-[10px] text-amber-400/80 block font-normal">3 Days</span>
+                        </button>
+                        <button onclick="selectDayAmount(105, 7, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
+                            <span class="block text-sm font-extrabold">$105</span>
+                            <span class="text-[10px] text-gray-400 block font-normal">1 Week (7 Days)</span>
+                        </button>
+                        <button onclick="selectDayAmount(450, 30, this)" class="day-btn py-3 rounded-xl glass-card text-xs font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors text-center">
+                            <span class="block text-sm font-extrabold">$450</span>
+                            <span class="text-[10px] text-gray-400 block font-normal">1 Month (30 Days)</span>
+                        </button>
                     </div>
-                    <button onclick="handleDonationSubmit()" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
-                        <i data-lucide="heart" class="w-4 h-4"></i> Support Dancers Now
+                    
+                    <button onclick="handleDonationSubmit()" id="submit-donate-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                        <i data-lucide="heart" class="w-4 h-4"></i> Donate 3 Days ($45)
                     </button>
                 </div>
             </div>
@@ -109,7 +122,8 @@
 
     <!-- Date Synchronization & Logic Script -->
     <script>
-        let selectedDonation = 50;
+        let selectedAmount = 45;
+        let selectedDays = 3;
 
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -124,31 +138,44 @@
             const currentMonth = monthNames[now.getMonth()];
             const currentYear = now.getFullYear();
 
-            // Update badge and campaign titles dynamically
+            // Dynamic DOM updates for "Donate a Day"
             const monthBadge = document.getElementById('current-month-badge');
             const campaignHeader = document.getElementById('campaign-header');
             const campaignTitle = document.getElementById('campaign-title');
             const yearFooter = document.getElementById('current-year');
 
-            if (monthBadge) monthBadge.innerText = `✨ ${currentMonth} ${currentYear} Fundraiser`;
-            if (campaignHeader) campaignHeader.innerText = `${currentMonth} ${currentYear} Community Drive`;
-            if (campaignTitle) campaignTitle.innerText = `${currentMonth} Youth Dancer Scholarship Fund`;
+            if (monthBadge) monthBadge.innerText = `✨ ${currentMonth} ${currentYear} "Donate a Day" Campaign`;
+            if (campaignHeader) campaignHeader.innerText = `${currentMonth} ${currentYear} Community Sponsorship`;
+            if (campaignTitle) campaignTitle.innerText = `Fund a Day of Dance for ${currentMonth}`;
             if (yearFooter) yearFooter.innerText = currentYear;
         });
 
-        function selectAmount(amt, btnElem) {
-            selectedDonation = amt;
-            const buttons = document.querySelectorAll('.donation-btn');
+        function selectDayAmount(amt, days, btnElem) {
+            selectedAmount = amt;
+            selectedDays = days;
+            
+            const buttons = document.querySelectorAll('.day-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('border-amber-400', 'text-amber-300');
                 btn.classList.add('border-white/10', 'text-white');
+                const subtext = btn.querySelector('span:nth-child(2)');
+                if (subtext) subtext.classList.replace('text-amber-400/80', 'text-gray-400');
             });
+
             btnElem.classList.remove('border-white/10', 'text-white');
             btnElem.classList.add('border-amber-400', 'text-amber-300');
+            const subtext = btnElem.querySelector('span:nth-child(2)');
+            if (subtext) subtext.classList.replace('text-gray-400', 'text-amber-400/80');
+
+            // Update CTA Button Text
+            const dayText = days === 1 ? '1 Day' : `${days} Days`;
+            document.getElementById('submit-donate-btn').innerHTML = `<i data-lucide="heart" class="w-4 h-4"></i> Donate ${dayText} ($${amt})`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function handleDonationSubmit() {
-            alert(`Thank you for your generous $${selectedDonation} donation to Central Valley Stars Dance Studio!`);
+            const dayText = selectedDays === 1 ? '1 day' : `${selectedDays} days`;
+            alert(`Thank you for funding ${dayText} of dance ($${selectedAmount}) for our students at Central Valley Stars!`);
         }
     </script>
 </body>
