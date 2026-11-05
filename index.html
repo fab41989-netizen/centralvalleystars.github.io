@@ -331,58 +331,42 @@
         </div>
     </section>
         
-    <!-- Meet The Faculty Section -->
-    <section id="instructors" class="py-16 relative z-10 bg-black/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <h2 class="text-xs uppercase tracking-widest text-pink-500 font-bold mb-2">Meet The Faculty</h2>
-                <p class="text-3xl sm:text-4xl font-extrabold text-white">World-Class Instructors</p>
-                <p class="text-gray-400 mt-3 text-sm sm:text-base">Our faculty brings decades of professional stage, commercial, and competitive experience to lead our upcoming sessions.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Instructor 1 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-pink-500">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Elena Rostova" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Elena'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Elena Rostova</h3>
-                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Ballet & Contemporary Director</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Former Bolshoi trained soloist with 15+ years of classic repertoire and contemporary instruction.</p>
-                </div>
-
-                <!-- Instructor 2 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-pink-500 to-purple-600">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Marcus 'Vibe' Rodriguez" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Marcus'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Marcus "Vibe" R.</h3>
-                    <p class="text-pink-400 text-xs font-semibold uppercase tracking-wider mb-3">Hip Hop & Urban Lead</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Commercial choreographer featured in music videos, commercials, and international tour stages.</p>
-                </div>
-
-                <!-- Instructor 3 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-purple-500 to-amber-400">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Sofia Morales" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=Sofia'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Sofia Morales</h3>
-                    <p class="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-3">Salsa & Latin Master</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">World Salsa Congress champion specializing in partner turn patterns and Latin styling.</p>
-                </div>
-
-                <!-- Instructor 4 -->
-                <div class="glass-card rounded-3xl p-5 text-center group">
-                    <div class="relative w-36 h-36 mx-auto mb-6 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-amber-400 to-purple-600">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="David Sterling" class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform" onerror="this.src='https://placehold.co/400x400/171226/FFF?text=David'">
-                    </div>
-                    <h3 class="text-xl font-bold text-white">David Sterling</h3>
-                    <p class="text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">Jazz & Tap Specialist</p>
-                    <p class="text-gray-400 text-xs mb-4 leading-relaxed">Broadway national tour alumnus focused on rhythm precision, theatricality, and stage energy.</p>
-                </div>
-            </div>
+    <!-- Faculty / Instructors Section Container in index.html -->
+    <section class="py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-white font-heading">Meet Our Instructors</h2>
+            <p class="text-purple-300 text-xs">World-class instruction right here in Central Valley.</p>
+        </div>
+    
+        <!-- Dynamic Teachers Grid -->
+        <div id="index-teachers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
+            <!-- Loaded dynamically from Supabase cvs_teachers table -->
         </div>
     </section>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        if (!window.SUPABASE_CONFIG) return;
+        const _supabaseIndex = supabase.createClient(window.SUPABASE_CONFIG.URL, window.SUPABASE_CONFIG.ANON_KEY);
+        
+        const { data: teachers } = await _supabaseIndex.from('cvs_teachers').select('*').order('created_at', { ascending: true });
+        const grid = document.getElementById('index-teachers-grid');
+        if (!grid || !teachers || teachers.length === 0) return;
+    
+        var html = '';
+        for (var i = 0; i < teachers.length; i++) {
+            var t = teachers[i];
+            var photo = t.photo_url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400';
+            html += '<div class="glass-card rounded-3xl p-6 text-center space-y-3 border border-purple-500/20">' +
+                        '<img src="' + photo + '" alt="' + t.name + '" class="w-24 h-24 rounded-full mx-auto object-cover border-2 border-amber-400 shadow-lg">' +
+                        '<h3 class="text-lg font-bold text-white font-heading">' + t.name + '</h3>' +
+                        '<p class="text-xs font-semibold text-amber-400 uppercase tracking-wider">' + t.title + '</p>' +
+                        '<p class="text-xs text-gray-300 leading-relaxed">' + (t.bio || '') + '</p>' +
+                    '</div>';
+        }
+        grid.innerHTML = html;
+    });
+    </script>
 
     <!-- Multi-Source Dance Industry News Section -->
     <section class="max-w-5xl mx-auto px-4 py-12 relative z-10">
