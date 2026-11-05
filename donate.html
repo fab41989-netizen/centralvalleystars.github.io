@@ -3,45 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support & Sponsor a Day | Central Valley Stars Dance Studio</title>
+    <title>Support & Donate | Central Valley Stars Dance Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { dark: '#0B0813' } } } } }
-    </script>
+    <script src="config.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0B0813; color: #F3F4F6; font-family: 'Inter', sans-serif; }
-        .glass-panel { background: rgba(23, 18, 38, 0.65); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); }
-        .gold-btn { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #000; font-weight: 700; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+        .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); transform: translateY(-4px); }
+        .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
+        .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col antialiased bg-[#0B0813]">
 
-    <header class="fixed top-0 left-0 right-0 z-50">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="glass-panel rounded-2xl px-4 py-3 sm:px-6 flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="15_banner2.png" alt="Stars Dance Studio Logo" class="h-9 sm:h-11 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]">
-                </a>
-                <a href="index.html" class="px-4 py-2 rounded-xl glass-panel text-xs font-bold text-gray-300 hover:text-white flex items-center gap-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i><span>Back to Home</span>
-                </a>
-            </div>
-        </nav>
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
+                    <div class="w-full h-full bg-[#0B0813] rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-heading font-extrabold text-lg text-white block leading-none">CENTRAL VALLEY STARS</span>
+                    <span class="font-heading text-[10px] font-semibold tracking-widest text-amber-400 block mt-1">DANCE STUDIO</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-300">
+                <a href="index.html" class="hover:text-amber-400 transition-colors">Home</a>
+                <a href="store.html" class="hover:text-amber-400 transition-colors">Studio Store</a>
+                <a href="donate.html" class="text-amber-400 font-bold">Donate</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="flex-grow pt-32 pb-20 max-w-7xl mx-auto px-4 text-center">
-        <h1 class="text-4xl font-extrabold mb-4">Sponsor a Day Calendar</h1>
-        <p class="text-gray-400">Select days to sponsor using PayPal, Venmo, or Cash App.</p>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-12 space-y-10 w-full">
+        
+        <!-- Hero Section -->
+        <div class="text-center space-y-4 max-w-2xl mx-auto">
+            <span id="current-month-badge" class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest bg-amber-400/10 text-amber-300 border border-amber-400/30 inline-block">
+                <!-- Dynamically populated -->
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white font-heading">Empower Our Dancers</h1>
+            <p class="text-gray-300 text-sm leading-relaxed">
+                Your support funds youth scholarships, recital costumes, competition travel, and studio equipment for young performers in the Central Valley.
+            </p>
+        </div>
+
+        <!-- Featured Monthly Campaign Card -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-10 border-amber-400/30 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 flex-1">
+                    <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="heart" class="w-4 h-4 fill-pink-400"></i>
+                        <span id="campaign-header">Monthly Community Drive</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-heading" id="campaign-title">
+                        <!-- Dynamically populated -->
+                    </h2>
+                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                        Every contribution made during this drive helps cover tuition fees and competition attire for families in need. Help us ensure every dancer has a chance to shine on stage!
+                    </p>
+                    
+                    <!-- Progress Tracker Bar -->
+                    <div class="space-y-2 pt-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-amber-300">$3,450 Raised</span>
+                            <span class="text-gray-400">Goal: $5,000</span>
+                        </div>
+                        <div class="w-full h-3 rounded-full bg-white/10 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-amber-400 to-pink-500 rounded-full" style="width: 69%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preset Donation Buttons -->
+                <div class="w-full md:w-80 glass-card rounded-2xl p-6 space-y-4 border-white/10">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-300 text-center">Select Donation Amount</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="selectAmount(25, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$25</button>
+                        <button onclick="selectAmount(50, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-amber-300 border border-amber-400 transition-colors">$50</button>
+                        <button onclick="selectAmount(100, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$100</button>
+                        <button onclick="selectAmount(250, this)" class="donation-btn py-3 rounded-xl glass-card text-sm font-bold text-white border border-white/10 hover:border-amber-400 hover:text-amber-300 transition-colors">$250</button>
+                    </div>
+                    <button onclick="handleDonationSubmit()" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                        <i data-lucide="heart" class="w-4 h-4"></i> Support Dancers Now
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <footer class="py-8 border-t border-white/10 text-center text-xs text-gray-400">
-        <p>© 2026 Central Valley Stars Dance Studio. All Rights Reserved.</p>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 text-center text-xs text-gray-500">
+        <p>&copy; <span id="current-year"></span> Central Valley Stars Dance Studio. All rights reserved.</p>
     </footer>
 
-    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
+    <!-- Date Synchronization & Logic Script -->
+    <script>
+        let selectedDonation = 50;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Automatically compute local month & year on each page load
+            const now = new Date();
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June", 
+                "July", "August", "September", "October", "November", "December"
+            ];
+            
+            const currentMonth = monthNames[now.getMonth()];
+            const currentYear = now.getFullYear();
+
+            // Update badge and campaign titles dynamically
+            const monthBadge = document.getElementById('current-month-badge');
+            const campaignHeader = document.getElementById('campaign-header');
+            const campaignTitle = document.getElementById('campaign-title');
+            const yearFooter = document.getElementById('current-year');
+
+            if (monthBadge) monthBadge.innerText = `✨ ${currentMonth} ${currentYear} Fundraiser`;
+            if (campaignHeader) campaignHeader.innerText = `${currentMonth} ${currentYear} Community Drive`;
+            if (campaignTitle) campaignTitle.innerText = `${currentMonth} Youth Dancer Scholarship Fund`;
+            if (yearFooter) yearFooter.innerText = currentYear;
+        });
+
+        function selectAmount(amt, btnElem) {
+            selectedDonation = amt;
+            const buttons = document.querySelectorAll('.donation-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-amber-400', 'text-amber-300');
+                btn.classList.add('border-white/10', 'text-white');
+            });
+            btnElem.classList.remove('border-white/10', 'text-white');
+            btnElem.classList.add('border-amber-400', 'text-amber-300');
+        }
+
+        function handleDonationSubmit() {
+            alert(`Thank you for your generous $${selectedDonation} donation to Central Valley Stars Dance Studio!`);
+        }
+    </script>
 </body>
 </html>
