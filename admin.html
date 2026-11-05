@@ -29,7 +29,7 @@
             <div class="text-center mb-6">
                 <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mx-auto mb-3"><i data-lucide="lock" class="w-6 h-6 text-purple-400"></i></div>
                 <h1 class="text-2xl font-bold text-white">Admin Authentication</h1>
-                <p class="text-gray-400 text-xs mt-1">Enter password to access portal</p>
+                <p class="text-gray-400 text-xs mt-1">Enter password to access portal (Default: DanceStar2026!)</p>
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
@@ -313,11 +313,12 @@
             <form onsubmit="handleAddNewMerchandise(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
-                    <input type="text" id="merchName" required placeholder="e.g. CVS Snapback Cap" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <input type="text" id="merchName" required placeholder="e.g. Fresh Baked Cookies" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
                     <select id="merchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
+                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
                         <option value="Apparel & Hats">Apparel & Hats</option>
                         <option value="Food & Snacks">Food & Snacks</option>
                         <option value="Gear & Accessories">Gear & Accessories</option>
@@ -326,7 +327,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" step="0.01" id="merchPrice" required placeholder="25.00" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                        <input type="number" step="0.01" id="merchPrice" required placeholder="3.50" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-300 mb-1">Quantity Available</label>
@@ -347,7 +348,7 @@
         </div>
     </div>
 
-    <!-- Edit Merchandise Modal (With Clickable Current Picture Preview) -->
+    <!-- Edit Merchandise Modal -->
     <div id="edit-merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
         <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl max-h-[90vh] overflow-y-auto">
             <button onclick="closeEditMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -374,6 +375,7 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
                     <select id="editMerchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
+                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
                         <option value="Apparel & Hats">Apparel & Hats</option>
                         <option value="Food & Snacks">Food & Snacks</option>
                         <option value="Gear & Accessories">Gear & Accessories</option>
@@ -524,7 +526,6 @@
             document.getElementById('editMerchImageFile').value = '';
             document.getElementById('edit-merch-success').classList.add('hidden');
 
-            // Render current picture thumbnail preview
             var thumbContainer = document.getElementById('editMerchThumbContainer');
             if (item.image_url && item.image_url.trim() !== '') {
                 thumbContainer.innerHTML = '<img src="' + item.image_url + '" alt="' + item.name + '" class="w-full h-full object-cover rounded-2xl group-hover:opacity-90 transition-opacity" onclick="openImagePreview(\'' + item.image_url + '\')">' +
