@@ -73,9 +73,10 @@
 
                 <div class="space-y-4">
                     <div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Student Inquiries</span>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Main Site Management</span>
                         <nav class="space-y-1">
-                            <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="users" class="w-4 h-4"></i> Class Registrations</button>
+                            <button onclick="switchTab('teachers')" id="nav-teachers" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="graduation-cap" class="w-4 h-4"></i> Faculty & Teachers</button>
+                            <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="users" class="w-4 h-4"></i> Class Registrations</button>
                         </nav>
                     </div>
 
@@ -109,21 +110,43 @@
         <!-- Main Content -->
         <main class="flex-grow overflow-y-auto p-4 sm:p-8 lg:ml-64">
             
+            <!-- TAB: TEACHERS MANAGEMENT -->
+            <section id="tab-teachers" class="space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Instructors & Faculty Roster</h2>
+                        <p class="text-gray-400 text-xs mt-0.5">Manage teachers displayed on the main index page.</p>
+                    </div>
+                    <button onclick="openAddTeacherModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Add New Teacher</button>
+                </div>
+
+                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                    <th class="p-4">Photo</th>
+                                    <th class="p-4">Teacher Name</th>
+                                    <th class="p-4">Title / Role</th>
+                                    <th class="p-4">Bio Summary</th>
+                                    <th class="p-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachers-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                        </table>
+                    </div>
+                    <div id="no-teachers" class="hidden p-12 text-center text-gray-400 text-xs">No teachers found in studio roster. Click "Add New Teacher" to add one.</div>
+                </div>
+            </section>
+
             <!-- TAB: INQUIRIES -->
-            <section id="tab-inquiries" class="space-y-6">
+            <section id="tab-inquiries" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Class Inquiries & Registrations</h2>
                         <p class="text-gray-400 text-xs mt-0.5">Manage trial class submissions.</p>
                     </div>
                     <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
-                </div>
-                <!-- Quick Filter Buttons Bar -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-1">
-                    <span class="text-xs text-gray-400 font-semibold mr-2">Filter:</span>
-                    <button onclick="filterInquiriesTable('all')" id="filter-inq-all" class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Inquiries</button>
-                    <button onclick="filterInquiriesTable('new')" id="filter-inq-new" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">New / Unread</button>
-                    <button onclick="filterInquiriesTable('reviewed')" id="filter-inq-reviewed" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Reviewed</button>
                 </div>
                 <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
                     <div class="overflow-x-auto">
@@ -149,26 +172,6 @@
                     </div>
                     <button onclick="openAddMerchModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Merchandise</button>
                 </div>
-
-                <!-- Admin Merchandise Index / Live Search & Category Filter Bar -->
-                <div class="space-y-4">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                            <i data-lucide="search" class="w-4 h-4"></i>
-                        </span>
-                        <input type="text" id="merchSearchInput" oninput="handleMerchSearch()" placeholder="Index search: filter catalog by item name, category, or description..." class="w-full pl-11 pr-4 py-3 rounded-2xl glass-panel text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs sm:text-sm shadow-lg">
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs text-gray-400 font-semibold mr-1">Category:</span>
-                        <button onclick="filterAdminMerchCategory('all')" id="admin-cat-all" class="admin-cat-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">All Items</button>
-                        <button onclick="filterAdminMerchCategory('STARS Sweet Treats')" id="admin-cat-STARS Sweet Treats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-amber-400/40 text-amber-300 hover:text-white">🍪 Sweet Treats</button>
-                        <button onclick="filterAdminMerchCategory('Apparel & Hats')" id="admin-cat-Apparel & Hats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">👕 Apparel & Hats</button>
-                        <button onclick="filterAdminMerchCategory('Food & Snacks')" id="admin-cat-Food & Snacks" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🍿 Food & Snacks</button>
-                        <button onclick="filterAdminMerchCategory('Gear & Accessories')" id="admin-cat-Gear & Accessories" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🎒 Gear</button>
-                    </div>
-                </div>
-
                 <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[750px]">
@@ -180,7 +183,7 @@
                             <tbody id="merchandise-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
                         </table>
                     </div>
-                    <div id="no-merchandise" class="hidden p-12 text-center text-gray-400 text-xs">No merchandise items found matching your search or filter.</div>
+                    <div id="no-merchandise" class="hidden p-12 text-center text-gray-400 text-xs">No merchandise items found in inventory.</div>
                 </div>
             </section>
 
@@ -213,98 +216,9 @@
                 <div class="glass-panel rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Analytics & Metrics Dashboard</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Click any metric card below to instantly view and manage its corresponding records.</p>
+                        <p class="text-gray-400 text-xs mt-0.5">Metrics and activity overview.</p>
                     </div>
                     <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh Metrics</button>
-                </div>
-
-                <!-- Section: Student Inquiries -->
-                <div>
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Student Inquiry Metrics</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <button onclick="jumpToInquiriesFilter('all')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Inquiries</span>
-                                <i data-lucide="users" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-total-inquiries" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
-                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View all submissions &rarr;</span>
-                        </button>
-                        <button onclick="jumpToInquiriesFilter('new')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">New Unread</span>
-                                <i data-lucide="bell-ring" class="w-5 h-5 text-pink-500 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-unread-inquiries" class="font-heading text-4xl font-extrabold text-pink-500 block mb-1">0</span>
-                            <span class="text-[11px] text-pink-300 flex items-center gap-1">View unread inquiries &rarr;</span>
-                        </button>
-                        <button onclick="jumpToInquiriesFilter('reviewed')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Reviewed</span>
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-reviewed-inquiries" class="font-heading text-4xl font-extrabold text-purple-400 block mb-1">0</span>
-                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View reviewed records &rarr;</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Section: Merchandise Store & Orders -->
-                <div class="pt-2">
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Merchandise Store & Sales Metrics</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Orders</span>
-                                <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-total-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block mb-1">0</span>
-                            <span class="text-[11px] text-emerald-300 flex items-center gap-1">View customer orders &rarr;</span>
-                        </button>
-                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Pending Fulfillment</span>
-                                <i data-lucide="clock" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-pending-orders" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
-                            <span class="text-[11px] text-amber-300 flex items-center gap-1">View pending orders &rarr;</span>
-                        </button>
-                        <div class="glass-card rounded-3xl p-6 border-purple-500/30 text-left">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Gross Revenue</span>
-                                <i data-lucide="dollar-sign" class="w-5 h-5 text-purple-400"></i>
-                            </div>
-                            <span id="stat-gross-revenue" class="font-heading text-4xl font-extrabold text-purple-300 block mb-1">$0.00</span>
-                            <span class="text-[11px] text-gray-400">Total store sales volume</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section: Inventory Stock Status -->
-                <div class="pt-2">
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Catalog Inventory Status</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <button onclick="switchTab('merchandise')" class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between group cursor-pointer w-full text-left">
-                            <div>
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Active Catalog Items</span>
-                                <span id="stat-catalog-items" class="font-heading text-3xl font-extrabold text-white block">0</span>
-                                <span class="text-[11px] text-purple-300 flex items-center gap-1 mt-1">Manage merchandise catalog &rarr;</span>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i data-lucide="package" class="w-6 h-6 text-purple-300"></i>
-                            </div>
-                        </button>
-                        <button onclick="switchTab('merchandise')" class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between group cursor-pointer w-full text-left">
-                            <div>
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Total Stock Units Available</span>
-                                <span id="stat-total-stock" class="font-heading text-3xl font-extrabold text-amber-400 block">0</span>
-                                <span class="text-[11px] text-amber-300 flex items-center gap-1 mt-1">View stock quantities &rarr;</span>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i data-lucide="layers" class="w-6 h-6 text-amber-300"></i>
-                            </div>
-                        </button>
-                    </div>
                 </div>
             </section>
 
@@ -324,108 +238,36 @@
         </main>
     </div>
 
-    <!-- Add Merchandise Modal -->
-    <div id="merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+    <!-- Add Teacher Modal -->
+    <div id="teacher-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
         <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl">
-            <button onclick="closeAddMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Add New Merchandise</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Upload a product image and add to inventory.</p>
-            <form onsubmit="handleAddNewMerchandise(event)" class="space-y-4">
+            <button onclick="closeAddTeacherModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 class="text-xl font-bold text-white mb-1 font-heading">Add Faculty / Teacher</h2>
+            <p class="text-amber-400 text-xs font-semibold mb-4">Upload a teacher portrait to feature on the index page.</p>
+            <form onsubmit="handleAddNewTeacher(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
-                    <input type="text" id="merchName" required placeholder="e.g. Fresh Baked Cookies" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
-                    <select id="merchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
-                        <option value="Apparel & Hats">Apparel & Hats</option>
-                        <option value="Food & Snacks">Food & Snacks</option>
-                        <option value="Gear & Accessories">Gear & Accessories</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" step="0.01" id="merchPrice" required placeholder="3.50" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Quantity Available</label>
-                        <input type="number" id="merchQty" value="15" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Teacher Name</label>
+                    <input type="text" id="teacherName" required placeholder="e.g. Maria Gonzalez" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Product Image File</label>
-                    <input type="file" id="merchImageFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Title / Specialties</label>
+                    <input type="text" id="teacherTitle" required placeholder="e.g. Lead Ballet & Contemporary Instructor" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
-                    <input type="text" id="merchDesc" placeholder="Brief description of the item" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Profile Photo File</label>
+                    <input type="file" id="teacherPhotoFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
                 </div>
-                <button type="submit" id="merch-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Upload & Save to Catalog</button>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Bio / Background</label>
+                    <textarea id="teacherBio" rows="3" placeholder="Brief background, credentials, and achievements..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm"></textarea>
+                </div>
+                <button type="submit" id="teacher-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save & Add to Main Page</button>
             </form>
-            <div id="merch-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Merchandise item uploaded successfully!</div>
+            <div id="teacher-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Teacher added successfully to main page!</div>
         </div>
     </div>
 
-    <!-- Edit Merchandise Modal -->
-    <div id="edit-merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button onclick="closeEditMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Edit Merchandise Item</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Click current picture below to preview full size.</p>
-            
-            <form onsubmit="handleEditMerchandise(event)" class="space-y-4">
-                <input type="hidden" id="editMerchId">
-                <input type="hidden" id="editMerchExistingImageUrl">
-
-                <!-- Current Picture Preview Thumbnail -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Current Product Image</label>
-                    <div id="editMerchThumbContainer" class="w-full h-32 rounded-2xl bg-purple-900/20 border border-purple-500/30 flex items-center justify-center overflow-hidden cursor-pointer relative group">
-                        <!-- Rendered dynamically -->
-                    </div>
-                    <span class="text-[10px] text-gray-400 mt-1 block">Click image to preview fullscreen</span>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
-                    <input type="text" id="editMerchName" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
-                    <select id="editMerchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
-                        <option value="Apparel & Hats">Apparel & Hats</option>
-                        <option value="Food & Snacks">Food & Snacks</option>
-                        <option value="Gear & Accessories">Gear & Accessories</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" step="0.01" id="editMerchPrice" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Quantity Available</label>
-                        <input type="number" id="editMerchQty" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Replace Image (Optional)</label>
-                    <input type="file" id="editMerchImageFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
-                    <input type="text" id="editMerchDesc" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <button type="submit" id="edit-merch-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Changes</button>
-            </form>
-            <div id="edit-merch-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Merchandise item updated successfully!</div>
-        </div>
-    </div>
-
-    <!-- Fullscreen Image Preview Lightbox Modal -->
+    <!-- Fullscreen Image Preview Lightbox -->
     <div id="image-preview-modal" class="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden" onclick="closeImagePreview()">
         <div class="relative max-w-4xl max-h-[90vh] p-2" onclick="event.stopPropagation()">
             <button onclick="closeImagePreview()" class="absolute -top-10 right-0 text-white bg-white/10 p-2 rounded-full hover:bg-white/20"><i data-lucide="x" class="w-6 h-6"></i></button>
@@ -435,12 +277,10 @@
 
     <script>
         let _supabase = null;
+        let allTeachers = [];
         let allSubmissions = [];
         let allMerchandise = [];
         let allOrders = [];
-        let currentInquiryFilter = 'all';
-        let currentAdminMerchCategory = 'all';
-        let merchSearchQuery = '';
         const ADMIN_SECRET = 'DanceStar2026!';
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -481,104 +321,28 @@
         }
 
         function switchTab(tabName) {
-            var tabs = ['inquiries', 'merchandise', 'orders', 'analytics', 'settings'];
+            var tabs = ['teachers', 'inquiries', 'merchandise', 'orders', 'analytics', 'settings'];
             for (var i = 0; i < tabs.length; i++) {
                 var t = tabs[i];
-                document.getElementById('tab-' + t).classList.add('hidden');
-                document.getElementById('nav-' + t).classList.remove('active');
+                var tabElem = document.getElementById('tab-' + t);
+                var navElem = document.getElementById('nav-' + t);
+                if (tabElem) tabElem.classList.add('hidden');
+                if (navElem) navElem.classList.remove('active');
             }
-            document.getElementById('tab-' + tabName).classList.remove('hidden');
-            document.getElementById('nav-' + tabName).classList.add('active');
+            var activeTab = document.getElementById('tab-' + tabName);
+            var activeNav = document.getElementById('nav-' + tabName);
+            if (activeTab) activeTab.classList.remove('hidden');
+            if (activeNav) activeNav.classList.add('active');
             if (window.innerWidth < 1024) toggleMobileSidebar();
         }
 
-        function jumpToInquiriesFilter(filterType) {
-            currentInquiryFilter = filterType;
-            var buttons = document.querySelectorAll('.filter-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var targetBtn = document.getElementById('filter-inq-' + filterType);
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
-            switchTab('inquiries');
-            renderSubmissionsTable();
+        function openAddTeacherModal() {
+            document.getElementById('teacher-modal').classList.remove('hidden');
+            document.getElementById('teacher-success').classList.add('hidden');
         }
 
-        function filterInquiriesTable(filterType) {
-            currentInquiryFilter = filterType;
-            var buttons = document.querySelectorAll('.filter-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var targetBtn = document.getElementById('filter-inq-' + filterType);
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
-            renderSubmissionsTable();
-        }
-
-        function filterAdminMerchCategory(category) {
-            currentAdminMerchCategory = category;
-            var buttons = document.querySelectorAll('.admin-cat-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var btnId = 'admin-cat-' + category;
-            var targetBtn = document.getElementById(btnId);
-            if (targetBtn) targetBtn.classList.add('active');
-            renderMerchandiseCatalogTable();
-        }
-
-        function handleMerchSearch() {
-            merchSearchQuery = document.getElementById('merchSearchInput').value.toLowerCase().trim();
-            renderMerchandiseCatalogTable();
-        }
-
-        function openAddMerchModal() {
-            document.getElementById('merch-modal').classList.remove('hidden');
-            document.getElementById('merch-success').classList.add('hidden');
-        }
-
-        function closeAddMerchModal() {
-            document.getElementById('merch-modal').classList.add('hidden');
-        }
-
-        function openEditMerchModal(id) {
-            var item = null;
-            for (var i = 0; i < allMerchandise.length; i++) {
-                if (allMerchandise[i].id === id) {
-                    item = allMerchandise[i];
-                    break;
-                }
-            }
-            if (!item) return;
-
-            document.getElementById('editMerchId').value = item.id;
-            document.getElementById('editMerchName').value = item.name;
-            document.getElementById('editMerchCategory').value = item.category;
-            document.getElementById('editMerchPrice').value = item.price;
-            document.getElementById('editMerchQty').value = item.quantity_available;
-            document.getElementById('editMerchDesc').value = item.description || '';
-            document.getElementById('editMerchExistingImageUrl').value = item.image_url || '';
-            document.getElementById('editMerchImageFile').value = '';
-            document.getElementById('edit-merch-success').classList.add('hidden');
-
-            var thumbContainer = document.getElementById('editMerchThumbContainer');
-            if (item.image_url && item.image_url.trim() !== '') {
-                thumbContainer.innerHTML = '<img src="' + item.image_url + '" alt="' + item.name + '" class="w-full h-full object-cover rounded-2xl group-hover:opacity-90 transition-opacity" onclick="openImagePreview(\'' + item.image_url + '\')">' +
-                                           '<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl pointer-events-none text-white text-xs font-semibold gap-1"><i data-lucide="maximize-2" class="w-4 h-4"></i> Click to preview</div>';
-            } else {
-                thumbContainer.innerHTML = '<div class="text-center text-gray-400 text-xs flex flex-col items-center gap-1"><i data-lucide="image-off" class="w-6 h-6 text-gray-500"></i><span>No image uploaded</span></div>';
-            }
-
-            document.getElementById('edit-merch-modal').classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        function closeEditMerchModal() {
-            document.getElementById('edit-merch-modal').classList.add('hidden');
+        function closeAddTeacherModal() {
+            document.getElementById('teacher-modal').classList.add('hidden');
         }
 
         function openImagePreview(url) {
@@ -590,21 +354,19 @@
             document.getElementById('image-preview-modal').classList.add('hidden');
         }
 
-        async function handleAddNewMerchandise(e) {
+        async function handleAddNewTeacher(e) {
             e.preventDefault();
-            const submitBtn = document.getElementById('merch-submit-btn');
-            const successBox = document.getElementById('merch-success');
+            const submitBtn = document.getElementById('teacher-submit-btn');
+            const successBox = document.getElementById('teacher-success');
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Uploading Image & Saving...';
+            submitBtn.innerText = 'Uploading Photo & Saving...';
 
-            const name = document.getElementById('merchName').value.trim();
-            const category = document.getElementById('merchCategory').value;
-            const price = parseFloat(document.getElementById('merchPrice').value);
-            const quantity_available = parseInt(document.getElementById('merchQty').value);
-            const description = document.getElementById('merchDesc').value.trim();
-            const fileInput = document.getElementById('merchImageFile');
+            const name = document.getElementById('teacherName').value.trim();
+            const title = document.getElementById('teacherTitle').value.trim();
+            const bio = document.getElementById('teacherBio').value.trim();
+            const fileInput = document.getElementById('teacherPhotoFile');
 
-            let imageUrl = '';
+            let photoUrl = '';
 
             try {
                 if (fileInput.files && fileInput.files[0]) {
@@ -613,213 +375,82 @@
                     const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
 
                     const { error: uploadError } = await _supabase.storage
-                        .from('merchandise-images')
+                        .from('teacher-photos')
                         .upload(fileName, file);
 
                     if (uploadError) throw uploadError;
 
                     const { data: publicUrlData } = _supabase.storage
-                        .from('merchandise-images')
+                        .from('teacher-photos')
                         .getPublicUrl(fileName);
 
-                    imageUrl = publicUrlData.publicUrl;
+                    photoUrl = publicUrlData.publicUrl;
                 }
 
-                const newItem = {
+                const newTeacher = {
                     name: name,
-                    category: category,
-                    price: price,
-                    quantity_available: quantity_available,
-                    description: description,
-                    image_url: imageUrl
+                    title: title,
+                    bio: bio,
+                    photo_url: photoUrl
                 };
 
-                const { error: insertError } = await _supabase.from('cvs_merchandise').insert([newItem]);
+                const { error: insertError } = await _supabase.from('cvs_teachers').insert([newTeacher]);
                 if (insertError) throw insertError;
 
                 successBox.classList.remove('hidden');
                 e.target.reset();
-                fetchAllData();
+                fetchTeachers();
                 setTimeout(function() { 
-                    closeAddMerchModal(); 
+                    closeAddTeacherModal(); 
                     successBox.classList.add('hidden'); 
                 }, 1500);
 
             } catch (err) {
-                console.error('Error adding merchandise:', err);
+                console.error('Error adding teacher:', err);
                 alert('Error: ' + err.message);
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Upload & Save to Catalog';
-            }
-        }
-
-        async function handleEditMerchandise(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('edit-merch-submit-btn');
-            const successBox = document.getElementById('edit-merch-success');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Updating Catalog...';
-
-            const id = document.getElementById('editMerchId').value;
-            const name = document.getElementById('editMerchName').value.trim();
-            const category = document.getElementById('editMerchCategory').value;
-            const price = parseFloat(document.getElementById('editMerchPrice').value);
-            const quantity_available = parseInt(document.getElementById('editMerchQty').value);
-            const description = document.getElementById('editMerchDesc').value.trim();
-            const fileInput = document.getElementById('editMerchImageFile');
-            let imageUrl = document.getElementById('editMerchExistingImageUrl').value;
-
-            try {
-                if (fileInput.files && fileInput.files[0]) {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
-
-                    const { error: uploadError } = await _supabase.storage
-                        .from('merchandise-images')
-                        .upload(fileName, file);
-
-                    if (uploadError) throw uploadError;
-
-                    const { data: publicUrlData } = _supabase.storage
-                        .from('merchandise-images')
-                        .getPublicUrl(fileName);
-
-                    imageUrl = publicUrlData.publicUrl;
-                }
-
-                const updatedItem = {
-                    name: name,
-                    category: category,
-                    price: price,
-                    quantity_available: quantity_available,
-                    description: description,
-                    image_url: imageUrl
-                };
-
-                const { error: updateError } = await _supabase.from('cvs_merchandise').update(updatedItem).eq('id', id);
-                if (updateError) throw updateError;
-
-                successBox.classList.remove('hidden');
-                fetchAllData();
-                setTimeout(function() { 
-                    closeEditMerchModal(); 
-                    successBox.classList.add('hidden'); 
-                }, 1500);
-
-            } catch (err) {
-                console.error('Error updating merchandise:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Save Changes';
+                submitBtn.innerText = 'Save & Add to Main Page';
             }
         }
 
         async function fetchAllData() {
             await Promise.all([
+                fetchTeachers(),
                 fetchSubmissions(),
                 fetchMerchandiseCatalog(),
                 fetchStoreOrders()
             ]);
-            updateAnalyticsDashboard();
         }
 
-        async function fetchSubmissions() {
-            const response = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
-            allSubmissions = response.data || [];
-            renderSubmissionsTable();
-        }
+        async function fetchTeachers() {
+            const response = await _supabase.from('cvs_teachers').select('*').order('created_at', { ascending: false });
+            allTeachers = response.data || [];
+            
+            const tbody = document.getElementById('teachers-table-body');
+            const noTeachers = document.getElementById('no-teachers');
 
-        function renderSubmissionsTable() {
-            const tbody = document.getElementById('submissions-table-body');
-            const noData = document.getElementById('no-data');
-
-            var filtered = allSubmissions;
-            if (currentInquiryFilter === 'new') {
-                filtered = allSubmissions.filter(function(s) { return !s.read; });
-            } else if (currentInquiryFilter === 'reviewed') {
-                filtered = allSubmissions.filter(function(s) { return s.read; });
-            }
-
-            if (filtered.length === 0) {
+            if (allTeachers.length === 0) {
                 tbody.innerHTML = '';
-                noData.classList.remove('hidden');
+                noTeachers.classList.remove('hidden');
                 return;
             }
 
-            noData.classList.add('hidden');
+            noTeachers.classList.add('hidden');
             var html = '';
-            for (var i = 0; i < filtered.length; i++) {
-                var s = filtered[i];
-                var statusClass = s.read ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
-                var statusText = s.read ? 'Reviewed' : 'New';
-                var dateStr = new Date(s.created_at).toLocaleDateString();
-                var fullName = s.first_name + ' ' + s.last_name;
-                var contact = s.email + ' | ' + s.phone;
-                var btnText = s.read ? 'Mark New' : 'Mark Read';
-
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ' + statusClass + '">' + statusText + '</span></td>' +
-                    '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + fullName + '</td>' +
-                    '<td class="p-4 text-gray-300">' + contact + '</td>' +
-                    '<td class="p-4 text-purple-300">' + s.dance_type + '</td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="toggleReadStatus(\'' + s.id + '\', ' + s.read + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
-                        '<button onclick="deleteSub(\'' + s.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
-                    '</td></tr>';
-            }
-            tbody.innerHTML = html;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        async function fetchMerchandiseCatalog() {
-            const response = await _supabase.from('cvs_merchandise').select('*').order('name');
-            allMerchandise = response.data || [];
-            renderMerchandiseCatalogTable();
-        }
-
-        function renderMerchandiseCatalogTable() {
-            const tbody = document.getElementById('merchandise-table-body');
-            const noMerch = document.getElementById('no-merchandise');
-
-            var filtered = allMerchandise;
-            if (currentAdminMerchCategory !== 'all') {
-                filtered = filtered.filter(function(m) { return m.category === currentAdminMerchCategory; });
-            }
-            if (merchSearchQuery !== '') {
-                filtered = filtered.filter(function(m) {
-                    return (m.name && m.name.toLowerCase().includes(merchSearchQuery)) ||
-                           (m.description && m.description.toLowerCase().includes(merchSearchQuery)) ||
-                           (m.category && m.category.toLowerCase().includes(merchSearchQuery));
-                });
-            }
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '';
-                noMerch.classList.remove('hidden');
-                return;
-            }
-
-            noMerch.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < filtered.length; i++) {
-                var m = filtered[i];
-                var imgThumb = '<div class="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-5 h-5"></i></div>';
-                if (m.image_url) {
-                    imgThumb = '<img src="' + m.image_url + '" alt="' + m.name + '" class="w-10 h-10 rounded-lg object-cover border border-white/10 cursor-pointer hover:opacity-80 transition-opacity" onclick="openImagePreview(\'' + m.image_url + '\')">';
+            for (var i = 0; i < allTeachers.length; i++) {
+                var t = allTeachers[i];
+                var photoThumb = '<div class="w-10 h-10 rounded-full bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></div>';
+                if (t.photo_url) {
+                    photoThumb = '<img src="' + t.photo_url + '" alt="' + t.name + '" class="w-10 h-10 rounded-full object-cover border border-white/10 cursor-pointer hover:opacity-80 transition-opacity" onclick="openImagePreview(\'' + t.photo_url + '\')">';
                 }
                 html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4">' + imgThumb + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + m.name + '</td>' +
-                    '<td class="p-4 text-purple-300">' + m.category + '</td>' +
-                    '<td class="p-4 text-amber-300">$' + Number(m.price).toFixed(2) + '</td>' +
-                    '<td class="p-4"><input type="number" min="0" value="' + m.quantity_available + '" onchange="updateQty(\'' + m.id + '\', this.value)" class="w-20 px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-xs"></td>' +
+                    '<td class="p-4">' + photoThumb + '</td>' +
+                    '<td class="p-4 font-bold text-white">' + t.name + '</td>' +
+                    '<td class="p-4 text-purple-300">' + t.title + '</td>' +
+                    '<td class="p-4 text-gray-300 max-w-xs truncate">' + (t.bio || 'N/A') + '</td>' +
                     '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="openEditMerchModal(\'' + m.id + '\')" class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-semibold">Edit</button>' +
-                        '<button onclick="deleteMerch(\'' + m.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
+                        '<button onclick="deleteTeacher(\'' + t.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Remove</button>' +
                     '</td>' +
                     '</tr>';
             }
@@ -827,103 +458,32 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        async function updateQty(id, newQty) {
-            await _supabase.from('cvs_merchandise').update({ quantity_available: parseInt(newQty) }).eq('id', id);
-            // Update local array data and re-render index
-            var item = allMerchandise.find(function(m) { return m.id === id; });
-            if (item) item.quantity_available = parseInt(newQty);
-            updateAnalyticsDashboard();
+        async function deleteTeacher(id) {
+            if (!confirm('Remove teacher from the index page faculty roster?')) return;
+            await _supabase.from('cvs_teachers').delete().eq('id', id);
+            fetchTeachers();
         }
 
-        async function deleteMerch(id) {
-            if (!confirm('Delete item from catalog?')) return;
-            await _supabase.from('cvs_merchandise').delete().eq('id', id);
-            fetchAllData();
+        async function fetchSubmissions() {
+            const response = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
+            allSubmissions = response.data || [];
+            const tbody = document.getElementById('submissions-table-body');
+            var html = '';
+            for (var i = 0; i < allSubmissions.length; i++) {
+                var s = allSubmissions[i];
+                html += '<tr class="hover:bg-white/5"><td class="p-4">' + s.first_name + ' ' + s.last_name + '</td></tr>';
+            }
+            if (tbody) tbody.innerHTML = html;
+        }
+
+        async function fetchMerchandiseCatalog() {
+            const response = await _supabase.from('cvs_merchandise').select('*').order('name');
+            allMerchandise = response.data || [];
         }
 
         async function fetchStoreOrders() {
             const response = await _supabase.from('cvs_store_orders').select('*').order('created_at', { ascending: false });
             allOrders = response.data || [];
-            
-            const tbody = document.getElementById('orders-table-body');
-            const noOrders = document.getElementById('no-orders');
-
-            if (allOrders.length === 0) {
-                tbody.innerHTML = '';
-                noOrders.classList.add('hidden'); // or remove
-                noOrders.classList.remove('hidden');
-                return;
-            }
-
-            noOrders.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < allOrders.length; i++) {
-                var o = allOrders[i];
-                var statusClass = o.fulfilled ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
-                var statusText = o.fulfilled ? 'Fulfilled' : 'Pending';
-                var dateStr = new Date(o.created_at).toLocaleDateString();
-                var customer = o.customer_name || o.email;
-                var btnText = o.fulfilled ? 'Unmark' : 'Fulfill';
-
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ' + statusClass + '">' + statusText + '</span></td>' +
-                    '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + customer + '</td>' +
-                    '<td class="p-4 text-gray-300">' + o.item_details + '</td>' +
-                    '<td class="p-4 text-amber-300">$' + Number(o.total_amount).toFixed(2) + '</td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="toggleOrder(\'' + o.id + '\', ' + o.fulfilled + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
-                        '<button onclick="deleteOrder(\'' + o.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
-                    '</td></tr>';
-            }
-            tbody.innerHTML = html;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        function updateAnalyticsDashboard() {
-            const totalInquiries = allSubmissions.length;
-            const unreadInquiries = allSubmissions.filter(function(s) { return !s.read; }).length;
-            const reviewedInquiries = totalInquiries - unreadInquiries;
-
-            document.getElementById('stat-total-inquiries').innerText = totalInquiries;
-            document.getElementById('stat-unread-inquiries').innerText = unreadInquiries;
-            document.getElementById('stat-reviewed-inquiries').innerText = reviewedInquiries;
-
-            const totalOrders = allOrders.length;
-            const pendingOrders = allOrders.filter(function(o) { return !o.fulfilled; }).length;
-            const grossRevenue = allOrders.reduce(function(sum, o) { return sum + Number(o.total_amount || 0); }, 0);
-
-            document.getElementById('stat-total-orders').innerText = totalOrders;
-            document.getElementById('stat-pending-orders').innerText = pendingOrders;
-            document.getElementById('stat-gross-revenue').innerText = '$' + grossRevenue.toFixed(2);
-
-            const catalogItemsCount = allMerchandise.length;
-            const totalStockUnits = allMerchandise.reduce(function(sum, m) { return sum + Number(m.quantity_available || 0); }, 0);
-
-            document.getElementById('stat-catalog-items').innerText = catalogItemsCount;
-            document.getElementById('stat-total-stock').innerText = totalStockUnits;
-        }
-
-        async function toggleReadStatus(id, curr) {
-            await _supabase.from('cvs_dance_submissions').update({ read: !curr }).eq('id', id);
-            fetchAllData();
-        }
-
-        async function toggleOrder(id, curr) {
-            await _supabase.from('cvs_store_orders').update({ fulfilled: !curr }).eq('id', id);
-            fetchAllData();
-        }
-
-        async function deleteOrder(id) {
-            if (!confirm('Delete order?')) return;
-            await _supabase.from('cvs_store_orders').delete().eq('id', id);
-            fetchAllData();
-        }
-
-        async function deleteSub(id) {
-            if (!confirm('Delete inquiry?')) return;
-            await _supabase.from('cvs_dance_submissions').delete().eq('id', id);
-            fetchAllData();
         }
     </script>
 </body>
