@@ -600,8 +600,69 @@
         }
 
         async function fetchSubmissions() {
-            const response = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
-            allSubmissions = response.data || [];
+            try {
+                const response = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
+                allSubmissions = response.data || [];
+                renderSubmissionsTable();
+            } catch (err) {
+                console.error('Error fetching submissions:', err);
+            }
+        }
+
+        function renderSubmissionsTable() {
+            const tbody = document.getElementById('submissions-table-body');
+            const noData = document.getElementById('no-data');
+
+            if (!tbody) return;
+
+            var filtered = allSubmissions;
+            if (currentInquiryFilter === 'new') {
+                filtered = allSubmissions.filter(function(s) { return !s.read; });
+            } else if (currentInquiryFilter === 'reviewed') {
+                filtered = allSubmissions.filter(function(s) { return s.read; });
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                if (noData) noData.classList.remove('hidden');
+                return;
+            }
+
+            if (noData) noData.classList.add('hidden');
+            var html = '';
+            for (var i = 0; i < filtered.length; i++) {
+                var s = filtered[i];
+                var statusClass = s.read ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
+                var statusText = s.read ? 'Reviewed' : 'New';
+                var dateStr = s.created_at ? new Date(s.created_at).toLocaleDateString() : 'N/A';
+                var fullName = (s.first_name || '') + ' ' + (s.last_name || '');
+                var contact = (s.email || '') + (s.phone ? ' | ' + s.phone : '');
+                var btnText = s.read ? 'Mark New' : 'Mark Read';
+
+                html += '<tr class="hover:bg-white/5">' +
+                    '<td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ' + statusClass + '">' + statusText + '</span></td>' +
+                    '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
+                    '<td class="p-4 font-bold text-white">' + fullName + '</td>' +
+                    '<td class="p-4 text-gray-300">' + contact + '</td>' +
+                    '<td class="p-4 text-purple-300">' + (s.dance_type || 'N/A') + '</td>' +
+                    '<td class="p-4 text-right space-x-2">' +
+                        '<button onclick="toggleReadStatus(\'' + s.id + '\', ' + s.read + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
+                        '<button onclick="deleteSub(\'' + s.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
+                    '</td></tr>';
+            }
+            tbody.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        async function toggleReadStatus(id, curr) {
+            await _supabase.from('cvs_dance_submissions').update({ read: !curr }).eq('id', id);
+            fetchSubmissions();
+        }
+
+        async function deleteSub(id) {
+            if (!confirm('Delete inquiry?')) return;
+            await _supabase.from('cvs_dance_submissions').delete().eq('id', id);
+            fetchSubmissions();
         }
 
         async function fetchMerchandiseCatalog() {
