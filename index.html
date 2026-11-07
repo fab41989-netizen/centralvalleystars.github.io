@@ -245,46 +245,36 @@
         </nav>
     </header>
 
-    <!-- Coming Soon Hero Section -->
-    <section class="relative pt-32 sm:pt-28 pb-16 flex items-center justify-center z-10 overflow-hidden">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+            <!-- Full-Width Responsive Hero Dance Photo Section -->
+            <section class="relative w-full h-[60vh] sm:h-[70vh] min-h-[400px] overflow-hidden border-b border-white/10">
+                <!-- Background Image with Gradient Overlay -->
+                <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+                     style="background-image: url('https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=2000&auto=format&fit=crop');">
+                    <!-- Dark Gradient Overlay for Readability -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0813] via-[#0B0813]/60 to-[#0B0813]/30"></div>
+                </div>
             
-            <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-amber-500/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wide mx-auto">
-                <span class="flex h-2 w-2 rounded-full bg-amber-400 animate-ping"></span>
-                <span>Coming Soon</span>
-            </div>
-
-            <!-- Main Heading -->
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
-                Something Extraordinary Is <br/>
-                <span class="gradient-text">Taking Center Stage.</span>
-            </h1>
-
-            <!-- Description -->
-            <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed">
-                Central Valley's premier state-of-the-art dance studios are putting the finishing touches on professional Marley floors, sound systems, and world-class faculty lineups.
-            </p>
-
-            <!-- Countdown Timer Grid -->
-            <div class="grid grid-cols-4 gap-3 sm:gap-6 max-w-lg mx-auto py-4">
-                <div class="glass-card p-4 rounded-2xl text-center">
-                    <span id="days" class="font-heading text-2xl sm:text-4xl font-extrabold text-amber-400 block">30</span>
-                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Days</span>
+                <!-- Centered Hero Text overlay -->
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-center text-center space-y-4">
+                    <span class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest bg-amber-400/10 text-amber-300 border border-amber-400/30 backdrop-blur-md">
+                        ✨ Central Valley's Premier Dance Studio
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white font-heading tracking-tight drop-shadow-md">
+                        Unleash Your Inner Star
+                    </h1>
+                    <p class="max-w-2xl text-sm sm:text-base text-gray-200 leading-relaxed drop-shadow">
+                        Inspiring dancers of all ages and skill levels through passionate instruction, community outreach, and creative performance.
+                    </p>
+                    <div class="flex items-center gap-4 pt-2">
+                        <a href="#instructors" class="px-6 py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-xl flex items-center gap-2">
+                            Meet Our Instructors
+                        </a>
+                        <a href="donate.html" class="px-6 py-3.5 rounded-xl glass-card border border-white/20 text-white text-xs font-bold uppercase tracking-wider hover:border-amber-400 hover:text-amber-300 transition-all">
+                            Support Our Dancers
+                        </a>
+                    </div>
                 </div>
-                <div class="glass-card p-4 rounded-2xl text-center">
-                    <span id="hours" class="font-heading text-2xl sm:text-4xl font-extrabold text-pink-500 block">12</span>
-                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Hours</span>
-                </div>
-                <div class="glass-card p-4 rounded-2xl text-center">
-                    <span id="minutes" class="font-heading text-2xl sm:text-4xl font-extrabold text-purple-400 block">45</span>
-                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Minutes</span>
-                </div>
-                <div class="glass-card p-4 rounded-2xl text-center">
-                    <span id="seconds" class="font-heading text-2xl sm:text-4xl font-extrabold text-amber-300 block">00</span>
-                    <span class="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400">Seconds</span>
-                </div>
-            </div>
+            </section>
 
             <!-- Notify Me Form Card -->
             <div id="notify" class="glass-panel rounded-3xl p-6 sm:p-10 max-w-xl mx-auto border-purple-500/30">
