@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Consultation Services | Central Valley Stars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="config.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0B0813; color: #F3F4F6; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+        .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); transform: translateY(-4px); }
+        .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
+        .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-[#0B0813]">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
+                    <div class="w-full h-full bg-[#0B0813] rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-heading font-extrabold text-lg text-white block leading-none">CENTRAL VALLEY STARS</span>
+                    <span class="font-heading text-[10px] font-semibold tracking-widest text-amber-400 block mt-1">DANCE STUDIO</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-300">
+                <a href="index.html" class="hover:text-amber-400 transition-colors">Home</a>
+                <a href="services.html" class="text-amber-400 font-bold">Consultations</a>
+                <a href="store.html" class="hover:text-amber-400 transition-colors">Studio Store</a>
+                <a href="donate.html" class="hover:text-amber-400 transition-colors">Donate</a>
+                <a href="community.html" class="hover:text-amber-400 transition-colors">Community Board</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16 w-full">
+        
+        <!-- Hero Section -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <span class="px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest bg-amber-400/10 text-amber-300 border border-amber-400/30 inline-block">
+                ✨ Personalized Dance Growth
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white font-heading">Dance Consultation & Coaching</h1>
+            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                Take your technique, routine choreography, or studio development to the next level with customized 1-on-1 consultations tailored to your goals.
+            </p>
+        </div>
+
+        <!-- Dynamic Services Grid -->
+        <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Loaded dynamically from Supabase cvs_services table -->
+        </div>
+
+        <div id="no-services" class="hidden glass-panel rounded-3xl p-12 text-center text-gray-400 text-xs">
+            No consultation packages currently active. Check back soon or contact us directly!
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 text-center text-xs text-gray-500 mt-12">
+        <p>&copy; <span id="current-year"></span> Central Valley Stars Dance Studio. All rights reserved.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        let _supabase = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            if (window.SUPABASE_CONFIG) {
+                _supabase = supabase.createClient(window.SUPABASE_CONFIG.URL, window.SUPABASE_CONFIG.ANON_KEY);
+                fetchActiveServices();
+            }
+        });
+
+        async function fetchActiveServices() {
+            try {
+                const { data, error } = await _supabase
+                    .from('cvs_services')
+                    .select('*')
+                    .eq('active', true)
+                    .order('created_at', { ascending: true });
+
+                if (error) throw error;
+                renderServicesGrid(data || []);
+            } catch (err) {
+                console.error('Error loading services:', err);
+            }
+        }
+
+        function renderServicesGrid(services) {
+            const grid = document.getElementById('services-grid');
+            const noServices = document.getElementById('no-services');
+
+            if (services.length === 0) {
+                grid.innerHTML = '';
+                noServices.classList.remove('hidden');
+                return;
+            }
+
+            noServices.classList.add('hidden');
+            let html = '';
+
+            for (let i = 0; i < services.length; i++) {
+                const s = services[i];
+                const featuresList = (s.features || []).map(f => `
+                    <li class="flex items-start gap-2 text-xs text-gray-300">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                        <span>${f}</span>
+                    </li>
+                `).join('');
+
+                const btnAction = s.booking_url 
+                    ? `href="${s.booking_url}" target="_blank"` 
+                    : `href="mailto:contact@centralvalleystars.org?subject=Inquiry regarding ${encodeURIComponent(s.title)}"`;
+
+                html += `
+                    <div class="glass-card rounded-3xl p-8 border border-purple-500/20 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">${s.tagline || 'Consultation'}</span>
+                                    <h3 class="text-2xl font-bold text-white font-heading mt-1">${s.title}</h3>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/30">${s.duration}</span>
+                            </div>
+
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-3xl font-extrabold text-white font-heading">${s.price}</span>
+                            </div>
+
+                            <p class="text-xs text-gray-300 leading-relaxed">${s.description}</p>
+
+                            ${featuresList ? `<ul class="space-y-2 pt-2 border-t border-white/10">${featuresList}</ul>` : ''}
+                        </div>
+
+                        <a ${btnAction} class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider text-center block shadow-lg">
+                            Book Consultation
+                        </a>
+                    </div>
+                `;
+            }
+
+            grid.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
