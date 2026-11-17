@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -141,7 +139,7 @@
 
                 <!-- Centered Cloudflare Turnstile Captcha Widget -->
                 <div class="pt-2 flex flex-col items-center justify-center overflow-x-auto max-w-full">
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAGBLiOGaGdFog41K" data-theme="dark"></div>
+                    <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"></div>
                     <p id="captcha-error" class="hidden text-rose-400 text-xs mt-1.5 font-semibold text-center">
                         Please complete the security verification before submitting.
                     </p>
@@ -183,7 +181,6 @@
         async function fetchIndexTeachers() {
             const grid = document.getElementById('index-teachers-grid');
             try {
-                // Fetch all instructors from cvs_teachers without filtering on an optional 'active' column
                 const { data, error } = await _supabase
                     .from('cvs_teachers')
                     .select('*')
