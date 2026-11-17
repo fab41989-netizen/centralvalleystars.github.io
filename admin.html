@@ -8,1191 +8,786 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="config.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0B0813; color: #F3F4F6; font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
         .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
         .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
-        .glass-card:hover { border-color: rgba(236, 72, 153, 0.5); transform: translateY(-3px); }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); }
         .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
         .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
-        .nav-item.active { background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.5); color: #FBBF24; }
-        .filter-btn.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); color: #FBBF24; }
-        .admin-cat-btn.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); color: #FBBF24; }
+        .nav-item.active { background: rgba(168, 85, 247, 0.25); border-color: #FBBF24; color: #FBBF24; border-left: 3px solid #FBBF24; }
+        .filter-ev-btn.active { background: rgba(251, 191, 36, 0.2); color: #FBBF24; border-color: #FBBF24; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-[#0B0813]">
+<body class="min-h-screen flex antialiased bg-[#0B0813]">
 
-    <!-- Login Screen -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0813]">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 shadow-2xl">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center mx-auto mb-3"><i data-lucide="lock" class="w-6 h-6 text-purple-400"></i></div>
-                <h1 class="text-2xl font-bold text-white">Admin Authentication</h1>
-                <p class="text-gray-400 text-xs mt-1">Enter password to access portal (Default: DanceStar2026!)</p>
-            </div>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
-                    <input type="password" id="adminPassword" required placeholder="••••••••••••" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 glass-panel border-r border-white/10 hidden md:flex flex-col shrink-0 p-6 space-y-8 sticky top-0 h-screen overflow-y-auto">
+        <a href="index.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
+                <div class="w-full h-full bg-[#0B0813] rounded-[10px] flex items-center justify-center">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
                 </div>
-                <button type="submit" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Access Portal</button>
-            </form>
-            <div id="login-error" class="hidden mt-4 p-3 rounded-xl bg-rose-500/20 text-rose-300 text-xs font-medium border border-rose-500/30 text-center">❌ Incorrect password. Please try again.</div>
-        </div>
-    </div>
+            </div>
+            <div>
+                <span class="font-heading font-extrabold text-sm text-white block leading-none">CVS ADMIN</span>
+                <span class="font-heading text-[9px] font-semibold tracking-widest text-amber-400 block mt-1">MANAGEMENT PORTAL</span>
+            </div>
+        </a>
 
-    <!-- Main Dashboard -->
-    <div id="app-container" class="hidden flex flex-col lg:flex-row h-screen w-full overflow-hidden">
+        <div class="space-y-6 flex-grow">
+            <!-- Main Site Management -->
+            <div>
+                <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Main Site Management</span>
+                <nav class="space-y-1">
+                    <button onclick="switchTab('teachers')" id="nav-teachers" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="graduation-cap" class="w-4 h-4"></i> Faculty & Teachers</button>
+                    <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="users" class="w-4 h-4"></i> Class Registrations</button>
+                    <button onclick="switchTab('community')" id="nav-community" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="calendar" class="w-4 h-4"></i> Community Events</button>
+                    <button onclick="switchTab('services')" id="nav-services" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="award" class="w-4 h-4"></i> Consultations</button>
+                </nav>
+            </div>
+
+            <!-- E-Commerce Management -->
+            <div>
+                <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Store & Sales</span>
+                <nav class="space-y-1">
+                    <button onclick="switchTab('merchandise')" id="nav-merchandise" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Studio Store Items</button>
+                    <button onclick="switchTab('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="receipt" class="w-4 h-4"></i> Store Orders</button>
+                </nav>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-white/10">
+            <a href="index.html" class="w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white"><i data-lucide="log-out" class="w-4 h-4"></i> Exit to Live Site</a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-6 sm:p-10 overflow-y-auto max-w-7xl mx-auto space-y-8">
         
-        <header class="lg:hidden glass-panel border-b border-white/10 p-4 flex items-center justify-between z-30">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
-                    <div class="w-full h-full bg-brand-dark rounded-[6px] flex items-center justify-center"><i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i></div>
-                </div>
-                <span class="font-heading font-extrabold text-sm text-white">CVS ADMIN</span>
+        <!-- Mobile Header Bar -->
+        <div class="md:hidden flex items-center justify-between pb-6 border-b border-white/10">
+            <h1 class="font-heading font-extrabold text-lg text-white">CVS Admin Portal</h1>
+            <div class="flex items-center gap-2">
+                <button onclick="switchTab('teachers')" class="px-3 py-1.5 rounded-lg glass-card text-xs">Faculty</button>
+                <button onclick="switchTab('community')" class="px-3 py-1.5 rounded-lg glass-card text-xs">Events</button>
+                <button onclick="switchTab('services')" class="px-3 py-1.5 rounded-lg glass-card text-xs">Services</button>
             </div>
-            <button onclick="toggleMobileSidebar()" class="p-2 rounded-xl glass-card text-amber-300 hover:text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
-        </header>
+        </div>
 
-        <!-- Sidebar -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 glass-panel border-r border-white/10 flex flex-col justify-between p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
-            <div class="space-y-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
-                            <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i></div>
-                        </div>
-                        <div>
-                            <span class="font-heading font-extrabold text-sm text-white block leading-none">CVS STUDIO</span>
-                            <span class="font-heading text-[10px] font-semibold tracking-widest text-amber-400 block mt-0.5">ADMIN CONSOLE</span>
-                        </div>
-                    </div>
-                    <button onclick="toggleMobileSidebar()" class="lg:hidden text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Main Site Management</span>
-                        <nav class="space-y-1">
-                            <button onclick="switchTab('teachers')" id="nav-teachers" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="graduation-cap" class="w-4 h-4"></i> Faculty & Teachers</button>
-                            <button onclick="switchTab('inquiries')" id="nav-inquiries" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="users" class="w-4 h-4"></i> Class Registrations</button>
-                        </nav>
-                    </div>
-
-                    <div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Merchandise Store</span>
-                        <nav class="space-y-1">
-                            <button onclick="switchTab('merchandise')" id="nav-merchandise" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="package" class="w-4 h-4"></i> Available Catalog</button>
-                            <button onclick="switchTab('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Customer Orders</button>
-                            <button onclick="openAddMerchModal()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-amber-300 glass-card border border-amber-400/30 text-left"><i data-lucide="plus-circle" class="w-4 h-4 text-amber-400"></i> Add Merchandise</button>
-                        </nav>
-                    </div>
-
-                    <div>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-gray-400 px-2 block mb-2">Management</span>
-                        <nav class="space-y-1">
-                            <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics Overview</button>
-                            <button onclick="switchTab('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-300 hover:text-white text-left"><i data-lucide="settings" class="w-4 h-4"></i> Portal Settings</button>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-3 pt-6 border-t border-white/10">
-                <a href="index.html" class="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass-card text-xs font-semibold text-gray-300 hover:text-amber-400"><i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Main Site</a>
-                <button onclick="handleLogout()" class="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-rose-500/20 text-rose-300 text-xs font-semibold border border-rose-500/30"><i data-lucide="log-out" class="w-4 h-4"></i> Logout</button>
-            </div>
-        </aside>
-
-        <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm hidden lg:hidden"></div>
-
-        <!-- Main Content -->
-        <main class="flex-grow overflow-y-auto p-4 sm:p-8 lg:ml-64">
-            
-            <!-- TAB: TEACHERS MANAGEMENT -->
-            <section id="tab-teachers" class="space-y-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Instructors & Faculty Roster</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Manage teachers displayed on the main index page.</p>
-                    </div>
-                    <button onclick="openAddTeacherModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Add New Teacher</button>
-                </div>
-
-                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px]">
-                            <thead>
-                                <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
-                                    <th class="p-4">Photo</th>
-                                    <th class="p-4">Teacher Name</th>
-                                    <th class="p-4">Title / Role</th>
-                                    <th class="p-4">Bio Summary</th>
-                                    <th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="teachers-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
-                        </table>
-                    </div>
-                    <div id="no-teachers" class="hidden p-12 text-center text-gray-400 text-xs">No teachers found in studio roster. Click "Add New Teacher" to add one.</div>
-                </div>
-            </section>
-
-            <!-- TAB: INQUIRIES -->
-            <section id="tab-inquiries" class="hidden space-y-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Class Inquiries & Registrations</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Manage trial class submissions.</p>
-                    </div>
-                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
-                </div>
-
-                <!-- Quick Filter Buttons Bar -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-1">
-                    <span class="text-xs text-gray-400 font-semibold mr-2">Filter:</span>
-                    <button onclick="filterInquiriesTable('all')" id="filter-inq-all" class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Inquiries</button>
-                    <button onclick="filterInquiriesTable('new')" id="filter-inq-new" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">New / Unread</button>
-                    <button onclick="filterInquiriesTable('reviewed')" id="filter-inq-reviewed" class="filter-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Reviewed</button>
-                </div>
-
-                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px]">
-                            <thead>
-                                <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
-                                    <th class="p-4">Status</th><th class="p-4">Date</th><th class="p-4">Name</th><th class="p-4">Contact Info</th><th class="p-4">Dance Style</th><th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="submissions-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
-                        </table>
-                    </div>
-                    <div id="no-data" class="hidden p-12 text-center text-gray-400 text-xs">No matching submissions found.</div>
-                </div>
-            </section>
-
-            <!-- TAB: MERCHANDISE CATALOG -->
-            <section id="tab-merchandise" class="hidden space-y-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Merchandise Available Catalog</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Manage store stock, pricing, and quantities available.</p>
-                    </div>
-                    <button onclick="openAddMerchModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Merchandise</button>
-                </div>
-
-                <!-- Admin Merchandise Index / Live Search & Category Filter Bar -->
-                <div class="space-y-4">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                            <i data-lucide="search" class="w-4 h-4"></i>
-                        </span>
-                        <input type="text" id="merchSearchInput" oninput="handleMerchSearch()" placeholder="Index search: filter catalog by item name, category, or description..." class="w-full pl-11 pr-4 py-3 rounded-2xl glass-panel text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs sm:text-sm shadow-lg">
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs text-gray-400 font-semibold mr-1">Category:</span>
-                        <button onclick="filterAdminMerchCategory('all')" id="admin-cat-all" class="admin-cat-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">All Items</button>
-                        <button onclick="filterAdminMerchCategory('STARS Sweet Treats')" id="admin-cat-STARS Sweet Treats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-amber-400/40 text-amber-300 hover:text-white">🍪 Sweet Treats</button>
-                        <button onclick="filterAdminMerchCategory('Apparel & Hats')" id="admin-cat-Apparel & Hats" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">👕 Apparel & Hats</button>
-                        <button onclick="filterAdminMerchCategory('Food & Snacks')" id="admin-cat-Food & Snacks" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🍿 Food & Snacks</button>
-                        <button onclick="filterAdminMerchCategory('Gear & Accessories')" id="admin-cat-Gear & Accessories" class="admin-cat-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white">🎒 Gear</button>
-                    </div>
-                </div>
-
-                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[750px]">
-                            <thead>
-                                <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
-                                    <th class="p-4">Image</th><th class="p-4">Item Name</th><th class="p-4">Category</th><th class="p-4">Price</th><th class="p-4">Quantity Available</th><th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="merchandise-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
-                        </table>
-                    </div>
-                    <div id="no-merchandise" class="hidden p-12 text-center text-gray-400 text-xs">No merchandise items found matching your search or filter.</div>
-                </div>
-            </section>
-
-            <!-- TAB: STORE ORDERS -->
-            <section id="tab-orders" class="hidden space-y-6">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Customer Store Orders</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Fulfill and manage customer purchases.</p>
-                    </div>
-                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
-                </div>
-                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[750px]">
-                            <thead>
-                                <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
-                                    <th class="p-4">Fulfillment</th><th class="p-4">Order Date</th><th class="p-4">Customer</th><th class="p-4">Items Ordered</th><th class="p-4">Total</th><th class="p-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="orders-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
-                        </table>
-                    </div>
-                    <div id="no-orders" class="hidden p-12 text-center text-gray-400 text-xs">No store orders found.</div>
-                </div>
-            </section>
-
-            <!-- TAB: ANALYTICS OVERVIEW -->
-            <section id="tab-analytics" class="hidden space-y-6">
-                <div class="glass-panel rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Analytics & Metrics Dashboard</h2>
-                        <p class="text-gray-400 text-xs mt-0.5">Click any metric card below to instantly view and manage its corresponding records.</p>
-                    </div>
-                    <button onclick="fetchAllData()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh Metrics</button>
-                </div>
-
-                <!-- Section: Student Inquiries -->
+        <!-- TAB: TEACHERS -->
+        <section id="tab-teachers" class="space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
                 <div>
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Student Inquiry Metrics</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <button onclick="jumpToInquiriesFilter('all')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Inquiries</span>
-                                <i data-lucide="users" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-total-inquiries" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
-                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View all submissions &rarr;</span>
-                        </button>
-                        <button onclick="jumpToInquiriesFilter('new')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">New Unread</span>
-                                <i data-lucide="bell-ring" class="w-5 h-5 text-pink-500 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-unread-inquiries" class="font-heading text-4xl font-extrabold text-pink-500 block mb-1">0</span>
-                            <span class="text-[11px] text-pink-300 flex items-center gap-1">View unread inquiries &rarr;</span>
-                        </button>
-                        <button onclick="jumpToInquiriesFilter('reviewed')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Reviewed</span>
-                                <i data-lucide="check-circle-2" class="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-reviewed-inquiries" class="font-heading text-4xl font-extrabold text-purple-400 block mb-1">0</span>
-                            <span class="text-[11px] text-purple-300 flex items-center gap-1">View reviewed records &rarr;</span>
-                        </button>
-                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Faculty & Teachers Management</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Add, edit, or remove instructor profiles displayed on the homepage.</p>
                 </div>
+                <button onclick="openTeacherModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Instructor</button>
+            </div>
 
-                <!-- Section: Merchandise Store & Orders -->
-                <div class="pt-2">
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Merchandise Store & Sales Metrics</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Total Orders</span>
-                                <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-total-orders" class="font-heading text-4xl font-extrabold text-emerald-400 block mb-1">0</span>
-                            <span class="text-[11px] text-emerald-300 flex items-center gap-1">View customer orders &rarr;</span>
-                        </button>
-                        <button onclick="switchTab('orders')" class="glass-card rounded-3xl p-6 border-purple-500/30 text-left group cursor-pointer w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Pending Fulfillment</span>
-                                <i data-lucide="clock" class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform"></i>
-                            </div>
-                            <span id="stat-pending-orders" class="font-heading text-4xl font-extrabold text-amber-400 block mb-1">0</span>
-                            <span class="text-[11px] text-amber-300 flex items-center gap-1">View pending orders &rarr;</span>
-                        </button>
-                        <div class="glass-card rounded-3xl p-6 border-purple-500/30 text-left">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Gross Revenue</span>
-                                <i data-lucide="dollar-sign" class="w-5 h-5 text-purple-400"></i>
-                            </div>
-                            <span id="stat-gross-revenue" class="font-heading text-4xl font-extrabold text-purple-300 block mb-1">$0.00</span>
-                            <span class="text-[11px] text-gray-400">Total store sales volume</span>
-                        </div>
-                    </div>
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Photo</th>
+                                <th class="p-4">Name</th>
+                                <th class="p-4">Specialty / Role</th>
+                                <th class="p-4">Bio Summary</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachers-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
                 </div>
+                <div id="no-teachers" class="hidden p-12 text-center text-gray-400 text-xs">No instructors added yet.</div>
+            </div>
+        </section>
 
-                <!-- Section: Inventory Stock Status -->
-                <div class="pt-2">
-                    <h3 class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-3 px-1">Catalog Inventory Status</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <button onclick="switchTab('merchandise')" class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between group cursor-pointer w-full text-left">
-                            <div>
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Active Catalog Items</span>
-                                <span id="stat-catalog-items" class="font-heading text-3xl font-extrabold text-white block">0</span>
-                                <span class="text-[11px] text-purple-300 flex items-center gap-1 mt-1">Manage merchandise catalog &rarr;</span>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i data-lucide="package" class="w-6 h-6 text-purple-300"></i>
-                            </div>
-                        </button>
-                        <button onclick="switchTab('merchandise')" class="glass-card rounded-3xl p-6 border-purple-500/30 flex items-center justify-between group cursor-pointer w-full text-left">
-                            <div>
-                                <span class="text-gray-400 text-xs uppercase tracking-wider font-semibold block mb-1">Total Stock Units Available</span>
-                                <span id="stat-total-stock" class="font-heading text-3xl font-extrabold text-amber-400 block">0</span>
-                                <span class="text-[11px] text-amber-300 flex items-center gap-1 mt-1">View stock quantities &rarr;</span>
-                            </div>
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i data-lucide="layers" class="w-6 h-6 text-amber-300"></i>
-                            </div>
-                        </button>
-                    </div>
+        <!-- TAB: INQUIRIES -->
+        <section id="tab-inquiries" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Class Registration Inquiries</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Submissions received from the public registration form on index.html.</p>
                 </div>
-            </section>
+                <button onclick="fetchInquiries()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
+            </div>
 
-            <!-- TAB: SETTINGS -->
-            <section id="tab-settings" class="hidden space-y-6">
-                <div class="glass-panel rounded-2xl p-6">
-                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Portal Settings</h2>
-                    <p class="text-gray-400 text-xs mt-0.5">Manage security and database.</p>
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Date</th>
+                                <th class="p-4">Dancer Name</th>
+                                <th class="p-4">Parent / Guardian</th>
+                                <th class="p-4">Contact Info</th>
+                                <th class="p-4">Style Interest</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inquiries-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
                 </div>
-                <div class="glass-panel rounded-3xl p-6 max-w-xl border-purple-500/30 space-y-4">
-                    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span><span>Connected to Supabase Successfully</span>
-                    </div>
+                <div id="no-inquiries" class="hidden p-12 text-center text-gray-400 text-xs">No class inquiries received yet.</div>
+            </div>
+        </section>
+
+        <!-- TAB: COMMUNITY EVENTS MODERATION -->
+        <section id="tab-community" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Community Events Moderation</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Approve user-submitted events to publish them on the public Community Board.</p>
                 </div>
-            </section>
+                <button onclick="fetchCommunityEvents()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
+            </div>
 
-        </main>
-    </div>
+            <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                <span class="text-xs text-gray-400 font-semibold mr-2">Status Filter:</span>
+                <button onclick="filterCommunityEvents('all')" id="filter-ev-all" class="filter-ev-btn active px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">All Events</button>
+                <button onclick="filterCommunityEvents('pending')" id="filter-ev-pending" class="filter-ev-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Pending Approval</button>
+                <button onclick="filterCommunityEvents('approved')" id="filter-ev-approved" class="filter-ev-btn px-4 py-2 rounded-xl text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Approved</button>
+            </div>
 
-    <!-- Add Teacher Modal -->
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Status</th>
+                                <th class="p-4">Event Date</th>
+                                <th class="p-4">Event Title</th>
+                                <th class="p-4">Organizer & Contact</th>
+                                <th class="p-4">Location</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="events-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
+                </div>
+                <div id="no-admin-events" class="hidden p-12 text-center text-gray-400 text-xs">No community event submissions found matching this filter.</div>
+            </div>
+        </section>
+
+        <!-- TAB: SERVICES MANAGEMENT -->
+        <section id="tab-services" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Consultation Services</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Manage consultation packages displayed on services.html.</p>
+                </div>
+                <button onclick="openServiceModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add New Service
+                </button>
+            </div>
+
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Status</th>
+                                <th class="p-4">Service Title</th>
+                                <th class="p-4">Price / Duration</th>
+                                <th class="p-4">Tagline</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
+                </div>
+                <div id="no-admin-services" class="hidden p-12 text-center text-gray-400 text-xs">No services created yet.</div>
+            </div>
+        </section>
+
+        <!-- TAB: MERCHANDISE -->
+        <section id="tab-merchandise" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel rounded-2xl p-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Studio Store Merchandise</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Manage items available in store.html.</p>
+                </div>
+                <button onclick="openMerchModal()" class="px-4 py-2.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Merchandise</button>
+            </div>
+
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Image</th>
+                                <th class="p-4">Item Name</th>
+                                <th class="p-4">Price</th>
+                                <th class="p-4">Category</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merch-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
+                </div>
+                <div id="no-merch" class="hidden p-12 text-center text-gray-400 text-xs">No store merchandise listed yet.</div>
+            </div>
+        </section>
+
+        <!-- TAB: ORDERS -->
+        <section id="tab-orders" class="hidden space-y-6">
+            <div class="flex items-center justify-between glass-panel rounded-2xl p-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-heading">Store Orders</h2>
+                    <p class="text-gray-400 text-xs mt-0.5">Customer orders placed through the studio store.</p>
+                </div>
+                <button onclick="fetchOrders()" class="px-4 py-2.5 rounded-xl glass-card text-xs font-bold text-amber-300 hover:text-white border-amber-400/40 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh</button>
+            </div>
+
+            <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="border-b border-white/10 text-gray-400 text-[11px] uppercase tracking-wider bg-white/5">
+                                <th class="p-4">Date</th>
+                                <th class="p-4">Customer</th>
+                                <th class="p-4">Items / Total</th>
+                                <th class="p-4">Status</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body" class="divide-y divide-white/5 text-xs text-gray-200"></tbody>
+                    </table>
+                </div>
+                <div id="no-orders" class="hidden p-12 text-center text-gray-400 text-xs">No orders recorded yet.</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals (Instructor, Merchandise, Service) -->
+    <!-- Instructor Modal -->
     <div id="teacher-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl">
-            <button onclick="closeAddTeacherModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Add Faculty / Teacher</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Upload a teacher portrait to feature on the index page.</p>
-            <form onsubmit="handleAddNewTeacher(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Teacher Name</label>
-                    <input type="text" id="teacherName" required placeholder="e.g. Maria Gonzalez" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Title / Specialties</label>
-                    <input type="text" id="teacherTitle" required placeholder="e.g. Lead Ballet & Contemporary Instructor" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Profile Photo File</label>
-                    <input type="file" id="teacherPhotoFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Bio / Background</label>
-                    <textarea id="teacherBio" rows="3" placeholder="Brief background, credentials, and achievements..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm"></textarea>
-                </div>
-                <button type="submit" id="teacher-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save & Add to Main Page</button>
-            </form>
-            <div id="teacher-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Teacher added successfully to main page!</div>
-        </div>
-    </div>
-
-    <!-- Edit Teacher Modal -->
-    <div id="edit-teacher-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
         <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button onclick="closeEditTeacherModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Edit Teacher Details</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Modify instructor information or photo.</p>
-            
-            <form onsubmit="handleEditTeacher(event)" class="space-y-4">
-                <input type="hidden" id="editTeacherId">
-                <input type="hidden" id="editTeacherExistingPhotoUrl">
-
-                <!-- Current Photo Preview -->
+            <button onclick="closeTeacherModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 id="teacher-modal-title" class="text-xl font-bold text-white mb-4 font-heading">Add Instructor</h2>
+            <form onsubmit="handleTeacherSubmit(event)" class="space-y-4">
+                <input type="hidden" id="teacherId">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Current Photo</label>
-                    <div id="editTeacherThumbContainer" class="w-24 h-24 rounded-full bg-purple-900/20 border border-purple-500/30 flex items-center justify-center overflow-hidden cursor-pointer relative group mx-auto">
-                        <!-- Rendered dynamically -->
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Teacher Name</label>
-                    <input type="text" id="editTeacherName" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Instructor Name</label>
+                    <input type="text" id="tName" required placeholder="Full Name" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Title / Specialties</label>
-                    <input type="text" id="editTeacherTitle" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Specialty / Role</label>
+                    <input type="text" id="tSpecialty" required placeholder="e.g. Ballet & Technique Lead" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Replace Photo (Optional)</label>
-                    <input type="file" id="editTeacherPhotoFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Photo Image URL</label>
+                    <input type="url" id="tImage" placeholder="https://images.unsplash.com/..." class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Bio / Background</label>
-                    <textarea id="editTeacherBio" rows="3" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm"></textarea>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Bio Summary</label>
+                    <textarea id="tBio" rows="3" placeholder="Brief background or credentials..." class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs"></textarea>
                 </div>
-                <button type="submit" id="edit-teacher-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Changes</button>
+                <button type="submit" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Instructor</button>
             </form>
-            <div id="edit-teacher-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Teacher profile updated successfully!</div>
         </div>
     </div>
 
-    <!-- Add Merchandise Modal -->
-    <div id="merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl">
-            <button onclick="closeAddMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Add New Merchandise</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Upload a product image and add to inventory.</p>
-            <form onsubmit="handleAddNewMerchandise(event)" class="space-y-4">
+    <!-- Service Modal -->
+    <div id="service-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeServiceModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 id="service-modal-title" class="text-xl font-bold text-white mb-4 font-heading">Add Consultation Service</h2>
+            <form onsubmit="handleServiceSubmit(event)" class="space-y-4">
+                <input type="hidden" id="serviceId">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
-                    <input type="text" id="merchName" required placeholder="e.g. Fresh Baked Cookies" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Service Title</label>
+                    <input type="text" id="svcTitle" required placeholder="e.g. Solo Choreography Review" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
-                    <select id="merchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
-                        <option value="Apparel & Hats">Apparel & Hats</option>
-                        <option value="Food & Snacks">Food & Snacks</option>
-                        <option value="Gear & Accessories">Gear & Accessories</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" step="0.01" id="merchPrice" required placeholder="3.50" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price</label>
+                        <input type="text" id="svcPrice" required placeholder="e.g. $75" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Quantity Available</label>
-                        <input type="number" id="merchQty" value="15" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Duration</label>
+                        <input type="text" id="svcDuration" required placeholder="e.g. 60 Mins" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Product Image File</label>
-                    <input type="file" id="merchImageFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Tagline / Category</label>
+                    <input type="text" id="svcTagline" placeholder="e.g. Private Coaching" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
-                    <input type="text" id="merchDesc" placeholder="Brief description of the item" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
+                    <textarea id="svcDescription" rows="3" required placeholder="Brief summary of what the client gets..." class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs"></textarea>
                 </div>
-                <button type="submit" id="merch-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Upload & Save to Catalog</button>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Features (Comma-separated)</label>
+                    <input type="text" id="svcFeatures" placeholder="Video analysis, Written feedback, Custom warmup" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Booking Payment URL (Optional)</label>
+                    <input type="url" id="svcBookingUrl" placeholder="https://paypal.me/yourlink" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs">
+                </div>
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="svcActive" checked class="rounded bg-white/5 border-white/10 text-amber-400 focus:ring-amber-400">
+                    <label for="svcActive" class="text-xs text-gray-300">Active / Visible on public site</label>
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Service</button>
             </form>
-            <div id="merch-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Merchandise item uploaded successfully!</div>
         </div>
     </div>
 
-    <!-- Edit Merchandise Modal -->
-    <div id="edit-merch-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-        <div class="max-w-md w-full glass-panel rounded-3xl p-6 sm:p-8 border-purple-500/30 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button onclick="closeEditMerchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold text-white mb-1 font-heading">Edit Merchandise Item</h2>
-            <p class="text-amber-400 text-xs font-semibold mb-4">Click current picture below to preview full size.</p>
-            
-            <form onsubmit="handleEditMerchandise(event)" class="space-y-4">
-                <input type="hidden" id="editMerchId">
-                <input type="hidden" id="editMerchExistingImageUrl">
-
-                <!-- Current Picture Preview Thumbnail -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Current Product Image</label>
-                    <div id="editMerchThumbContainer" class="w-full h-32 rounded-2xl bg-purple-900/20 border border-purple-500/30 flex items-center justify-center overflow-hidden cursor-pointer relative group">
-                        <!-- Rendered dynamically -->
-                    </div>
-                    <span class="text-[10px] text-gray-400 mt-1 block">Click image to preview fullscreen</span>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Item Name</label>
-                    <input type="text" id="editMerchName" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
-                    <select id="editMerchCategory" required class="w-full px-4 py-3 rounded-xl bg-[#0B0813] border border-white/10 text-white focus:outline-none focus:border-amber-400 text-sm">
-                        <option value="STARS Sweet Treats">🍪 STARS Sweet Treats</option>
-                        <option value="Apparel & Hats">Apparel & Hats</option>
-                        <option value="Food & Snacks">Food & Snacks</option>
-                        <option value="Gear & Accessories">Gear & Accessories</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Price ($)</label>
-                        <input type="number" step="0.01" id="editMerchPrice" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Quantity Available</label>
-                        <input type="number" id="editMerchQty" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Replace Image (Optional)</label>
-                    <input type="file" id="editMerchImageFile" accept="image/*" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
-                    <input type="text" id="editMerchDesc" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 text-sm">
-                </div>
-                <button type="submit" id="edit-merch-submit-btn" class="w-full py-3.5 rounded-xl gradient-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg">Save Changes</button>
-            </form>
-            <div id="edit-merch-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-medium border border-emerald-500/30 text-center">✨ Merchandise item updated successfully!</div>
-        </div>
-    </div>
-
-    <!-- Fullscreen Image Preview Lightbox -->
-    <div id="image-preview-modal" class="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden" onclick="closeImagePreview()">
-        <div class="relative max-w-4xl max-h-[90vh] p-2" onclick="event.stopPropagation()">
-            <button onclick="closeImagePreview()" class="absolute -top-10 right-0 text-white bg-white/10 p-2 rounded-full hover:bg-white/20"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <img id="preview-modal-img" src="" alt="Full Preview" class="max-w-full max-h-[85vh] rounded-2xl object-contain border border-white/20 shadow-2xl">
-        </div>
-    </div>
-
+    <!-- Script Logic -->
     <script>
         let _supabase = null;
         let allTeachers = [];
-        let allSubmissions = [];
-        let allMerchandise = [];
+        let allInquiries = [];
+        let allCommunityEvents = [];
+        let allServices = [];
+        let allMerch = [];
         let allOrders = [];
-        let currentInquiryFilter = 'all';
-        let currentAdminMerchCategory = 'all';
-        let merchSearchQuery = '';
-        const ADMIN_SECRET = 'DanceStar2026!';
+        let currentEventFilter = 'all';
 
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             if (window.SUPABASE_CONFIG) {
-                _supabase = supabase.createClient(window.SUPABASE_CONFIG.URL, window.SUPABASE_CONFIG.ANON_KEY);
-            }
-            if (sessionStorage.getItem('cvs_admin_logged_in') === 'true') {
-                showApp();
+                const sbUrl = window.SUPABASE_CONFIG.URL || window.SUPABASE_CONFIG.url;
+                const sbKey = window.SUPABASE_CONFIG.ANON_KEY || window.SUPABASE_CONFIG.anonKey;
+                if (sbUrl && sbKey) {
+                    _supabase = supabase.createClient(sbUrl, sbKey);
+                    fetchAllData();
+                }
             }
         });
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('adminPassword').value;
-            if (pass === ADMIN_SECRET) {
-                sessionStorage.setItem('cvs_admin_logged_in', 'true');
-                showApp();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
-        }
-
-        function showApp() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('hidden');
-            fetchAllData();
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('cvs_admin_logged_in');
-            location.reload();
-        }
-
-        function toggleMobileSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebar-backdrop').classList.toggle('hidden');
-        }
-
         function switchTab(tabName) {
-            var tabs = ['teachers', 'inquiries', 'merchandise', 'orders', 'analytics', 'settings'];
-            for (var i = 0; i < tabs.length; i++) {
-                var t = tabs[i];
-                var tabElem = document.getElementById('tab-' + t);
-                var navElem = document.getElementById('nav-' + t);
-                if (tabElem) tabElem.classList.add('hidden');
-                if (navElem) navElem.classList.remove('active');
-            }
-            var activeTab = document.getElementById('tab-' + tabName);
-            var activeNav = document.getElementById('nav-' + tabName);
-            if (activeTab) activeTab.classList.remove('hidden');
+            const tabs = ['teachers', 'inquiries', 'community', 'services', 'merchandise', 'orders'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                const nav = document.getElementById(`nav-${t}`);
+                if (section) section.classList.add('hidden');
+                if (nav) nav.classList.remove('active');
+            });
+
+            const activeSection = document.getElementById(`tab-${tabName}`);
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeSection) activeSection.classList.remove('hidden');
             if (activeNav) activeNav.classList.add('active');
-            if (window.innerWidth < 1024) toggleMobileSidebar();
-        }
-
-        function openAddTeacherModal() {
-            document.getElementById('teacher-modal').classList.remove('hidden');
-            document.getElementById('teacher-success').classList.add('hidden');
-        }
-
-        function closeAddTeacherModal() {
-            document.getElementById('teacher-modal').classList.add('hidden');
-        }
-
-        function openEditTeacherModal(id) {
-            var teacher = null;
-            for (var i = 0; i < allTeachers.length; i++) {
-                if (allTeachers[i].id === id) {
-                    teacher = allTeachers[i];
-                    break;
-                }
-            }
-            if (!teacher) return;
-
-            document.getElementById('editTeacherId').value = teacher.id;
-            document.getElementById('editTeacherName').value = teacher.name;
-            document.getElementById('editTeacherTitle').value = teacher.title;
-            document.getElementById('editTeacherBio').value = teacher.bio || '';
-            document.getElementById('editTeacherExistingPhotoUrl').value = teacher.photo_url || '';
-            document.getElementById('editTeacherPhotoFile').value = '';
-            document.getElementById('edit-teacher-success').classList.add('hidden');
-
-            var thumbContainer = document.getElementById('editTeacherThumbContainer');
-            if (teacher.photo_url && teacher.photo_url.trim() !== '') {
-                thumbContainer.innerHTML = '<img src="' + teacher.photo_url + '" alt="' + teacher.name + '" class="w-full h-full object-cover rounded-full group-hover:opacity-90 transition-opacity" onclick="openImagePreview(\'' + teacher.photo_url + '\')">' +
-                                           '<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-full pointer-events-none text-white text-xs"><i data-lucide="maximize-2" class="w-4 h-4"></i></div>';
-            } else {
-                thumbContainer.innerHTML = '<div class="text-center text-gray-400 text-xs flex flex-col items-center justify-center"><i data-lucide="user" class="w-6 h-6 text-gray-500"></i></div>';
-            }
-
-            document.getElementById('edit-teacher-modal').classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        function closeEditTeacherModal() {
-            document.getElementById('edit-teacher-modal').classList.add('hidden');
-        }
-
-        function openAddMerchModal() {
-            document.getElementById('merch-modal').classList.remove('hidden');
-            document.getElementById('merch-success').classList.add('hidden');
-        }
-
-        function closeAddMerchModal() {
-            document.getElementById('merch-modal').classList.add('hidden');
-        }
-
-        function openEditMerchModal(id) {
-            var item = null;
-            for (var i = 0; i < allMerchandise.length; i++) {
-                if (allMerchandise[i].id === id) {
-                    item = allMerchandise[i];
-                    break;
-                }
-            }
-            if (!item) return;
-
-            document.getElementById('editMerchId').value = item.id;
-            document.getElementById('editMerchName').value = item.name;
-            document.getElementById('editMerchCategory').value = item.category;
-            document.getElementById('editMerchPrice').value = item.price;
-            document.getElementById('editMerchQty').value = item.quantity_available;
-            document.getElementById('editMerchDesc').value = item.description || '';
-            document.getElementById('editMerchExistingImageUrl').value = item.image_url || '';
-            document.getElementById('editMerchImageFile').value = '';
-            document.getElementById('edit-merch-success').classList.add('hidden');
-
-            var thumbContainer = document.getElementById('editMerchThumbContainer');
-            if (item.image_url && item.image_url.trim() !== '') {
-                thumbContainer.innerHTML = '<img src="' + item.image_url + '" alt="' + item.name + '" class="w-full h-full object-cover rounded-2xl group-hover:opacity-90 transition-opacity" onclick="openImagePreview(\'' + item.image_url + '\')">' +
-                                           '<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl pointer-events-none text-white text-xs font-semibold gap-1"><i data-lucide="maximize-2" class="w-4 h-4"></i> Click to preview</div>';
-            } else {
-                thumbContainer.innerHTML = '<div class="text-center text-gray-400 text-xs flex flex-col items-center gap-1"><i data-lucide="image-off" class="w-6 h-6 text-gray-500"></i><span>No image uploaded</span></div>';
-            }
-
-            document.getElementById('edit-merch-modal').classList.remove('hidden');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        function closeEditMerchModal() {
-            document.getElementById('edit-merch-modal').classList.add('hidden');
-        }
-
-        function openImagePreview(url) {
-            document.getElementById('preview-modal-img').src = url;
-            document.getElementById('image-preview-modal').classList.remove('hidden');
-        }
-
-        function closeImagePreview() {
-            document.getElementById('image-preview-modal').classList.add('hidden');
         }
 
         async function fetchAllData() {
             await Promise.all([
                 fetchTeachers(),
-                fetchSubmissions(),
-                fetchMerchandiseCatalog(),
-                fetchStoreOrders()
+                fetchInquiries(),
+                fetchCommunityEvents(),
+                fetchServices(),
+                fetchMerch(),
+                fetchOrders()
             ]);
-            updateAnalyticsDashboard();
         }
 
-        /* --- TEACHERS MANAGEMENT --- */
+        // --- TEACHERS ---
         async function fetchTeachers() {
-            const response = await _supabase.from('cvs_teachers').select('*').order('created_at', { ascending: false });
-            allTeachers = response.data || [];
-            
+            try {
+                const { data } = await _supabase.from('cvs_teachers').select('*').order('created_at', { ascending: true });
+                allTeachers = data || [];
+                renderTeachersTable();
+            } catch (err) { console.error(err); }
+        }
+
+        function renderTeachersTable() {
             const tbody = document.getElementById('teachers-table-body');
-            const noTeachers = document.getElementById('no-teachers');
+            const noEl = document.getElementById('no-teachers');
+            if (!tbody) return;
 
             if (allTeachers.length === 0) {
                 tbody.innerHTML = '';
-                noTeachers.classList.remove('hidden');
+                if (noEl) noEl.classList.remove('hidden');
                 return;
             }
+            if (noEl) noEl.classList.add('hidden');
 
-            noTeachers.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < allTeachers.length; i++) {
-                var t = allTeachers[i];
-                var photoThumb = '<div class="w-10 h-10 rounded-full bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="user" class="w-5 h-5"></i></div>';
-                if (t.photo_url) {
-                    photoThumb = '<img src="' + t.photo_url + '" alt="' + t.name + '" class="w-10 h-10 rounded-full object-cover border border-white/10 cursor-pointer hover:opacity-80 transition-opacity" onclick="openImagePreview(\'' + t.photo_url + '\')">';
-                }
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4">' + photoThumb + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + t.name + '</td>' +
-                    '<td class="p-4 text-purple-300">' + t.title + '</td>' +
-                    '<td class="p-4 text-gray-300 max-w-xs truncate">' + (t.bio || 'N/A') + '</td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="openEditTeacherModal(\'' + t.id + '\')" class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-semibold">Edit</button>' +
-                        '<button onclick="deleteTeacher(\'' + t.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Remove</button>' +
-                    '</td>' +
-                    '</tr>';
+            let html = '';
+            for (let i = 0; i < allTeachers.length; i++) {
+                const t = allTeachers[i];
+                const img = t.image_url || t.photo_url;
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4">${img ? `<img src="${img}" class="w-10 h-10 object-cover rounded-lg">` : '<div class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center"><i data-lucide="user" class="w-4 h-4"></i></div>'}</td>
+                        <td class="p-4 font-bold text-white">${t.name}</td>
+                        <td class="p-4 text-amber-300">${t.specialty || 'Instructor'}</td>
+                        <td class="p-4 text-gray-300 truncate max-w-xs">${t.bio || 'N/A'}</td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="editTeacher('${t.id}')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">Edit</button>
+                            <button onclick="deleteTeacher('${t.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>
+                        </td>
+                    </tr>
+                `;
             }
             tbody.innerHTML = html;
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        async function handleAddNewTeacher(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('teacher-submit-btn');
-            const successBox = document.getElementById('teacher-success');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Uploading Photo & Saving...';
-
-            const name = document.getElementById('teacherName').value.trim();
-            const title = document.getElementById('teacherTitle').value.trim();
-            const bio = document.getElementById('teacherBio').value.trim();
-            const fileInput = document.getElementById('teacherPhotoFile');
-
-            let photoUrl = '';
-
-            try {
-                if (fileInput.files && fileInput.files[0]) {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
-
-                    const { error: uploadError } = await _supabase.storage
-                        .from('teacher-photos')
-                        .upload(fileName, file);
-
-                    if (uploadError) throw uploadError;
-
-                    const { data: publicUrlData } = _supabase.storage
-                        .from('teacher-photos')
-                        .getPublicUrl(fileName);
-
-                    photoUrl = publicUrlData.publicUrl;
-                }
-
-                const newTeacher = { name: name, title: title, bio: bio, photo_url: photoUrl };
-                const { error: insertError } = await _supabase.from('cvs_teachers').insert([newTeacher]);
-                if (insertError) throw insertError;
-
-                successBox.classList.remove('hidden');
-                e.target.reset();
-                fetchTeachers();
-                setTimeout(function() { closeAddTeacherModal(); successBox.classList.add('hidden'); }, 1500);
-
-            } catch (err) {
-                console.error('Error adding teacher:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Save & Add to Main Page';
-            }
+        function openTeacherModal() {
+            document.getElementById('teacherId').value = '';
+            document.getElementById('tName').value = '';
+            document.getElementById('tSpecialty').value = '';
+            document.getElementById('tImage').value = '';
+            document.getElementById('tBio').value = '';
+            document.getElementById('teacher-modal-title').innerText = 'Add Instructor';
+            document.getElementById('teacher-modal').classList.remove('hidden');
         }
 
-        async function handleEditTeacher(e) {
+        function closeTeacherModal() { document.getElementById('teacher-modal').classList.add('hidden'); }
+
+        function editTeacher(id) {
+            const t = allTeachers.find(item => item.id === id);
+            if (!t) return;
+            document.getElementById('teacherId').value = t.id;
+            document.getElementById('tName').value = t.name;
+            document.getElementById('tSpecialty').value = t.specialty || '';
+            document.getElementById('tImage').value = t.image_url || t.photo_url || '';
+            document.getElementById('tBio').value = t.bio || '';
+            document.getElementById('teacher-modal-title').innerText = 'Edit Instructor';
+            document.getElementById('teacher-modal').classList.remove('hidden');
+        }
+
+        async function handleTeacherSubmit(e) {
             e.preventDefault();
-            const submitBtn = document.getElementById('edit-teacher-submit-btn');
-            const successBox = document.getElementById('edit-teacher-success');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Updating Teacher...';
-
-            const id = document.getElementById('editTeacherId').value;
-            const name = document.getElementById('editTeacherName').value.trim();
-            const title = document.getElementById('editTeacherTitle').value.trim();
-            const bio = document.getElementById('editTeacherBio').value.trim();
-            const fileInput = document.getElementById('editTeacherPhotoFile');
-            let photoUrl = document.getElementById('editTeacherExistingPhotoUrl').value;
-
+            const id = document.getElementById('teacherId').value;
+            const record = {
+                name: document.getElementById('tName').value.trim(),
+                specialty: document.getElementById('tSpecialty').value.trim(),
+                image_url: document.getElementById('tImage').value.trim(),
+                bio: document.getElementById('tBio').value.trim()
+            };
             try {
-                if (fileInput.files && fileInput.files[0]) {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
-
-                    const { error: uploadError } = await _supabase.storage
-                        .from('teacher-photos')
-                        .upload(fileName, file);
-
-                    if (uploadError) throw uploadError;
-
-                    const { data: publicUrlData } = _supabase.storage
-                        .from('teacher-photos')
-                        .getPublicUrl(fileName);
-
-                    photoUrl = publicUrlData.publicUrl;
+                if (id) {
+                    await _supabase.from('cvs_teachers').update(record).eq('id', id);
+                } else {
+                    await _supabase.from('cvs_teachers').insert([record]);
                 }
-
-                const updatedTeacher = { name: name, title: title, bio: bio, photo_url: photoUrl };
-                const { error: updateError } = await _supabase.from('cvs_teachers').update(updatedTeacher).eq('id', id);
-                if (updateError) throw updateError;
-
-                successBox.classList.remove('hidden');
+                closeTeacherModal();
                 fetchTeachers();
-                setTimeout(function() { closeEditTeacherModal(); successBox.classList.add('hidden'); }, 1500);
-
-            } catch (err) {
-                console.error('Error updating teacher:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Save Changes';
-            }
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
         async function deleteTeacher(id) {
-            if (!confirm('Remove teacher from the index page faculty roster?')) return;
-            await _supabase.from('cvs_teachers').delete().eq('id', id);
-            fetchTeachers();
-        }
-
-        /* --- CLASS INQUIRIES MANAGEMENT --- */
-        async function fetchSubmissions() {
+            if (!confirm('Delete this instructor?')) return;
             try {
-                const response = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
-                allSubmissions = response.data || [];
-                renderSubmissionsTable();
-            } catch (err) {
-                console.error('Error fetching submissions:', err);
-            }
+                await _supabase.from('cvs_teachers').delete().eq('id', id);
+                fetchTeachers();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        function jumpToInquiriesFilter(filterType) {
-            currentInquiryFilter = filterType;
-            var buttons = document.querySelectorAll('.filter-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var targetBtn = document.getElementById('filter-inq-' + filterType);
-            if (targetBtn) targetBtn.classList.add('active');
-            switchTab('inquiries');
-            renderSubmissionsTable();
+        // --- INQUIRIES ---
+        async function fetchInquiries() {
+            try {
+                const { data } = await _supabase.from('cvs_dance_submissions').select('*').order('created_at', { ascending: false });
+                allInquiries = data || [];
+                renderInquiriesTable();
+            } catch (err) { console.error(err); }
         }
 
-        function filterInquiriesTable(filterType) {
-            currentInquiryFilter = filterType;
-            var buttons = document.querySelectorAll('.filter-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var targetBtn = document.getElementById('filter-inq-' + filterType);
-            if (targetBtn) targetBtn.classList.add('active');
-            renderSubmissionsTable();
-        }
-
-        function renderSubmissionsTable() {
-            const tbody = document.getElementById('submissions-table-body');
-            const noData = document.getElementById('no-data');
-
+        function renderInquiriesTable() {
+            const tbody = document.getElementById('inquiries-table-body');
+            const noEl = document.getElementById('no-inquiries');
             if (!tbody) return;
 
-            var filtered = allSubmissions;
-            if (currentInquiryFilter === 'new') {
-                filtered = allSubmissions.filter(function(s) { return !s.read; });
-            } else if (currentInquiryFilter === 'reviewed') {
-                filtered = allSubmissions.filter(function(s) { return s.read; });
+            if (allInquiries.length === 0) {
+                tbody.innerHTML = '';
+                if (noEl) noEl.classList.remove('hidden');
+                return;
             }
+            if (noEl) noEl.classList.add('hidden');
+
+            let html = '';
+            for (let i = 0; i < allInquiries.length; i++) {
+                const inq = allInquiries[i];
+                const dateStr = inq.created_at ? new Date(inq.created_at).toLocaleDateString() : 'N/A';
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4 text-gray-400 font-mono">${dateStr}</td>
+                        <td class="p-4 font-bold text-white">${inq.student_name}</td>
+                        <td class="p-4 text-gray-300">${inq.parent_name}</td>
+                        <td class="p-4 text-gray-300"><span class="block">${inq.email}</span><span class="text-[10px] text-gray-400">${inq.phone}</span></td>
+                        <td class="p-4 text-amber-300">${inq.dance_style || 'General'}</td>
+                        <td class="p-4 text-right"><button onclick="deleteInquiry('${inq.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button></td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+        }
+
+        async function deleteInquiry(id) {
+            if (!confirm('Delete this inquiry?')) return;
+            try {
+                await _supabase.from('cvs_dance_submissions').delete().eq('id', id);
+                fetchInquiries();
+            } catch (err) { alert('Error: ' + err.message); }
+        }
+
+        // --- COMMUNITY EVENTS ---
+        async function fetchCommunityEvents() {
+            try {
+                const { data } = await _supabase.from('cvs_community_events').select('*').order('created_at', { ascending: false });
+                allCommunityEvents = data || [];
+                renderCommunityEventsTable();
+            } catch (err) { console.error(err); }
+        }
+
+        function filterCommunityEvents(status) {
+            currentEventFilter = status;
+            document.querySelectorAll('.filter-ev-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById(`filter-ev-${status}`);
+            if (btn) btn.classList.add('active');
+            renderCommunityEventsTable();
+        }
+
+        function renderCommunityEventsTable() {
+            const tbody = document.getElementById('events-table-body');
+            const noEl = document.getElementById('no-admin-events');
+            if (!tbody) return;
+
+            let filtered = allCommunityEvents;
+            if (currentEventFilter === 'pending') filtered = allCommunityEvents.filter(e => !e.approved);
+            if (currentEventFilter === 'approved') filtered = allCommunityEvents.filter(e => e.approved);
 
             if (filtered.length === 0) {
                 tbody.innerHTML = '';
-                if (noData) noData.classList.remove('hidden');
+                if (noEl) noEl.classList.remove('hidden');
                 return;
             }
+            if (noEl) noEl.classList.add('hidden');
 
-            if (noData) noData.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < filtered.length; i++) {
-                var s = filtered[i];
-                var statusClass = s.read ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
-                var statusText = s.read ? 'Reviewed' : 'New';
-                var dateStr = s.created_at ? new Date(s.created_at).toLocaleDateString() : 'N/A';
-                var fullName = (s.first_name || '') + ' ' + (s.last_name || '');
-                var contact = (s.email || '') + (s.phone ? ' | ' + s.phone : '');
-                var btnText = s.read ? 'Mark New' : 'Mark Read';
-
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ' + statusClass + '">' + statusText + '</span></td>' +
-                    '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + fullName + '</td>' +
-                    '<td class="p-4 text-gray-300">' + contact + '</td>' +
-                    '<td class="p-4 text-purple-300">' + (s.dance_type || 'N/A') + '</td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="toggleReadStatus(\'' + s.id + '\', ' + s.read + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
-                        '<button onclick="deleteSub(\'' + s.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
-                    '</td></tr>';
+            let html = '';
+            for (let i = 0; i < filtered.length; i++) {
+                const ev = filtered[i];
+                const statusClass = ev.approved ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
+                const toggleClass = ev.approved ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300';
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${statusClass}">${ev.approved ? 'Approved' : 'Pending'}</span></td>
+                        <td class="p-4 font-mono text-gray-400">${ev.event_date || 'N/A'}</td>
+                        <td class="p-4 font-bold text-white">${ev.event_title}</td>
+                        <td class="p-4 text-gray-300"><span class="block font-semibold">${ev.organizer_name}</span><span class="text-[10px] text-gray-400">${ev.contact_email}</span></td>
+                        <td class="p-4 text-purple-300">${ev.event_location}</td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="toggleEventApproval('${ev.id}', ${ev.approved})" class="px-3 py-1 rounded ${toggleClass} text-xs font-bold">${ev.approved ? 'Unapprove' : 'Approve'}</button>
+                            <button onclick="deleteCommunityEvent('${ev.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>
+                        </td>
+                    </tr>
+                `;
             }
             tbody.innerHTML = html;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        async function toggleReadStatus(id, curr) {
-            await _supabase.from('cvs_dance_submissions').update({ read: !curr }).eq('id', id);
-            fetchSubmissions();
-            updateAnalyticsDashboard();
+        async function toggleEventApproval(id, status) {
+            try {
+                await _supabase.from('cvs_community_events').update({ approved: !status }).eq('id', id);
+                fetchCommunityEvents();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        async function deleteSub(id) {
-            if (!confirm('Delete inquiry?')) return;
-            await _supabase.from('cvs_dance_submissions').delete().eq('id', id);
-            fetchSubmissions();
-            updateAnalyticsDashboard();
+        async function deleteCommunityEvent(id) {
+            if (!confirm('Delete this community event submission?')) return;
+            try {
+                await _supabase.from('cvs_community_events').delete().eq('id', id);
+                fetchCommunityEvents();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        /* --- MERCHANDISE CATALOG MANAGEMENT --- */
-        async function fetchMerchandiseCatalog() {
-            const response = await _supabase.from('cvs_merchandise').select('*').order('name');
-            allMerchandise = response.data || [];
-            renderMerchandiseCatalogTable();
+        // --- SERVICES ---
+        async function fetchServices() {
+            try {
+                const { data } = await _supabase.from('cvs_services').select('*').order('created_at', { ascending: false });
+                allServices = data || [];
+                renderServicesTable();
+            } catch (err) { console.error(err); }
         }
 
-        function filterAdminMerchCategory(category) {
-            currentAdminMerchCategory = category;
-            var buttons = document.querySelectorAll('.admin-cat-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            var targetBtn = document.getElementById('admin-cat-' + category);
-            if (targetBtn) targetBtn.classList.add('active');
-            renderMerchandiseCatalogTable();
-        }
+        function renderServicesTable() {
+            const tbody = document.getElementById('services-table-body');
+            const noEl = document.getElementById('no-admin-services');
+            if (!tbody) return;
 
-        function handleMerchSearch() {
-            merchSearchQuery = document.getElementById('merchSearchInput').value.toLowerCase().trim();
-            renderMerchandiseCatalogTable();
-        }
-
-        function renderMerchandiseCatalogTable() {
-            const tbody = document.getElementById('merchandise-table-body');
-            const noMerch = document.getElementById('no-merchandise');
-
-            var filtered = allMerchandise;
-            if (currentAdminMerchCategory !== 'all') {
-                filtered = filtered.filter(function(m) { return m.category === currentAdminMerchCategory; });
-            }
-            if (merchSearchQuery !== '') {
-                filtered = filtered.filter(function(m) {
-                    return (m.name && m.name.toLowerCase().includes(merchSearchQuery)) ||
-                           (m.description && m.description.toLowerCase().includes(merchSearchQuery)) ||
-                           (m.category && m.category.toLowerCase().includes(merchSearchQuery));
-                });
-            }
-
-            if (filtered.length === 0) {
+            if (allServices.length === 0) {
                 tbody.innerHTML = '';
-                noMerch.classList.remove('hidden');
+                if (noEl) noEl.classList.remove('hidden');
                 return;
             }
+            if (noEl) noEl.classList.add('hidden');
 
-            noMerch.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < filtered.length; i++) {
-                var m = filtered[i];
-                var imgThumb = '<div class="w-10 h-10 rounded-lg bg-purple-900/30 flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-5 h-5"></i></div>';
-                if (m.image_url) {
-                    imgThumb = '<img src="' + m.image_url + '" alt="' + m.name + '" class="w-10 h-10 rounded-lg object-cover border border-white/10 cursor-pointer hover:opacity-80 transition-opacity" onclick="openImagePreview(\'' + m.image_url + '\')">';
-                }
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4">' + imgThumb + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + m.name + '</td>' +
-                    '<td class="p-4 text-purple-300">' + m.category + '</td>' +
-                    '<td class="p-4 text-amber-300">$' + Number(m.price).toFixed(2) + '</td>' +
-                    '<td class="p-4"><input type="number" min="0" value="' + m.quantity_available + '" onchange="updateQty(\'' + m.id + '\', this.value)" class="w-20 px-2 py-1 rounded bg-white/5 border border-white/10 text-white text-xs"></td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="openEditMerchModal(\'' + m.id + '\')" class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 text-xs font-semibold">Edit</button>' +
-                        '<button onclick="deleteMerch(\'' + m.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
-                    '</td>' +
-                    '</tr>';
+            let html = '';
+            for (let i = 0; i < allServices.length; i++) {
+                const s = allServices[i];
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${s.active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">${s.active ? 'Active' : 'Hidden'}</span></td>
+                        <td class="p-4 font-bold text-white">${s.title}</td>
+                        <td class="p-4 text-amber-300">${s.price} <span class="text-gray-400 text-[10px]">(${s.duration})</span></td>
+                        <td class="p-4 text-gray-300">${s.tagline || 'N/A'}</td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="editService('${s.id}')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">Edit</button>
+                            <button onclick="deleteService('${s.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>
+                        </td>
+                    </tr>
+                `;
             }
             tbody.innerHTML = html;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        async function handleAddNewMerchandise(e) {
+        function openServiceModal() {
+            document.getElementById('serviceId').value = '';
+            document.getElementById('svcTitle').value = '';
+            document.getElementById('svcPrice').value = '';
+            document.getElementById('svcDuration').value = '';
+            document.getElementById('svcTagline').value = '';
+            document.getElementById('svcDescription').value = '';
+            document.getElementById('svcFeatures').value = '';
+            document.getElementById('svcBookingUrl').value = '';
+            document.getElementById('svcActive').checked = true;
+            document.getElementById('service-modal-title').innerText = 'Add Consultation Service';
+            document.getElementById('service-modal').classList.remove('hidden');
+        }
+
+        function closeServiceModal() { document.getElementById('service-modal').classList.add('hidden'); }
+
+        function editService(id) {
+            const s = allServices.find(item => item.id === id);
+            if (!s) return;
+            document.getElementById('serviceId').value = s.id;
+            document.getElementById('svcTitle').value = s.title;
+            document.getElementById('svcPrice').value = s.price;
+            document.getElementById('svcDuration').value = s.duration;
+            document.getElementById('svcTagline').value = s.tagline || '';
+            document.getElementById('svcDescription').value = s.description;
+            document.getElementById('svcFeatures').value = (s.features || []).join(', ');
+            document.getElementById('svcBookingUrl').value = s.booking_url || '';
+            document.getElementById('svcActive').checked = s.active;
+            document.getElementById('service-modal-title').innerText = 'Edit Consultation Service';
+            document.getElementById('service-modal').classList.remove('hidden');
+        }
+
+        async function handleServiceSubmit(e) {
             e.preventDefault();
-            const submitBtn = document.getElementById('merch-submit-btn');
-            const successBox = document.getElementById('merch-success');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Uploading Image & Saving...';
-
-            const name = document.getElementById('merchName').value.trim();
-            const category = document.getElementById('merchCategory').value;
-            const price = parseFloat(document.getElementById('merchPrice').value);
-            const quantity_available = parseInt(document.getElementById('merchQty').value);
-            const description = document.getElementById('merchDesc').value.trim();
-            const fileInput = document.getElementById('merchImageFile');
-
-            let imageUrl = '';
-
+            const id = document.getElementById('serviceId').value;
+            const featuresArr = document.getElementById('svcFeatures').value.split(',').map(f => f.trim()).filter(Boolean);
+            const record = {
+                title: document.getElementById('svcTitle').value.trim(),
+                price: document.getElementById('svcPrice').value.trim(),
+                duration: document.getElementById('svcDuration').value.trim(),
+                tagline: document.getElementById('svcTagline').value.trim(),
+                description: document.getElementById('svcDescription').value.trim(),
+                features: featuresArr,
+                booking_url: document.getElementById('svcBookingUrl').value.trim() || null,
+                active: document.getElementById('svcActive').checked
+            };
             try {
-                if (fileInput.files && fileInput.files[0]) {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
-
-                    const { error: uploadError } = await _supabase.storage.from('merchandise-images').upload(fileName, file);
-                    if (uploadError) throw uploadError;
-
-                    const { data: publicUrlData } = _supabase.storage.from('merchandise-images').getPublicUrl(fileName);
-                    imageUrl = publicUrlData.publicUrl;
+                if (id) {
+                    await _supabase.from('cvs_services').update(record).eq('id', id);
+                } else {
+                    await _supabase.from('cvs_services').insert([record]);
                 }
-
-                const newItem = { name: name, category: category, price: price, quantity_available: quantity_available, description: description, image_url: imageUrl };
-                const { error: insertError } = await _supabase.from('cvs_merchandise').insert([newItem]);
-                if (insertError) throw insertError;
-
-                successBox.classList.remove('hidden');
-                e.target.reset();
-                fetchMerchandiseCatalog();
-                setTimeout(function() { closeAddMerchModal(); successBox.classList.add('hidden'); }, 1500);
-
-            } catch (err) {
-                console.error('Error adding merchandise:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Upload & Save to Catalog';
-            }
+                closeServiceModal();
+                fetchServices();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        async function handleEditMerchandise(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('edit-merch-submit-btn');
-            const successBox = document.getElementById('edit-merch-success');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Updating Catalog...';
-
-            const id = document.getElementById('editMerchId').value;
-            const name = document.getElementById('editMerchName').value.trim();
-            const category = document.getElementById('editMerchCategory').value;
-            const price = parseFloat(document.getElementById('editMerchPrice').value);
-            const quantity_available = parseInt(document.getElementById('editMerchQty').value);
-            const description = document.getElementById('editMerchDesc').value.trim();
-            const fileInput = document.getElementById('editMerchImageFile');
-            let imageUrl = document.getElementById('editMerchExistingImageUrl').value;
-
+        async function deleteService(id) {
+            if (!confirm('Delete this service?')) return;
             try {
-                if (fileInput.files && fileInput.files[0]) {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 9) + '.' + fileExt;
-
-                    const { error: uploadError } = await _supabase.storage.from('merchandise-images').upload(fileName, file);
-                    if (uploadError) throw uploadError;
-
-                    const { data: publicUrlData } = _supabase.storage.from('merchandise-images').getPublicUrl(fileName);
-                    imageUrl = publicUrlData.publicUrl;
-                }
-
-                const updatedItem = { name: name, category: category, price: price, quantity_available: quantity_available, description: description, image_url: imageUrl };
-                const { error: updateError } = await _supabase.from('cvs_merchandise').update(updatedItem).eq('id', id);
-                if (updateError) throw updateError;
-
-                successBox.classList.remove('hidden');
-                fetchMerchandiseCatalog();
-                setTimeout(function() { closeEditMerchModal(); successBox.classList.add('hidden'); }, 1500);
-
-            } catch (err) {
-                console.error('Error updating merchandise:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Save Changes';
-            }
+                await _supabase.from('cvs_services').delete().eq('id', id);
+                fetchServices();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        async function updateQty(id, newQty) {
-            await _supabase.from('cvs_merchandise').update({ quantity_available: parseInt(newQty) }).eq('id', id);
-            var item = allMerchandise.find(function(m) { return m.id === id; });
-            if (item) item.quantity_available = parseInt(newQty);
-            updateAnalyticsDashboard();
+        // --- MERCHANDISE & ORDERS ---
+        async function fetchMerch() {
+            try {
+                const { data } = await _supabase.from('cvs_merchandise').select('*').order('created_at', { ascending: false });
+                allMerch = data || [];
+                renderMerchTable();
+            } catch (err) { console.error(err); }
+        }
+
+        function renderMerchTable() {
+            const tbody = document.getElementById('merch-table-body');
+            const noEl = document.getElementById('no-merch');
+            if (!tbody) return;
+            if (allMerch.length === 0) {
+                tbody.innerHTML = '';
+                if (noEl) noEl.classList.remove('hidden');
+                return;
+            }
+            if (noEl) noEl.classList.add('hidden');
+            let html = '';
+            for (let i = 0; i < allMerch.length; i++) {
+                const m = allMerch[i];
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4">${m.image_url ? `<img src="${m.image_url}" class="w-10 h-10 object-cover rounded-lg">` : '<div class="w-10 h-10 bg-white/5 rounded-lg"></div>'}</td>
+                        <td class="p-4 font-bold text-white">${m.title}</td>
+                        <td class="p-4 text-amber-300">$${m.price}</td>
+                        <td class="p-4 text-gray-300">${m.category || 'Apparel'}</td>
+                        <td class="p-4 text-right"><button onclick="deleteMerch('${m.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button></td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
         }
 
         async function deleteMerch(id) {
-            if (!confirm('Delete item from catalog?')) return;
-            await _supabase.from('cvs_merchandise').delete().eq('id', id);
-            fetchMerchandiseCatalog();
-            updateAnalyticsDashboard();
+            if (!confirm('Delete this merchandise item?')) return;
+            try {
+                await _supabase.from('cvs_merchandise').delete().eq('id', id);
+                fetchMerch();
+            } catch (err) { alert('Error: ' + err.message); }
         }
 
-        /* --- STORE ORDERS & ANALYTICS --- */
-        async function fetchStoreOrders() {
-            const response = await _supabase.from('cvs_store_orders').select('*').order('created_at', { ascending: false });
-            allOrders = response.data || [];
-            
-            const tbody = document.getElementById('orders-table-body');
-            const noOrders = document.getElementById('no-orders');
+        async function fetchOrders() {
+            try {
+                const { data } = await _supabase.from('cvs_orders').select('*').order('created_at', { ascending: false });
+                allOrders = data || [];
+                renderOrdersTable();
+            } catch (err) { console.error(err); }
+        }
 
+        function renderOrdersTable() {
+            const tbody = document.getElementById('orders-table-body');
+            const noEl = document.getElementById('no-orders');
+            if (!tbody) return;
             if (allOrders.length === 0) {
                 tbody.innerHTML = '';
-                noOrders.classList.remove('hidden');
+                if (noEl) noEl.classList.remove('hidden');
                 return;
             }
-
-            noOrders.classList.add('hidden');
-            var html = '';
-            for (var i = 0; i < allOrders.length; i++) {
-                var o = allOrders[i];
-                var statusClass = o.fulfilled ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
-                var statusText = o.fulfilled ? 'Fulfilled' : 'Pending';
-                var dateStr = new Date(o.created_at).toLocaleDateString();
-                var customer = o.customer_name || o.email;
-                var btnText = o.fulfilled ? 'Unmark' : 'Fulfill';
-
-                html += '<tr class="hover:bg-white/5">' +
-                    '<td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ' + statusClass + '">' + statusText + '</span></td>' +
-                    '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
-                    '<td class="p-4 font-bold text-white">' + customer + '</td>' +
-                    '<td class="p-4 text-gray-300">' + o.item_details + '</td>' +
-                    '<td class="p-4 text-amber-300">$' + Number(o.total_amount).toFixed(2) + '</td>' +
-                    '<td class="p-4 text-right space-x-2">' +
-                        '<button onclick="toggleOrder(\'' + o.id + '\', ' + o.fulfilled + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
-                        '<button onclick="deleteOrder(\'' + o.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
-                    '</td></tr>';
+            if (noEl) noEl.classList.add('hidden');
+            let html = '';
+            for (let i = 0; i < allOrders.length; i++) {
+                const o = allOrders[i];
+                html += `
+                    <tr class="hover:bg-white/5">
+                        <td class="p-4 font-mono text-gray-400">${new Date(o.created_at).toLocaleDateString()}</td>
+                        <td class="p-4 font-bold text-white">${o.customer_name || 'Customer'}</td>
+                        <td class="p-4 text-amber-300">$${o.total_amount || '0.00'}</td>
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300">${o.status || 'Paid'}</span></td>
+                        <td class="p-4 text-right"><button onclick="deleteOrder('${o.id}')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button></td>
+                    </tr>
+                `;
             }
             tbody.innerHTML = html;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        async function toggleOrder(id, curr) {
-            await _supabase.from('cvs_store_orders').update({ fulfilled: !curr }).eq('id', id);
-            fetchStoreOrders();
-            updateAnalyticsDashboard();
         }
 
         async function deleteOrder(id) {
-            if (!confirm('Delete order?')) return;
-            await _supabase.from('cvs_store_orders').delete().eq('id', id);
-            fetchStoreOrders();
-            updateAnalyticsDashboard();
-        }
-
-        function updateAnalyticsDashboard() {
-            const totalInquiries = allSubmissions.length;
-            const unreadInquiries = allSubmissions.filter(function(s) { return !s.read; }).length;
-            const reviewedInquiries = totalInquiries - unreadInquiries;
-
-            if (document.getElementById('stat-total-inquiries')) document.getElementById('stat-total-inquiries').innerText = totalInquiries;
-            if (document.getElementById('stat-unread-inquiries')) document.getElementById('stat-unread-inquiries').innerText = unreadInquiries;
-            if (document.getElementById('stat-reviewed-inquiries')) document.getElementById('stat-reviewed-inquiries').innerText = reviewedInquiries;
-
-            const totalOrders = allOrders.length;
-            const pendingOrders = allOrders.filter(function(o) { return !o.fulfilled; }).length;
-            const grossRevenue = allOrders.reduce(function(sum, o) { return sum + Number(o.total_amount || 0); }, 0);
-
-            if (document.getElementById('stat-total-orders')) document.getElementById('stat-total-orders').innerText = totalOrders;
-            if (document.getElementById('stat-pending-orders')) document.getElementById('stat-pending-orders').innerText = pendingOrders;
-            if (document.getElementById('stat-gross-revenue')) document.getElementById('stat-gross-revenue').innerText = '$' + grossRevenue.toFixed(2);
-
-            const catalogItemsCount = allMerchandise.length;
-            const totalStockUnits = allMerchandise.reduce(function(sum, m) { return sum + Number(m.quantity_available || 0); }, 0);
-
-            if (document.getElementById('stat-catalog-items')) document.getElementById('stat-catalog-items').innerText = catalogItemsCount;
-            if (document.getElementById('stat-total-stock')) document.getElementById('stat-total-stock').innerText = totalStockUnits;
+            if (!confirm('Delete this order record?')) return;
+            try {
+                await _supabase.from('cvs_orders').delete().eq('id', id);
+                fetchOrders();
+            } catch (err) { alert('Error: ' + err.message); }
         }
     </script>
 </body>
