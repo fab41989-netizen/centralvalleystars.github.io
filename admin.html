@@ -911,8 +911,15 @@
                 var statusClass = s.read ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300';
                 var statusText = s.read ? 'Reviewed' : 'New';
                 var dateStr = s.created_at ? new Date(s.created_at).toLocaleDateString() : 'N/A';
-                var fullName = (s.first_name || '') + ' ' + (s.last_name || '');
+                
+                // Fallback check for both new columns (student_name) and legacy columns (first_name, last_name)
+                var fullName = s.student_name || ((s.first_name || '') + ' ' + (s.last_name || '')).trim() || 'Unknown Dancer';
+                
                 var contact = (s.email || '') + (s.phone ? ' | ' + s.phone : '');
+                
+                // Fallback check for both dance_style and dance_type
+                var danceStyle = s.dance_style || s.dance_type || 'General';
+
                 var btnText = s.read ? 'Mark New' : 'Mark Read';
 
                 html += '<tr class="hover:bg-white/5">' +
@@ -920,7 +927,7 @@
                     '<td class="p-4 text-gray-400">' + dateStr + '</td>' +
                     '<td class="p-4 font-bold text-white">' + fullName + '</td>' +
                     '<td class="p-4 text-gray-300">' + contact + '</td>' +
-                    '<td class="p-4 text-purple-300">' + (s.dance_type || 'N/A') + '</td>' +
+                    '<td class="p-4 text-purple-300">' + danceStyle + '</td>' +
                     '<td class="p-4 text-right space-x-2">' +
                         '<button onclick="toggleReadStatus(\'' + s.id + '\', ' + s.read + ')" class="px-3 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">' + btnText + '</button>' +
                         '<button onclick="deleteSub(\'' + s.id + '\')" class="px-3 py-1 rounded bg-rose-500/20 text-rose-300 text-xs">Delete</button>' +
