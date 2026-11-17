@@ -253,8 +253,13 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting...';
 
+            const fullName = document.getElementById('studentName').value.trim();
+            const nameParts = fullName.split(' ');
+
             const payload = {
-                student_name: document.getElementById('studentName').value.trim(),
+                student_name: fullName,
+                first_name: nameParts[0] || fullName,
+                last_name: nameParts.slice(1).join(' ') || '',
                 parent_name: document.getElementById('parentName').value.trim(),
                 email: document.getElementById('email').value.trim(),
                 phone: document.getElementById('phone').value.trim(),
