@@ -250,17 +250,19 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting...';
 
-            const fullName = document.getElementById('studentName').value.trim();
-            const nameParts = fullName.split(' ');
-
+            const studentFullName = document.getElementById('studentName').value.trim();
+            const parentFullName = document.getElementById('parentName').value.trim();
+            const nameParts = studentFullName.split(' ');
+            
             const payload = {
-                student_name: fullName,
-                first_name: nameParts[0] || fullName,
+                student_name: studentFullName,
+                first_name: nameParts[0] || studentFullName,
                 last_name: nameParts.slice(1).join(' ') || '',
-                parent_name: document.getElementById('parentName').value.trim(),
-                email: document.getElementById('email').value.trim(),
+                parent_name: parentFullName,  // Correctly maps parent name to parent_name
                 phone: document.getElementById('phone').value.trim(),
-                dance_style: document.getElementById('danceStyle').value
+                email: document.getElementById('email').value.trim(),
+                dance_style: document.getElementById('danceStyle').value,
+                dance_type: document.getElementById('danceStyle').value
             };
 
             try {
