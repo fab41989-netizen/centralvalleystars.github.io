@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Archive | Central Valley Stars Dance Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="config.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0B0813; color: #F3F4F6; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+        .glass-panel { background: rgba(23, 18, 38, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.25); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .glass-card { background: rgba(30, 24, 51, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.25s ease; }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.55); transform: translateY(-3px); }
+        .video-card.active-video { border-color: #FBBF24; background: rgba(168, 85, 247, 0.18); box-shadow: 0 0 25px rgba(251, 191, 36, 0.2); }
+        .cat-pill.active { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); color: #FFFFFF; border-color: transparent; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
+        .gradient-btn { background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%); transition: all 0.3s ease; }
+        .gradient-btn:hover { background: linear-gradient(135deg, #F43F5E 0%, #7C3AED 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); }
+        /* Custom scrollbar for Up Next queue */
+        .queue-scroll::-webkit-scrollbar { width: 6px; }
+        .queue-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 9999px; }
+        .queue-scroll::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 9999px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-[#0B0813]">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 p-[2px]">
+                    <div class="w-full h-full bg-[#0B0813] rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-heading font-extrabold text-base sm:text-lg text-white block leading-none">CENTRAL VALLEY STARS</span>
+                    <span class="font-heading text-[10px] font-semibold tracking-widest text-amber-400 block mt-1">PERFORMANCE ARCHIVE</span>
+                </div>
+            </a>
+
+            <!-- YouTube-Style Center Search Bar -->
+            <div class="hidden sm:flex flex-1 max-w-md relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </span>
+                <input type="text" id="videoSearchInput" oninput="filterVideos()" placeholder="Search recitals, competitions, or year..."
+                       class="w-full pl-11 pr-4 py-2.5 rounded-full bg-white/5 border border-white/15 text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs">
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-5 text-xs font-semibold text-gray-300 shrink-0">
+                <a href="index.html" class="hover:text-amber-400 transition-colors">Home</a>
+                <a href="performances.html" class="text-amber-400 font-bold">Performances</a>
+                <a href="services.html" class="hover:text-amber-400 transition-colors">Consultations</a>
+                <a href="store.html" class="hover:text-amber-400 transition-colors">Studio Store</a>
+                <a href="community.html" class="hover:text-amber-400 transition-colors">Community</a>
+            </nav>
+
+            <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-xl glass-card text-amber-300">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Search & Nav Drawer -->
+        <div id="mobile-nav-drawer" class="hidden lg:hidden px-4 pb-4 space-y-3 border-t border-white/10 pt-3">
+            <div class="relative sm:hidden">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </span>
+                <input type="text" id="mobileVideoSearchInput" oninput="syncMobileSearch(this.value)" placeholder="Search performances..."
+                       class="w-full pl-10 pr-4 py-2.5 rounded-full bg-white/5 border border-white/15 text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 text-xs">
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-semibold text-gray-300">
+                <a href="index.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:text-amber-400">Home</a>
+                <a href="performances.html" class="px-3 py-1.5 rounded-lg bg-purple-500/20 text-amber-400 font-bold">Performances</a>
+                <a href="services.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:text-amber-400">Consultations</a>
+                <a href="store.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:text-amber-400">Studio Store</a>
+                <a href="community.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:text-amber-400">Community</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main YouTube-Style Theater + Archive Content -->
+    <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 flex-grow">
+
+        <!-- Category Filter Pills Bar (YouTube Chip Bar) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+            <button onclick="setCategoryFilter('All')" id="cat-All" class="cat-pill active px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 whitespace-nowrap">All Performances</button>
+            <button onclick="setCategoryFilter('Recitals')" id="cat-Recitals" class="cat-pill px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Annual Recitals</button>
+            <button onclick="setCategoryFilter('Competition')" id="cat-Competition" class="cat-pill px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Competition Showcases</button>
+            <button onclick="setCategoryFilter('Ballet')" id="cat-Ballet" class="cat-pill px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Ballet & Pointe</button>
+            <button onclick="setCategoryFilter('Hip Hop')" id="cat-Hip Hop" class="cat-pill px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Hip Hop</button>
+            <button onclick="setCategoryFilter('Jazz & Contemporary')" id="cat-Jazz & Contemporary" class="cat-pill px-4 py-2 rounded-full text-xs font-bold glass-card border border-white/10 text-gray-300 hover:text-white whitespace-nowrap">Jazz & Contemporary</button>
+        </div>
+
+        <!-- Theater Stage: Left Primary Video Player + Right "Up Next" Queue -->
+        <section id="theater-section" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            
+            <!-- Left 2 Columns: Active Video Player & Details -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="glass-panel rounded-3xl overflow-hidden border-purple-500/30 shadow-2xl">
+                    <div class="relative w-full aspect-video bg-black">
+                        <iframe id="main-youtube-player"
+                                class="absolute inset-0 w-full h-full"
+                                src=""
+                                title="Central Valley Stars Performance Player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Video Metadata Card -->
+                <div class="glass-panel rounded-3xl p-5 sm:p-6 space-y-4">
+                    <div class="flex flex-wrap items-start justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span id="player-category-badge" class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-400/15 text-amber-300 border border-amber-400/30">Recitals</span>
+                                <span id="player-year-badge" class="px-3 py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">2026 Season</span>
+                            </div>
+                            <h1 id="player-title" class="text-xl sm:text-2xl font-extrabold text-white font-heading">Loading Performance...</h1>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyShareLink()" id="share-btn" class="px-4 py-2 rounded-xl glass-card text-xs font-bold text-gray-200 hover:text-amber-300 flex items-center gap-2">
+                                <i data-lucide="share-2" class="w-4 h-4"></i>
+                                <span id="share-btn-text">Share</span>
+                            </button>
+                            <a id="youtube-external-link" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"
+                               class="px-4 py-2 rounded-xl bg-rose-600/20 border border-rose-500/40 text-rose-300 hover:bg-rose-600/30 text-xs font-bold flex items-center gap-2">
+                                <i data-lucide="youtube" class="w-4 h-4"></i>
+                                <span>Watch on YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Studio Channel Strip + Description -->
+                    <div class="pt-3 border-t border-white/10 space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 flex items-center justify-center font-heading font-black text-xs text-white">
+                                    CVS
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-white flex items-center gap-1.5">
+                                        Central Valley Stars Dance Studio
+                                        <i data-lucide="badge-check" class="w-4 h-4 text-amber-400"></i>
+                                    </p>
+                                    <p class="text-[11px] text-gray-400">Fresno, CA • Official Student Performance Archive</p>
+                                </div>
+                            </div>
+                            <a href="index.html#instructors" class="px-4 py-2 rounded-full gradient-btn text-white text-xs font-bold">
+                                Join Our Classes
+                            </a>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 text-xs text-gray-300 leading-relaxed" id="player-description">
+                            Select any performance from the archive below to watch past recitals, competition routines, and student showcases.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 1 Column: "Up Next" Playlist Sidebar -->
+            <aside class="glass-panel rounded-3xl p-4 sm:p-5 border-purple-500/30 space-y-4">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="list-video" class="w-4 h-4 text-amber-400"></i>
+                        <h2 class="text-sm font-extrabold text-white font-heading uppercase tracking-wider">Up Next in Archive</h2>
+                    </div>
+                    <span id="queue-count" class="text-[11px] font-semibold text-purple-300">0 videos</span>
+                </div>
+
+                <div id="up-next-list" class="space-y-3 max-h-[540px] overflow-y-auto pr-1 queue-scroll">
+                    <!-- Rendered dynamically -->
+                </div>
+            </aside>
+        </section>
+
+        <!-- Full Video Archive Grid Section -->
+        <section class="space-y-5 pt-4 border-t border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white font-heading">Past Achieved Performances</h2>
+                    <p class="text-xs text-gray-400">Click any performance card to play it in the theater above.</p>
+                </div>
+                <span id="archive-results-label" class="text-xs font-semibold text-amber-300"></span>
+            </div>
+
+            <div id="video-archive-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Video Cards Rendered Here -->
+            </div>
+
+            <div id="no-videos-found" class="hidden glass-panel rounded-3xl p-12 text-center space-y-2">
+                <i data-lucide="film" class="w-10 h-10 text-gray-500 mx-auto"></i>
+                <p class="text-sm font-bold text-white">No performances match your search</p>
+                <p class="text-xs text-gray-400">Try clearing your search filter or selecting "All Performances".</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 text-center text-xs text-gray-500 mt-12">
+        <p>&copy; <span id="current-year"></span> Central Valley Stars Dance Studio • Fresno, California. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let _supabase = null;
+        let allVideos = [];
+        let activeVideoId = null;
+        let currentCategory = 'All';
+        let currentSearch = '';
+
+        // Starter fallback performances if Supabase table is empty so page works immediately
+        const SAMPLE_PERFORMANCES = [
+            {
+                id: 'sample-1',
+                title: 'Spring Gala Finale — "Starlight Over the Valley"',
+                youtube_url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+                category: 'Recitals',
+                event_year: '2026',
+                duration: '4:18',
+                description: 'Full company finale routine performed at our Spring Showcase in Fresno. Featuring our Junior and Senior Ensemble dancers.',
+                featured: true
+            },
+            {
+                id: 'sample-2',
+                title: 'Regional Dance Championships — 1st Place Hip Hop Crew',
+                youtube_url: 'https://www.youtube.com/watch?v=YE7VzlLtp-4',
+                category: 'Competition',
+                event_year: '2026',
+                duration: '3:05',
+                description: 'Award-winning high-energy Hip Hop routine earning Platinum and 1st Overall at the Central California Regional Finals.',
+                featured: false
+            },
+            {
+                id: 'sample-3',
+                title: 'Classical Ballet Variation — Swan Lake Ensemble',
+                youtube_url: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+                category: 'Ballet',
+                event_year: '2025',
+                duration: '3:42',
+                description: 'Intermediate & Advanced Ballet technique showcase highlighting poise, alignment, and musicality.',
+                featured: false
+            },
+            {
+                id: 'sample-4',
+                title: 'Contemporary & Jazz Showcase — "Rise Up"',
+                youtube_url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+                category: 'Jazz & Contemporary',
+                event_year: '2025',
+                duration: '2:54',
+                description: 'Expressive contemporary choreography performed by our Teen Company dancers.',
+                featured: false
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            if (window.SUPABASE_CONFIG) {
+                const sbUrl = window.SUPABASE_CONFIG.URL || window.SUPABASE_CONFIG.url;
+                const sbKey = window.SUPABASE_CONFIG.ANON_KEY || window.SUPABASE_CONFIG.anonKey;
+                if (sbUrl && sbKey) {
+                    _supabase = supabase.createClient(sbUrl, sbKey);
+                }
+            }
+
+            await loadPerformances();
+        });
+
+        function toggleMobileNav() {
+            document.getElementById('mobile-nav-drawer').classList.toggle('hidden');
+        }
+
+        function syncMobileSearch(val) {
+            document.getElementById('videoSearchInput').value = val;
+            filterVideos();
+        }
+
+        // Extracts 11-character YouTube Video ID from watch, youtu.be, shorts, or embed URLs
+        function extractYouTubeId(url) {
+            if (!url) return '';
+            const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = url.match(regExp);
+            return match ? match[1] : url.trim();
+        }
+
+        function getYouTubeThumbnail(url) {
+            const ytId = extractYouTubeId(url);
+            return ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : '';
+        }
+
+        async function loadPerformances() {
+            try {
+                if (_supabase) {
+                    const { data, error } = await _supabase
+                        .from('cvs_performances')
+                        .select('*')
+                        .order('featured', { ascending: false })
+                        .order('created_at', { ascending: false });
+
+                    if (!error && data && data.length > 0) {
+                        allVideos = data;
+                    } else {
+                        allVideos = SAMPLE_PERFORMANCES;
+                    }
+                } else {
+                    allVideos = SAMPLE_PERFORMANCES;
+                }
+            } catch (err) {
+                console.warn('Using starter performances:', err);
+                allVideos = SAMPLE_PERFORMANCES;
+            }
+
+            // Check if a specific video ID was shared via URL hash (#video=...)
+            const hashMatch = window.location.hash.match(/video=([^&]+)/);
+            const initialVideo = hashMatch
+                ? allVideos.find(v => String(v.id) === decodeURIComponent(hashMatch[1])) || allVideos[0]
+                : allVideos[0];
+
+            if (initialVideo) {
+                selectVideo(initialVideo.id, false);
+            }
+            renderVideoViews();
+        }
+
+        function selectVideo(id, shouldScroll = true) {
+            const video = allVideos.find(v => String(v.id) === String(id));
+            if (!video) return;
+
+            activeVideoId = video.id;
+            const ytId = extractYouTubeId(video.youtube_url);
+            const player = document.getElementById('main-youtube-player');
+
+            if (player && ytId) {
+                player.src = `https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1`;
+            }
+
+            document.getElementById('player-title').innerText = video.title;
+            document.getElementById('player-category-badge').innerText = video.category || 'Showcase';
+            document.getElementById('player-year-badge').innerText = (video.event_year || '2026') + ' Season';
+            document.getElementById('player-description').innerText = video.description || 'Central Valley Stars student performance.';
+            document.getElementById('youtube-external-link').href = ytId ? `https://www.youtube.com/watch?v=${ytId}` : video.youtube_url;
+
+            window.history.replaceState(null, '', `#video=${encodeURIComponent(video.id)}`);
+            renderVideoViews();
+
+            if (shouldScroll) {
+                document.getElementById('theater-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function setCategoryFilter(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-300');
+            });
+            const activePill = document.getElementById('cat-' + category);
+            if (activePill) {
+                activePill.classList.add('active');
+                activePill.classList.remove('text-gray-300');
+            }
+            renderVideoViews();
+        }
+
+        function filterVideos() {
+            currentSearch = (document.getElementById('videoSearchInput').value || '').toLowerCase().trim();
+            renderVideoViews();
+        }
+
+        function getFilteredVideos() {
+            return allVideos.filter(v => {
+                const matchesCat = currentCategory === 'All' || (v.category && v.category.toLowerCase() === currentCategory.toLowerCase());
+                const matchesSearch = !currentSearch ||
+                    (v.title && v.title.toLowerCase().includes(currentSearch)) ||
+                    (v.description && v.description.toLowerCase().includes(currentSearch)) ||
+                    (v.event_year && String(v.event_year).includes(currentSearch)) ||
+                    (v.category && v.category.toLowerCase().includes(currentSearch));
+                return matchesCat && matchesSearch;
+            });
+        }
+
+        function renderVideoViews() {
+            const filtered = getFilteredVideos();
+            const queueList = document.getElementById('up-next-list');
+            const grid = document.getElementById('video-archive-grid');
+            const emptyState = document.getElementById('no-videos-found');
+
+            document.getElementById('queue-count').innerText = `${filtered.length} video${filtered.length === 1 ? '' : 's'}`;
+            document.getElementById('archive-results-label').innerText = `Showing ${filtered.length} of ${allVideos.length} archived performances`;
+
+            if (filtered.length === 0) {
+                queueList.innerHTML = '<p class="text-xs text-gray-400 text-center py-6">No matching videos in queue.</p>';
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            // 1. Render Right-Hand "Up Next" Compact Queue
+            queueList.innerHTML = filtered.map(v => {
+                const isActive = String(v.id) === String(activeVideoId);
+                const thumb = getYouTubeThumbnail(v.youtube_url);
+                return `
+                    <button onclick="selectVideo('${v.id}')"
+                            class="video-card ${isActive ? 'active-video' : ''} w-full text-left flex gap-3 p-2.5 rounded-2xl glass-card items-start group">
+                        <div class="relative w-32 aspect-video rounded-xl overflow-hidden bg-black shrink-0">
+                            <img src="${thumb}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            ${v.duration ? `<span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/85 text-[10px] font-bold text-white">${v.duration}</span>` : ''}
+                            ${isActive ? `<div class="absolute inset-0 bg-purple-900/50 flex items-center justify-center"><span class="px-2 py-0.5 rounded-full bg-amber-400 text-[#0B0813] text-[9px] font-black uppercase">Playing</span></div>` : ''}
+                        </div>
+                        <div class="min-w-0 flex-1 space-y-1">
+                            <p class="text-xs font-bold text-white line-clamp-2 group-hover:text-amber-300 transition-colors">${v.title}</p>
+                            <p class="text-[10px] text-purple-300 font-semibold">${v.category || 'Recitals'} • ${v.event_year || '2026'}</p>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            // 2. Render Full YouTube-Style Thumbnail Grid Below
+            grid.innerHTML = filtered.map(v => {
+                const isActive = String(v.id) === String(activeVideoId);
+                const thumb = getYouTubeThumbnail(v.youtube_url);
+                return `
+                    <div onclick="selectVideo('${v.id}')"
+                         class="video-card ${isActive ? 'active-video' : ''} glass-card rounded-3xl overflow-hidden cursor-pointer flex flex-col justify-between group">
+                        <div>
+                            <div class="relative aspect-video bg-black overflow-hidden">
+                                <img src="${thumb}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0B0813]/80 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div class="w-12 h-12 rounded-full gradient-btn flex items-center justify-center shadow-xl">
+                                        <i data-lucide="play" class="w-5 h-5 text-white fill-white ml-0.5"></i>
+                                    </div>
+                                </div>
+                                ${v.duration ? `<span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/85 text-[10px] font-bold text-white">${v.duration}</span>` : ''}
+                                <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#0B0813]/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-amber-300">
+                                    ${v.event_year || '2026'}
+                                </span>
+                            </div>
+
+                            <div class="p-4 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-300">${v.category || 'Showcase'}</span>
+                                    ${isActive ? '<span class="text-[10px] font-bold text-amber-400">• Now Playing</span>' : ''}
+                                </div>
+                                <h3 class="text-sm font-bold text-white font-heading line-clamp-2 group-hover:text-amber-300 transition-colors">${v.title}</h3>
+                                <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${v.description || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const label = document.getElementById('share-btn-text');
+                label.innerText = 'Link Copied!';
+                setTimeout(() => { label.innerText = 'Share'; }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
